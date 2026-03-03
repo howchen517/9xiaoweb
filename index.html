@@ -164,16 +164,42 @@
         .product-item {
             background: var(--bg-white);
             border-radius: 20px;
-            padding: 16px;
+            padding: 12px 16px; /* 稍微縮小上下 padding 讓圖片更緊湊 */
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 2px solid var(--light-purple);
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            gap: 12px; /* 新增 gap 讓內容有呼吸感 */
         }
-        .product-name { font-size: 16px; font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .price { color: var(--primary-pink); font-weight: bold; font-size: 18px; }
+        
+        /* 🎀 新增商品縮圖樣式 🎀 */
+        .product-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0; /* 防止圖片被擠壓 */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background-color: var(--light-purple); /* 預設底色，避免圖片載入前空白 */
+        }
+
+        .product-info {
+            flex: 1; /* 讓文字區塊佔滿剩餘空間 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-name { 
+            font-size: 15px; 
+            font-weight: bold; 
+            margin-bottom: 4px; 
+            color: var(--text-main);
+            /* 如果不需要 Emoji，可以把 display: flex; align-items: center; gap: 8px; 拿掉 */
+        }
+        .price { color: var(--primary-pink); font-weight: bold; font-size: 16px; }
         
         /* 數量控制器 (圓潤可愛版) */
         .qty-ctrl { display: flex; align-items: center; gap: 12px; background: var(--light-pink); padding: 4px; border-radius: 20px;}
@@ -278,7 +304,7 @@
 
     <script>
         // 你的 LIFF ID
-        const LIFF_ID = "2009198027-AdmXuJNK"; 
+        const LIFF_ID = "你的_LIFF_ID_填在這裡"; 
 
         // 💡 【老闆看這裡】商品資料庫 (教你怎麼放圖片)
         // banner: 是步驟一遊戲列表的大橫幅圖片 (建議比例 16:9)
@@ -291,9 +317,15 @@
                 banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Identity+V', 
                 icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=IDV',
                 products: [
-                    { id: 'idv_1', name: '🔮 759 迴聲', price: 330 },
-                    { id: 'idv_2', name: '🔮 3795 迴聲', price: 1490 },
-                    { id: 'idv_3', name: '🔮 7590 迴聲', price: 2990 }
+                    { id: 'idv_1', name: '759 迴聲', price: 330, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
+                    { id: 'idv_2', name: '2277 迴聲', price: 990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
+                    { id: 'idv_3', name: '3036 迴聲', price: 1320, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
+                    { id: 'idv_4', name: '3795 迴聲', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
+                    { id: 'idv_5', name: '7590 迴聲', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
+                    { id: 'idv_6', name: '15180 迴聲', price: 5980, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
+                    { id: 'idv_7', name: '3615 迴聲 (安卓)', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=📱' },
+                    { id: 'idv_8', name: '7230 迴聲 (安卓)', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=📱' },
+                    { id: 'idv_9', name: '14460 迴聲 (安卓)', price: 5980, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=📱' }
                 ]
             },
             'roblox': {
@@ -302,8 +334,11 @@
                 banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Roblox', 
                 icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=RBX',
                 products: [
-                    { id: 'rbx_1', name: '⭐ 800 Robux', price: 280 },
-                    { id: 'rbx_2', name: '⭐ 4500 Robux', price: 1450 }
+                    { id: 'rbx_1', name: '800 Robux', price: 280, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
+                    { id: 'rbx_2', name: '1700 Robux', price: 580, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
+                    { id: 'rbx_3', name: '4500 Robux', price: 1450, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
+                    { id: 'rbx_4', name: '10000 Robux', price: 3200, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
+                    { id: 'rbx_5', name: '22500 Robux', price: 6800, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' }
                 ]
             },
             'supernatural': {
@@ -312,9 +347,12 @@
                 banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Supernatural', 
                 icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=SNO',
                 products: [
-                    { id: 'sno_1', name: '💎 基礎禮包', price: 150 },
-                    { id: 'sno_2', name: '💎 進階禮包', price: 450 },
-                    { id: 'sno_3', name: '💎 豪華禮包', price: 1490 }
+                    { id: 'sno_0', name: '特權月卡', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎫' },
+                    { id: 'sno_1', name: '300 點數', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
+                    { id: 'sno_2', name: '980 點數', price: 490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
+                    { id: 'sno_3', name: '1980 點數', price: 990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
+                    { id: 'sno_4', name: '3280 點數', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
+                    { id: 'sno_5', name: '6480 點數', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' }
                 ]
             },
             'aov': {
@@ -323,9 +361,13 @@
                 banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Arena+of+Valor', 
                 icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=AOV',
                 products: [
-                    { id: 'aov_1', name: '🎟️ 364 點券', price: 170 },
-                    { id: 'aov_2', name: '🎟️ 728 點券', price: 330 },
-                    { id: 'aov_3', name: '🎟️ 1466 點券', price: 650 }
+                    { id: 'aov_1', name: '364 點券', price: 170, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_2', name: '728 點券', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_3', name: '1466 點券', price: 650, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_4', name: '2250 點券', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_5', name: '2932 點券', price: 1300, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_6', name: '4543 點券', price: 2000, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_7', name: '9086 點券', price: 4000, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' }
                 ]
             },
             'codm': {
@@ -334,9 +376,12 @@
                 banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=CODM', 
                 icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=CODM',
                 products: [
-                    { id: 'codm_1', name: '🪙 420 CP', price: 150 },
-                    { id: 'codm_2', name: '🪙 880 CP', price: 300 },
-                    { id: 'codm_3', name: '🪙 2400 CP', price: 750 }
+                    { id: 'codm_1', name: '880 CP', price: 300, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_2', name: '2400 CP', price: 750, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_3', name: '5000 CP', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_4', name: '10800 CP', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_5', name: '15800 CP', price: 4290, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_6', name: '21600 CP', price: 5890, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' }
                 ]
             },
             'pubgm': {
@@ -345,9 +390,11 @@
                 banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=PUBG+Mobile', 
                 icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=PUBG',
                 products: [
-                    { id: 'pubg_1', name: '💵 300+25 UC', price: 150 },
-                    { id: 'pubg_2', name: '💵 600+60 UC', price: 300 },
-                    { id: 'pubg_3', name: '💵 1500+300 UC', price: 750 }
+                    { id: 'pubg_1', name: '700 UC', price: 300, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
+                    { id: 'pubg_2', name: '1875 UC', price: 750, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
+                    { id: 'pubg_3', name: '3990 UC', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
+                    { id: 'pubg_4', name: '8400 UC', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
+                    { id: 'pubg_5', name: '16800 UC', price: 5890, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' }
                 ]
             },
             'hok': {
@@ -356,9 +403,11 @@
                 banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Honor+of+Kings', 
                 icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=HOK',
                 products: [
-                    { id: 'hok_1', name: '🎫 60 點券', price: 35 },
-                    { id: 'hok_2', name: '🎫 300 點券', price: 150 },
-                    { id: 'hok_3', name: '🎫 680 點券', price: 330 }
+                    { id: 'hok_1', name: '830 點券', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'hok_2', name: '1245 點券', price: 490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'hok_3', name: '2508 點券', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'hok_4', name: '4180 點券', price: 1490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'hok_5', name: '8360 點券', price: 2990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' }
                 ]
             },
             'ww': {
@@ -367,9 +416,12 @@
                 banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Wuthering+Waves', 
                 icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=WW',
                 products: [
-                    { id: 'ww_1', name: '🌙 300 月相', price: 150 },
-                    { id: 'ww_2', name: '🌙 980 月相', price: 490 },
-                    { id: 'ww_3', name: '🌙 3280 月相', price: 1490 }
+                    { id: 'ww_0', name: '月相觀測卡', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎟️' },
+                    { id: 'ww_1', name: '980 月相', price: 490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
+                    { id: 'ww_2', name: '1980 月相', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
+                    { id: 'ww_3', name: '3280 月相', price: 1490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
+                    { id: 'ww_4', name: '6480 月相', price: 2990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
+                    { id: 'ww_5', name: '月相一條龍', price: 5980, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' }
                 ]
             },
             'genshin': {
@@ -378,9 +430,12 @@
                 banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Genshin+Impact', 
                 icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=Genshin',
                 products: [
-                    { id: 'gs_1', name: '✨ 300 創世結晶', price: 150 },
-                    { id: 'gs_2', name: '✨ 980 創世結晶', price: 490 },
-                    { id: 'gs_3', name: '✨ 3280 創世結晶', price: 1490 }
+                    { id: 'gs_0', name: '空月祝福', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🌙' },
+                    { id: 'gs_1', name: '980 創世結晶', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
+                    { id: 'gs_2', name: '1980 創世結晶', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
+                    { id: 'gs_3', name: '3280 創世結晶', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
+                    { id: 'gs_4', name: '6480 創世結晶', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
+                    { id: 'gs_5', name: '結晶一條龍', price: 5980, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🐉' }
                 ]
             },
             'maple': {
@@ -389,9 +444,12 @@
                 banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=MapleStory', 
                 icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=Maple',
                 products: [
-                    { id: 'maple_1', name: '🍁 新手特惠包', price: 100 },
-                    { id: 'maple_2', name: '🍁 成長基金', price: 490 },
-                    { id: 'maple_3', name: '🍁 豪華月卡', price: 330 }
+                    { id: 'maple_0', name: '免廣告月卡', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'maple_1', name: '1000 鑽石', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
+                    { id: 'maple_2', name: '3300 鑽石', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
+                    { id: 'maple_3', name: '6600 鑽石', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
+                    { id: 'maple_4', name: '10000 鑽石', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
+                    { id: 'maple_5', name: '20000 鑽石', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' }
                 ]
             },
             'brawl': {
@@ -400,9 +458,13 @@
                 banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Brawl+Stars', 
                 icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=Brawl',
                 products: [
-                    { id: 'bs_1', name: '💎 30 寶石', price: 70 },
-                    { id: 'bs_2', name: '💎 80 寶石', price: 150 },
-                    { id: 'bs_3', name: '💎 170 寶石', price: 300 }
+                    { id: 'bs_0', name: '亂鬥通行券', price: 230, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎫' },
+                    { id: 'bs_00', name: '高級通行券', price: 330, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎟️' },
+                    { id: 'bs_1', name: '80 寶石', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
+                    { id: 'bs_2', name: '170 寶石', price: 300, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
+                    { id: 'bs_3', name: '360 寶石', price: 590, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
+                    { id: 'bs_4', name: '950 寶石', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
+                    { id: 'bs_5', name: '2000 寶石', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' }
                 ]
             },
             'heartbeat': {
@@ -411,9 +473,13 @@
                 banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Heartbeat+Town', 
                 icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=Heart',
                 products: [
-                    { id: 'ht_1', name: '💖 60 心鑽', price: 30 },
-                    { id: 'ht_2', name: '💖 300 心鑽', price: 150 },
-                    { id: 'ht_3', name: '💖 680 心鑽', price: 330 }
+                    { id: 'ht_0', name: '金橡果商會會員', price: 150, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'ht_1', name: '300+20 心鑽', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
+                    { id: 'ht_2', name: '680+50 心鑽', price: 330, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
+                    { id: 'ht_3', name: '1280+90 心鑽', price: 590, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
+                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
+                    { id: 'ht_5', name: '3280+270 心鑽', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
+                    { id: 'ht_6', name: '6480+570 心鑽', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' }
                 ]
             },
             'love': {
@@ -422,9 +488,12 @@
                 banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Love+and+Deepspace', 
                 icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=Love',
                 products: [
-                    { id: 'love_1', name: '💌 60 晶鑽', price: 35 },
-                    { id: 'love_2', name: '💌 300 晶鑽', price: 150 },
-                    { id: 'love_3', name: '💌 980 晶鑽', price: 490 }
+                    { id: 'love_0', name: '季卡/月卡', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎫' },
+                    { id: 'love_1', name: '450 晶鑽', price: 230, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
+                    { id: 'love_2', name: '980 晶鑽', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
+                    { id: 'love_3', name: '1980 晶鑽', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
+                    { id: 'love_4', name: '3280 晶鑽', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
+                    { id: 'love_5', name: '6480 晶鑽', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' }
                 ]
             },
             'yysls': {
@@ -433,9 +502,13 @@
                 banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Where+Winds+Meet', 
                 icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=YYSLS',
                 products: [
-                    { id: 'yy_1', name: '🎐 60 長鳴珠', price: 35 },
-                    { id: 'yy_2', name: '🎐 300 長鳴珠', price: 150 },
-                    { id: 'yy_3', name: '🎐 980 長鳴珠', price: 490 }
+                    { id: 'yy_0', name: '月度禮金', price: 150, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'yy_1', name: '600 長鳴珠', price: 300, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
+                    { id: 'yy_2', name: '900 長鳴珠', price: 450, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
+                    { id: 'yy_3', name: '1800 長鳴珠', price: 890, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
+                    { id: 'yy_4', name: '3000 長鳴珠', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
+                    { id: 'yy_5', name: '6000 長鳴珠', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
+                    { id: 'yy_6', name: '12000 長鳴珠', price: 5980, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' }
                 ]
             }
         };
@@ -447,21 +520,33 @@
         // 1. 初始化 LIFF
         async function initApp() {
             try {
-                // 測試環境可以先註解掉這兩行 liff 程式碼來看畫面
-                // await liff.init({ liffId: LIFF_ID });
-                // if (!liff.isLoggedIn()) { liff.login(); return; }
-                
-                // const profile = await liff.getProfile();
-                // document.getElementById('user-name').innerText = profile.displayName;
-                // document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
-                
-                // 開發測試用假資料
-                document.getElementById('user-name').innerText = "親愛的顧客";
+                // 檢查是否已填寫真實的 LIFF ID
+                if (LIFF_ID === "2009198027-AdmXuJNK" || !LIFF_ID) {
+                    console.warn("尚未填寫真實的 LIFF ID，目前處於網頁測試模式。");
+                    document.getElementById('user-name').innerText = "九霄的客人 (測試模式)";
+                    renderGames();
+                    return;
+                }
 
+                // 正式環境：啟動 LIFF 並要求登入
+                await liff.init({ liffId: LIFF_ID });
+                if (!liff.isLoggedIn()) { 
+                    liff.login(); 
+                    return; 
+                }
+                
+                // 獲取使用者資料
+                const profile = await liff.getProfile();
+                document.getElementById('user-name').innerText = profile.displayName;
+                document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
+                
+                // 渲染遊戲列表
                 renderGames();
             } catch (err) {
                 console.error("LIFF Init Error:", err);
-                document.getElementById('user-name').innerText = "未登入";
+                document.getElementById('user-name').innerText = "未登入 (LIFF 載入失敗)";
+                // 即使發生錯誤也先渲染列表，避免畫面空白
+                renderGames();
             }
         }
 
@@ -504,9 +589,11 @@
             
             db[gameId].products.forEach(p => {
                 cart[p.id] = 0; // 初始數量為 0
+                // 🎀 在這裡渲染商品的圖片 (p.img) 🎀
                 pList.innerHTML += `
                     <div class="product-item">
-                        <div>
+                        <img src="${p.img}" class="product-icon" alt="${p.name}">
+                        <div class="product-info">
                             <div class="product-name">${p.name}</div>
                             <div class="price">NT$ ${p.price}</div>
                         </div>
@@ -597,5 +684,4 @@
         initApp();
     </script>
 </body>
-
 </html>
