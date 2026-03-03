@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>九霄科技｜致力於給顧客最好的服務</title>
+    <!-- 引入 LINE LIFF SDK -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        /* 🎀 1. 核心可愛配色與字體設定 🎀 */
+        :root {
+            --primary-pink: #FF85B3;    /* 櫻花粉 主色 */
+            --light-pink: #FFF0F5;      /* 極淺粉 背景色 */
+            --primary-purple: #B39DDB;  /* 薰衣草紫 輔助色 */
+            --light-purple: #F3E5F5;    /* 淺紫 */
+            --bg-white: #FFFFFF;        /* 奶油白 卡片底色 */
+            --text-main: #5D4037;       /* 咖啡色 文字 (比純黑更柔和可愛) */
+            --text-muted: #8D6E63;      /* 淺咖啡色 次要文字 */
+            --gradient-btn: linear-gradient(135deg, #FF85B3 0%, #B39DDB 100%); /* 漸層按鈕 */
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--light-pink); /* 整個網頁的背景色 */
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* 🎀 2. 頂部導航 (加上可愛的圓角邊框) 🎀 */
+        .header {
+            padding: 15px 20px;
+            background: var(--bg-white);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 4px 15px rgba(255, 133, 179, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-pink);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 吉祥物小頭像 */
+        .brand-mascot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-pink);
+        }
+
+        .user-profile {
+            font-size: 14px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--light-purple);
+            background-size: cover;
+            background-position: center;
+            border: 2px solid var(--primary-purple);
+        }
+
+        /* 🎀 3. 內容區 🎀 */
+        .container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 120px;
+        }
+
+        .step { display: none; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .step.active { display: block; }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* 🎀 4. 遊戲卡片 (加入圖片橫幅) 🎀 */
+        .game-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(179, 157, 219, 0.15);
+            overflow: hidden; /* 讓圖片不超出圓角 */
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+        .game-card:active { 
+            transform: scale(0.96); 
+            border-color: var(--primary-pink);
+        }
+        
+        /* 遊戲圖片橫幅設定 */
+        .game-banner {
+            width: 100%;
+            height: 140px;
+            object-fit: cover; /* 讓圖片自動裁切填滿，不變形 */
+            display: block;
+        }
+
+        .game-info {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-info h3 { margin: 0 0 6px 0; font-size: 18px; color: var(--text-main); }
+        .game-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
+        .arrow-icon { color: var(--primary-pink); font-size: 20px; font-weight: bold; }
+
+        /* 🎀 5. 商品列表與輸入框 🎀 */
+        .form-panel {
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(179, 157, 219, 0.15);
+            margin-bottom: 24px;
+        }
+
+        .input-group { margin-bottom: 16px; }
+        .input-group label { 
+            display: block; margin-bottom: 8px; font-size: 14px; 
+            font-weight: bold; color: var(--text-main); 
+        }
+        .input-group input {
+            width: 100%; padding: 14px; border-radius: 16px;
+            border: 2px solid var(--light-purple); 
+            background: var(--light-pink);
+            color: var(--text-main); font-size: 16px; box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .input-group input:focus { 
+            outline: none; 
+            border-color: var(--primary-pink); 
+            background: var(--bg-white);
+            box-shadow: 0 0 0 4px rgba(255, 133, 179, 0.2);
+        }
+
+        .product-item {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid var(--light-purple);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .product-name { font-size: 16px; font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .price { color: var(--primary-pink); font-weight: bold; font-size: 18px; }
+        
+        /* 數量控制器 (圓潤可愛版) */
+        .qty-ctrl { display: flex; align-items: center; gap: 12px; background: var(--light-pink); padding: 4px; border-radius: 20px;}
+        .btn-qty {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: none; background: var(--bg-white); color: var(--primary-purple);
+            font-size: 18px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+        .btn-qty:active { transform: scale(0.9); }
+        .btn-qty.add { background: var(--gradient-btn); color: white; }
+
+        /* 🎀 6. 底部操作區 🎀 */
+        .footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--bg-white);
+            padding: 15px 20px; box-sizing: border-box;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            box-shadow: 0 -4px 20px rgba(179, 157, 219, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        .total-box { display: flex; flex-direction: column; }
+        .total-label { font-size: 12px; color: var(--text-muted); font-weight: bold;}
+        .total-price { font-size: 24px; font-weight: bold; color: var(--primary-pink); }
+        
+        .btn-next {
+            background: var(--gradient-btn); color: white; border: none;
+            padding: 14px 32px; border-radius: 30px; font-size: 16px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 6px 15px rgba(255, 133, 179, 0.4);
+            transition: 0.2s;
+        }
+        .btn-next:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(255, 133, 179, 0.4); }
+        
+        .btn-back {
+            background: var(--light-pink); color: var(--primary-purple); border: none;
+            padding: 14px 20px; border-radius: 30px; font-size: 15px; font-weight: bold; cursor: pointer;
+        }
+        .btn-back:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部導航 -->
+    <div class="header">
+        <div class="brand">
+            <!-- 老闆可以在這裡換成九霄的吉祥物圖片網址 -->
+            <img src="https://placehold.co/100x100/FFD1E3/FF85B3?text=Fox" alt="九霄小狐" class="brand-mascot">
+            九霄科技 ✨
+        </div>
+        <div class="user-profile">
+            <span id="user-name">讀取中...</span>
+            <div id="user-img" class="user-avatar"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 步驟一：選擇遊戲 -->
+        <div id="step-1" class="step active">
+            <h2 style="font-size: 22px; margin-top: 0; color: var(--primary-purple);">你想儲值哪款遊戲呢？🎮</h2>
+            <div id="game-list"></div>
+        </div>
+
+        <!-- 步驟二：選擇商品與填寫資料 -->
+        <div id="step-2" class="step">
+            <!-- 顯示當前選擇的遊戲圖片與標題 -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img id="selected-game-img" src="" style="width: 80px; height: 80px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <h2 id="selected-game-title" style="font-size: 24px; margin: 10px 0 0 0; color: var(--primary-pink);"></h2>
+            </div>
+            
+            <div class="form-panel">
+                <div class="input-group">
+                    <label>📝 玩家 UID / 帳號 <span style="color:var(--primary-pink)">*</span></label>
+                    <input type="text" id="player-uid" placeholder="請務必填寫正確哦！">
+                </div>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label>🌸 角色暱稱 (選填)</label>
+                    <input type="text" id="player-name" placeholder="填寫暱稱方便客服核對">
+                </div>
+            </div>
+
+            <h3 style="font-size: 18px; color: var(--primary-purple); margin-top: 24px;">🛍️ 選擇想要的面額</h3>
+            <div id="product-list"></div>
+        </div>
+    </div>
+
+    <!-- 底部操作區 -->
+    <div class="footer" id="footer" style="display: none;">
+        <div class="total-box">
+            <span class="total-label">總計金額</span>
+            <span class="total-price" id="total-price">NT$ 0</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn-back" id="btn-back" onclick="goBack()">返回</button>
+            <button class="btn-next" id="btn-next" onclick="submitOrder()">結帳去 💖</button>
+        </div>
+    </div>
+
+    <script>
+        // 你的 LIFF ID
+        const LIFF_ID = "你的_LIFF_ID_填在這裡"; 
+
+        // 💡 【老闆看這裡】商品資料庫 (教你怎麼放圖片)
+        // banner: 是步驟一遊戲列表的大橫幅圖片 (建議比例 16:9)
+        // icon: 是步驟二上面的小方形圖片 (建議比例 1:1)
+        // 只要把網址替換成你上傳到 Imgur 或圖床的網址就可以了！
+        const db = {
+            'idv': {
+                name: '第五人格',
+                desc: '官方授權，UID免密碼快速到帳',
+                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Identity+V', 
+                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=IDV',
+                products: [
+                    { id: 'idv_1', name: '🔮 759 迴聲', price: 330 },
+                    { id: 'idv_2', name: '🔮 3795 迴聲', price: 1490 },
+                    { id: 'idv_3', name: '🔮 7590 迴聲', price: 2990 }
+                ]
+            },
+            'roblox': {
+                name: 'Roblox',
+                desc: '超低價 Robux 全自動代儲',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Roblox', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=RBX',
+                products: [
+                    { id: 'rbx_1', name: '⭐ 800 Robux', price: 280 },
+                    { id: 'rbx_2', name: '⭐ 4500 Robux', price: 1450 }
+                ]
+            },
+            'supernatural': {
+                name: '超自然行動組',
+                desc: 'UID直儲，快速安全有保障',
+                banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Supernatural', 
+                icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=SNO',
+                products: [
+                    { id: 'sno_1', name: '💎 基礎禮包', price: 150 },
+                    { id: 'sno_2', name: '💎 進階禮包', price: 450 },
+                    { id: 'sno_3', name: '💎 豪華禮包', price: 1490 }
+                ]
+            },
+            'aov': {
+                name: '傳說對決',
+                desc: '正規點券，秒速發貨不封號',
+                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Arena+of+Valor', 
+                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=AOV',
+                products: [
+                    { id: 'aov_1', name: '🎟️ 364 點券', price: 170 },
+                    { id: 'aov_2', name: '🎟️ 728 點券', price: 330 },
+                    { id: 'aov_3', name: '🎟️ 1466 點券', price: 650 }
+                ]
+            },
+            'codm': {
+                name: '決勝時刻',
+                desc: 'CP點數直儲，超值特惠中',
+                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=CODM', 
+                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=CODM',
+                products: [
+                    { id: 'codm_1', name: '🪙 420 CP', price: 150 },
+                    { id: 'codm_2', name: '🪙 880 CP', price: 300 },
+                    { id: 'codm_3', name: '🪙 2400 CP', price: 750 }
+                ]
+            },
+            'pubgm': {
+                name: 'PUBG M',
+                desc: 'UC幣直儲，全球服通用',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=PUBG+Mobile', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=PUBG',
+                products: [
+                    { id: 'pubg_1', name: '💵 300+25 UC', price: 150 },
+                    { id: 'pubg_2', name: '💵 600+60 UC', price: 300 },
+                    { id: 'pubg_3', name: '💵 1500+300 UC', price: 750 }
+                ]
+            },
+            'hok': {
+                name: '王者榮耀',
+                desc: '官方授權點券，快速入帳',
+                banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Honor+of+Kings', 
+                icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=HOK',
+                products: [
+                    { id: 'hok_1', name: '🎫 60 點券', price: 35 },
+                    { id: 'hok_2', name: '🎫 300 點券', price: 150 },
+                    { id: 'hok_3', name: '🎫 680 點券', price: 330 }
+                ]
+            },
+            'ww': {
+                name: '鳴潮',
+                desc: '月相直儲，五星保底帶回家',
+                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Wuthering+Waves', 
+                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=WW',
+                products: [
+                    { id: 'ww_1', name: '🌙 300 月相', price: 150 },
+                    { id: 'ww_2', name: '🌙 980 月相', price: 490 },
+                    { id: 'ww_3', name: '🌙 3280 月相', price: 1490 }
+                ]
+            },
+            'genshin': {
+                name: '原神',
+                desc: '創世結晶 UID秒儲免帳密',
+                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Genshin+Impact', 
+                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=Genshin',
+                products: [
+                    { id: 'gs_1', name: '✨ 300 創世結晶', price: 150 },
+                    { id: 'gs_2', name: '✨ 980 創世結晶', price: 490 },
+                    { id: 'gs_3', name: '✨ 3280 創世結晶', price: 1490 }
+                ]
+            },
+            'maple': {
+                name: '楓之谷放置冒險記',
+                desc: '超值禮包，輕鬆掛機練等',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=MapleStory', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=Maple',
+                products: [
+                    { id: 'maple_1', name: '🍁 新手特惠包', price: 100 },
+                    { id: 'maple_2', name: '🍁 成長基金', price: 490 },
+                    { id: 'maple_3', name: '🍁 豪華月卡', price: 330 }
+                ]
+            },
+            'brawl': {
+                name: '荒野亂鬥',
+                desc: '寶石直儲，暢快對戰',
+                banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Brawl+Stars', 
+                icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=Brawl',
+                products: [
+                    { id: 'bs_1', name: '💎 30 寶石', price: 70 },
+                    { id: 'bs_2', name: '💎 80 寶石', price: 150 },
+                    { id: 'bs_3', name: '💎 170 寶石', price: 300 }
+                ]
+            },
+            'heartbeat': {
+                name: '心動小鎮',
+                desc: '心鑽代儲，享受療癒生活',
+                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Heartbeat+Town', 
+                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=Heart',
+                products: [
+                    { id: 'ht_1', name: '💖 60 心鑽', price: 30 },
+                    { id: 'ht_2', name: '💖 300 心鑽', price: 150 },
+                    { id: 'ht_3', name: '💖 680 心鑽', price: 330 }
+                ]
+            },
+            'love': {
+                name: '戀與深空',
+                desc: '晶鑽代儲，浪漫邂逅不錯過',
+                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Love+and+Deepspace', 
+                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=Love',
+                products: [
+                    { id: 'love_1', name: '💌 60 晶鑽', price: 35 },
+                    { id: 'love_2', name: '💌 300 晶鑽', price: 150 },
+                    { id: 'love_3', name: '💌 980 晶鑽', price: 490 }
+                ]
+            },
+            'yysls': {
+                name: '燕雲十六聲',
+                desc: '長鳴珠直儲，武俠必備',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Where+Winds+Meet', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=YYSLS',
+                products: [
+                    { id: 'yy_1', name: '🎐 60 長鳴珠', price: 35 },
+                    { id: 'yy_2', name: '🎐 300 長鳴珠', price: 150 },
+                    { id: 'yy_3', name: '🎐 980 長鳴珠', price: 490 }
+                ]
+            }
+        };
+
+        let currentActiveGame = null;
+        let cart = {}; 
+        let totalAmount = 0;
+
+        // 1. 初始化 LIFF
+        async function initApp() {
+            try {
+                // 測試環境可以先註解掉這兩行 liff 程式碼來看畫面
+                // await liff.init({ liffId: LIFF_ID });
+                // if (!liff.isLoggedIn()) { liff.login(); return; }
+                
+                // const profile = await liff.getProfile();
+                // document.getElementById('user-name').innerText = profile.displayName;
+                // document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
+                
+                // 開發測試用假資料
+                document.getElementById('user-name').innerText = "親愛的顧客";
+
+                renderGames();
+            } catch (err) {
+                console.error("LIFF Init Error:", err);
+                document.getElementById('user-name').innerText = "未登入";
+            }
+        }
+
+        // 2. 渲染遊戲列表 (加入圖片)
+        function renderGames() {
+            const list = document.getElementById('game-list');
+            list.innerHTML = '';
+            for (const [gameId, gameInfo] of Object.entries(db)) {
+                list.innerHTML += `
+                    <div class="game-card" onclick="selectGame('${gameId}')">
+                        <!-- 顯示橫幅圖片 -->
+                        <img src="${gameInfo.banner}" class="game-banner" alt="${gameInfo.name}">
+                        <div class="game-info">
+                            <div>
+                                <h3>${gameInfo.name}</h3>
+                                <p>${gameInfo.desc}</p>
+                            </div>
+                            <div class="arrow-icon">➔</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 3. 選擇遊戲，進入步驟二
+        function selectGame(gameId) {
+            currentActiveGame = gameId;
+            cart = {}; // 清空購物車
+            updateTotal();
+            
+            // 設定標題和小圖片
+            document.getElementById('selected-game-title').innerText = db[gameId].name;
+            document.getElementById('selected-game-img').src = db[gameId].icon;
+            
+            document.getElementById('player-uid').value = '';
+            document.getElementById('player-name').value = '';
+            
+            const pList = document.getElementById('product-list');
+            pList.innerHTML = '';
+            
+            db[gameId].products.forEach(p => {
+                cart[p.id] = 0; // 初始數量為 0
+                pList.innerHTML += `
+                    <div class="product-item">
+                        <div>
+                            <div class="product-name">${p.name}</div>
+                            <div class="price">NT$ ${p.price}</div>
+                        </div>
+                        <div class="qty-ctrl">
+                            <button class="btn-qty" onclick="changeQty('${p.id}', -1)">-</button>
+                            <span id="qty-${p.id}" style="width: 24px; text-align: center; font-weight: bold; color: var(--text-main);">0</span>
+                            <button class="btn-qty add" onclick="changeQty('${p.id}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('step-1').classList.remove('active');
+            document.getElementById('step-2').classList.add('active');
+            document.getElementById('footer').style.display = 'flex';
+        }
+
+        // 4. 增減數量
+        function changeQty(productId, delta) {
+            let newQty = cart[productId] + delta;
+            if (newQty < 0) newQty = 0;
+            
+            cart[productId] = newQty;
+            document.getElementById(`qty-${productId}`).innerText = newQty;
+            updateTotal();
+        }
+
+        function updateTotal() {
+            totalAmount = 0;
+            if (currentActiveGame) {
+                db[currentActiveGame].products.forEach(p => {
+                    totalAmount += cart[p.id] * p.price;
+                });
+            }
+            document.getElementById('total-price').innerText = `NT$ ${totalAmount}`;
+        }
+
+        function goBack() {
+            document.getElementById('step-2').classList.remove('active');
+            document.getElementById('step-1').classList.add('active');
+            document.getElementById('footer').style.display = 'none';
+        }
+
+        // 5. 送出訂單給 LINE Bot
+        function submitOrder() {
+            const uid = document.getElementById('player-uid').value.trim();
+            const nickname = document.getElementById('player-name').value.trim();
+
+            if (!uid) {
+                alert("🌸 哎呀！忘記填寫玩家 UID 囉！");
+                return;
+            }
+            if (totalAmount === 0) {
+                alert("🛍️ 請至少選擇一個想要的面額喔！");
+                return;
+            }
+
+            // 整理訂單明細
+            let orderDetails = "";
+            db[currentActiveGame].products.forEach(p => {
+                if (cart[p.id] > 0) {
+                    orderDetails += `▪ ${p.name} x ${cart[p.id]}\n`;
+                }
+            });
+
+            // 組合給 LINE Bot 看的訊息格式 (加入可愛的表情符號)
+            const messageText = `🎀【九霄科技 新訂單】🎀\n\n🎮 遊戲：${db[currentActiveGame].name}\n🆔 UID：${uid}\n👤 暱稱：${nickname || '未填'}\n\n🛒 購買內容：\n${orderDetails}\n💰 應付總額：NT$ ${totalAmount}\n\n老闆，我已經確認無誤了，請給我匯款帳號！✨`;
+
+            // 如果在 LINE LIFF 環境內，直接傳送訊息
+            if (liff.isInClient()) {
+                liff.sendMessages([{ type: 'text', text: messageText }])
+                    .then(() => {
+                        window.alert("🎉 訂單已送出！請在聊天室查看付款資訊。");
+                        liff.closeWindow();
+                    })
+                    .catch((err) => {
+                        console.error('送出失敗', err);
+                        alert("傳送失敗，請稍後再試 😢");
+                    });
+            } else {
+                // 網頁版測試用
+                console.log("模擬送出訊息：\n" + messageText);
+                alert("🌸 網頁版測試：訂單已建立 (請看 Console)！\n實際在 LINE 裡會自動將訂單傳送至聊天室。");
+            }
+        }
+
+        // 啟動
+        initApp();
+    </script>
+</body>
+</html>
