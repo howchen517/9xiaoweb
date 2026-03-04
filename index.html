@@ -305,7 +305,7 @@
                     </div>
                     <div class="input-group">
                         <label>🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label>
-                        <input type="text" id="uid-server" placeholder="例如：台港澳服 / Asia">
+                        <input type="text" id="uid-server" placeholder="例如：台港澳 / 陸服">
                     </div>
                     <div class="input-group">
                         <label>🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
@@ -322,7 +322,7 @@
                     <div class="input-group">
                         <label>2. 🔑 登入方式 <span style="color:var(--primary-pink)">*</span></label>
                         <select id="acc-login-method">
-                            <option value="" disabled selected>請選擇登入綁定方式</option>
+                            <option value="" disabled selected>請選擇登入方式</option>
                             <option value="Facebook">Facebook (FB)</option>
                             <option value="Google">Google</option>
                             <option value="Garena">Garena</option>
@@ -343,7 +343,7 @@
                     </div>
                     <div class="input-group">
                         <label>6. 🛡️ 臉書復原碼 / Google 備用碼 <span style="color:var(--primary-pink)">*</span></label>
-                        <input type="text" id="acc-recovery" placeholder="請務必填寫以利快速登入">
+                        <input type="text" id="acc-recovery" placeholder="沒有的話則需配合在線驗證">
                     </div>
                 </div>
 
@@ -351,7 +351,7 @@
                 <div id="form-none" style="display: none; background: var(--light-pink); padding: 15px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
                     <p style="margin: 0; font-size: 14px; font-weight: bold; color: var(--primary-pink); text-align: center;">
                         💡 溫馨提醒<br><br>
-                        <span style="color: var(--text-main); font-weight: normal;">此遊戲將直接發送「專屬序號」，<br>結帳後請自行至官方儲值中心兌換即可，無需填寫任何帳號資料喔！</span>
+                        <span style="color: var(--text-main); font-weight: normal;">此遊戲將直接發送「貝殼幣序號」，<br>結帳後請自行至Garena官方儲值中心兌換即可，無需填寫任何帳號資料喔！</span>
                     </p>
                 </div>
 
@@ -385,7 +385,7 @@
         </div>
         <div style="display: flex; gap: 10px;">
             <button class="btn-back" id="btn-back" onclick="goBack()">返回</button>
-            <button class="btn-next" id="btn-next" onclick="submitOrder()">結帳去 💖</button>
+            <button class="btn-next" id="btn-next" onclick="submitOrder()">結帳</button>
         </div>
     </div>
 
@@ -399,7 +399,7 @@
         const db = {
             'idv': {
                 name: '第五人格', loginType: 'uid',
-                desc: '官方授權，UID免密碼快速到帳',
+                desc: 'UID免帳密，首次儲值需掃碼',
                 banner: 'https://img.youtube.com/vi/vTqW_mR195c/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/vTqW_mR195c/hqdefault.jpg',
                 products: [
@@ -413,7 +413,7 @@
             },
             'genshin': {
                 name: '原神', loginType: 'uid',
-                desc: '創世結晶 UID秒儲免帳密',
+                desc: 'UID儲值免帳密',
                 banner: 'https://img.youtube.com/vi/TAlKhARUcoY/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/TAlKhARUcoY/hqdefault.jpg',
                 products: [
@@ -426,7 +426,7 @@
             },
             'arenabreakout': {
                 name: '暗區突圍', loginType: 'uid',
-                desc: '科恩幣直儲，快速到帳',
+                desc: 'UID直儲，快速到帳',
                 banner: 'https://img.youtube.com/vi/Z8Z4m_vK33Q/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/Z8Z4m_vK33Q/hqdefault.jpg',
                 products: [
@@ -450,7 +450,7 @@
             },
             'honkai': {
                 name: '崩壞系列', loginType: 'uid',
-                desc: '星瓊/水晶 UID直儲',
+                desc: 'UID儲值免帳密',
                 banner: 'https://img.youtube.com/vi/w8vPZrMFiZ4/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/w8vPZrMFiZ4/hqdefault.jpg',
                 products: [
@@ -462,7 +462,7 @@
             },
             'eggy': {
                 name: '蛋仔派對', loginType: 'uid',
-                desc: '蛋幣秒儲，派對走起',
+                desc: 'UID儲值免帳密',
                 banner: 'https://img.youtube.com/vi/8_qWz-4X1aI/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/8_qWz-4X1aI/hqdefault.jpg',
                 products: [
@@ -474,7 +474,7 @@
             },
             'ww': {
                 name: '鳴潮', loginType: 'uid',
-                desc: '月相直儲，五星保底帶回家',
+                desc: 'UID儲值免帳密',
                 banner: 'https://img.youtube.com/vi/7K4a-s05d1c/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/7K4a-s05d1c/hqdefault.jpg',
                 products: [
@@ -498,7 +498,7 @@
             },
             'roblox': {
                 name: 'Roblox', loginType: 'account',
-                desc: '超低價 Robux 全自動代儲',
+                desc: 'UID儲值免帳密',
                 banner: 'https://img.youtube.com/vi/eAvN_M_1-Lg/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/eAvN_M_1-Lg/hqdefault.jpg',
                 products: [
@@ -522,7 +522,7 @@
             },
             'pubgm': {
                 name: 'PUBG M', loginType: 'account',
-                desc: 'UC幣代儲，全球服通用',
+                desc: '大吉大利，今晚吃雞',
                 banner: 'https://img.youtube.com/vi/uR8O1q59tXY/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/uR8O1q59tXY/hqdefault.jpg',
                 products: [
@@ -534,7 +534,7 @@
             },
             'hok': {
                 name: '王者榮耀', loginType: 'account',
-                desc: '官方授權點券，快速入帳',
+                desc: '此方式為慢儲，且需先通過實名認證',
                 banner: 'https://img.youtube.com/vi/3bBIfA9ZfGE/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/3bBIfA9ZfGE/hqdefault.jpg',
                 products: [
@@ -546,7 +546,7 @@
             },
             'maple': {
                 name: '楓之谷放置冒險記', loginType: 'account',
-                desc: '超值禮包，輕鬆掛機練等',
+                desc: '超值禮包，輕鬆練等',
                 banner: 'https://img.youtube.com/vi/B4aJ19O0g44/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/B4aJ19O0g44/hqdefault.jpg',
                 products: [
@@ -570,7 +570,7 @@
             },
             'supernatural': {
                 name: '超自然行動組', loginType: 'account',
-                desc: '安全代登，快速有保障',
+                desc: '推特登入無法儲值',
                 banner: 'https://img.youtube.com/vi/OqI1j3n1d58/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/OqI1j3n1d58/hqdefault.jpg',
                 products: [
@@ -583,7 +583,7 @@
             },
             'love': {
                 name: '戀與深空', loginType: 'account',
-                desc: '晶鑽代登，浪漫邂逅不錯過',
+                desc: '晶鑽代儲，浪漫邂逅不錯過',
                 banner: 'https://img.youtube.com/vi/1X8N_Hw0ZzI/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/1X8N_Hw0ZzI/hqdefault.jpg',
                 products: [
@@ -596,7 +596,7 @@
             },
             'valorant': {
                 name: '特戰英豪', loginType: 'account',
-                desc: 'VP點數代登，安全快速',
+                desc: '顆秒 難道你真的是賦能哥',
                 banner: 'https://img.youtube.com/vi/e_E9W2vsRbQ/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/e_E9W2vsRbQ/hqdefault.jpg',
                 products: [
@@ -621,7 +621,7 @@
             },
             'ptcg': {
                 name: 'PTCG Pocket', loginType: 'account',
-                desc: '寶可金塊代儲，快速抽卡',
+                desc: '金塊代儲，快速抽卡',
                 banner: 'https://img.youtube.com/vi/3pB_A1A12QY/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/3pB_A1A12QY/hqdefault.jpg',
                 products: [
@@ -634,7 +634,7 @@
             },
             'yysls': {
                 name: '燕雲十六聲', loginType: 'account',
-                desc: '長鳴珠代登，武俠必備',
+                desc: '長鳴珠代儲，武俠必備',
                 banner: 'https://img.youtube.com/vi/P8bL4W4c8Dk/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/P8bL4W4c8Dk/hqdefault.jpg',
                 products: [
@@ -647,7 +647,7 @@
             },
             'racingmaster': {
                 name: '巔峰極速', loginType: 'account',
-                desc: '寶石代登，極速飆車',
+                desc: '寶石代儲，極速飆車',
                 banner: 'https://img.youtube.com/vi/c_T1w_kZ4K8/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/c_T1w_kZ4K8/hqdefault.jpg',
                 products: [
@@ -660,7 +660,7 @@
             },
             'heartbeat': {
                 name: '心動小鎮', loginType: 'account',
-                desc: '心鑽代登，享受療癒生活',
+                desc: '心鑽代儲，享受療癒生活',
                 banner: 'https://img.youtube.com/vi/0pT3Q29W55w/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/0pT3Q29W55w/hqdefault.jpg',
                 products: [
@@ -674,7 +674,7 @@
             },
             'arknights2': {
                 name: '明日方舟:終末地', loginType: 'account',
-                desc: '源石代登，官方安全',
+                desc: '源石代儲，官方安全',
                 banner: 'https://img.youtube.com/vi/1O3U_H5Dq4g/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/1O3U_H5Dq4g/hqdefault.jpg',
                 products: [
@@ -699,7 +699,7 @@
             },
             'nobunaga': {
                 name: '信長之野望:真戰', loginType: 'account',
-                desc: '小判代登，稱霸戰國',
+                desc: '小判代儲，稱霸戰國',
                 banner: 'https://img.youtube.com/vi/1uT1Yy006Sg/hqdefault.jpg', 
                 icon: 'https://img.youtube.com/vi/1uT1Yy006Sg/hqdefault.jpg',
                 products: [
@@ -998,7 +998,7 @@
                         "layout": "vertical",
                         "backgroundColor": "#FFF0F5",
                         "contents": [
-                            { "type": "text", "text": "✨ 老闆，請給我匯款帳號！", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
+                            { "type": "text", "text": "✨ 訂單確認中！請稍候 . . . ", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
                         ]
                     }
                 }
@@ -1031,3 +1031,4 @@
     </script>
 </body>
 </html>
+
