@@ -991,7 +991,7 @@
 
             plainText += `----------------------\n`;
             plainText += `💰 應付總額：NT$ ${totalAmount}\n`;
-            plainText += `✨ 訂單確認中！`;
+            plainText += `✨ 訂單確認中！請稍後 . . .`;
 
             // 組合 Flex Message JSON
             const flexMessage = {
@@ -1035,7 +1035,7 @@
                     "footer": {
                         "type": "box", "layout": "vertical", "backgroundColor": "#FFF0F5",
                         "contents": [
-                            { "type": "text", "text": "✨ 訂單確認中！", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
+                            { "type": "text", "text": "✨ 訂單確認中！請稍後 . . .", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
                         ]
                     }
                 }
