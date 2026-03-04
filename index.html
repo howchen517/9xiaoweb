@@ -390,7 +390,7 @@
     </div>
 
     <script>
-        // 👉 老闆，這裡一定要填入你真實的 LIFF ID
+        // 👉 老闆，這裡一定要填入你真實的 LIFF ID (換成你自己的哦！)
         const LIFF_ID = "2009198027-AdmXuJNK"; 
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
@@ -668,7 +668,8 @@
                     { id: 'ht_1', name: '300+20 心鑽', price: 150, img: getEmoji('1f496') },
                     { id: 'ht_2', name: '680+50 心鑽', price: 330, img: getEmoji('1f496') },
                     { id: 'ht_3', name: '1280+90 心鑽', price: 590, img: getEmoji('1f496') },
-                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: getEmoji('1f496') }
+                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: getEmoji('1f496') },
+                    { id: 'ht_5', name: '3280+270 心鑽', price: 1490, img: getEmoji('1f496') }
                 ]
             },
             'arknights2': {
@@ -954,6 +955,7 @@
                 }
             });
 
+            // 完美的 Flex Message 組合結構
             const flexMessage = {
                 "type": "flex",
                 "altText": `🎀 九霄科技 新訂單：${orderId}`, 
@@ -981,66 +983,65 @@
                             ...flexItems,
                             
                             { "type": "separator", "margin": "md", "color": "#FFD1E3" },
-                        {
-                            "type": "box", "layout": "horizontal", "margin": "md",
-                            "contents": [
-                                { "type": "text", "text": "應付總額", "color": "#8D6E63", "size": "md", "flex": 1, "align": "start", "gravity": "center" },
-                                { "type": "text", "text": `NT$ ${totalAmount}`, "weight": "bold", "size": "lg", "color": "#FF85B3", "flex": 2, "align": "end" }
-                            ]
-                        }
-                    ]
-                },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "backgroundColor": "#FFF0F5",
-                    "spacing": "sm",
-                    "paddingAll": "md",
-                    "contents": [
-                        {
-                            "type": "button",
-                            "style": "primary",
-                            "color": "#FF85B3",
-                            "height": "sm",
-                            "action": {
-                                "type": "message",
-                                "label": "💳 點我取得繳費帳號",
-                                "text": `老闆，我要「${paymentMethod}」的繳費資訊！`
+                            {
+                                "type": "box", "layout": "horizontal", "margin": "md",
+                                "contents": [
+                                    { "type": "text", "text": "應付總額", "color": "#8D6E63", "size": "md", "flex": 1, "align": "start", "gravity": "center" },
+                                    { "type": "text", "text": `NT$ ${totalAmount}`, "weight": "bold", "size": "lg", "color": "#FF85B3", "flex": 2, "align": "end" }
+                                ]
                             }
-                        },
-                        {
-                            "type": "text",
-                            "text": "✨ 點擊上方按鈕，系統將自動回覆給您",
-                            "wrap": true,
-                            "size": "xxs",
-                            "color": "#B39DDB",
-                            "weight": "bold",
-                            "align": "center",
-                            "margin": "sm"
-                        }
-                    ]
+                        ]
+                    },
+                    "footer": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#FFF0F5",
+                        "spacing": "sm",
+                        "paddingAll": "md",
+                        "contents": [
+                            {
+                                "type": "button",
+                                "style": "primary",
+                                "color": "#FF85B3",
+                                "height": "sm",
+                                "action": {
+                                    "type": "message",
+                                    "label": "💳 點我取得繳費帳號",
+                                    "text": `老闆，我要「${paymentMethod}」的繳費資訊！`
+                                }
+                            },
+                            {
+                                "type": "text",
+                                "text": "✨ 點擊上方按鈕，系統將自動回覆給您",
+                                "wrap": true,
+                                "size": "xxs",
+                                "color": "#B39DDB",
+                                "weight": "bold",
+                                "align": "center",
+                                "margin": "sm"
+                            }
+                        ]
+                    }
                 }
+            };
+
+            if (liff && liff.isInClient && liff.isInClient()) {
+                liff.sendMessages([flexMessage])
+                    .then(() => {
+                        window.alert(`🎉 訂單已送出！(編號: ${orderId})\n點擊卡片下方按鈕即可取得繳費帳號唷！`);
+                        liff.closeWindow();
+                    })
+                    .catch((err) => {
+                        console.error('送出失敗', err);
+                        alert("傳送失敗 😢\n錯誤原因：" + err.message);
+                    });
+            } else {
+                console.log("模擬送出 Flex：\n", JSON.stringify(flexMessage, null, 2));
+                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n這是一個極致完美的卡片版本！`);
             }
-        };
-
-        // 🎀 恢復成只發送一張 Flex 卡片，保持畫面最乾淨漂亮！ 🎀
-        if (liff && liff.isInClient && liff.isInClient()) {
-            liff.sendMessages([flexMessage])
-                .then(() => {
-                    window.alert(`🎉 訂單已送出！(編號: ${orderId})\n點擊卡片下方按鈕即可取得繳費帳號唷！`);
-                    liff.closeWindow();
-                })
-                .catch((err) => {
-                    console.error('送出失敗', err);
-                    alert("傳送失敗 😢\n錯誤原因：" + err.message);
-                });
-        } else {
-            console.log("模擬送出 Flex：\n", JSON.stringify(flexMessage, null, 2));
-            alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！`);
         }
-    }
 
-    initApp();
-</script>
+        initApp();
+    </script>
 </body>
 </html>
