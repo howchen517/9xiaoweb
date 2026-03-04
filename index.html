@@ -44,14 +44,12 @@
             z-index: 100;
         }
 
-        /* 🎀 新增：首頁按鈕容器 🎀 */
         .header-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        /* 🎀 新增：回到首頁按鈕 🎀 */
         .btn-home {
             background: var(--light-pink);
             border: none;
@@ -67,14 +65,8 @@
             box-shadow: 0 2px 8px rgba(255, 133, 179, 0.2);
             text-decoration: none;
         }
-        .btn-home:active {
-            transform: scale(0.9);
-        }
-        .btn-home svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
+        .btn-home:active { transform: scale(0.9); }
+        .btn-home svg { width: 20px; height: 20px; fill: currentColor; }
 
         .brand {
             font-size: 20px;
@@ -271,14 +263,12 @@
 
     <div class="header">
         <div class="header-left">
-            <!-- 🏠 回到首頁按鈕 -->
             <button class="btn-home" onclick="goHome()" title="回到首頁">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M12 3L20 10.5V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V10.5L12 3ZM12 5.5186L6 11.1444V19H18V11.1444L12 5.5186ZM10 13H14V19H10V13Z"></path>
                 </svg>
             </button>
             <div class="brand">
-                <!-- 老闆可以在這裡換成九霄的吉祥物圖片網址 -->
                 <img src="https://placehold.co/100x100/FFD1E3/FF85B3?text=Fox" alt="九霄小狐" class="brand-mascot">
                 九霄科技 ✨
             </div>
@@ -304,15 +294,67 @@
             </div>
             
             <div class="form-panel">
-                <div class="input-group">
-                    <label>📝 玩家 UID / 帳號 <span style="color:var(--primary-pink)">*</span></label>
-                    <input type="text" id="player-uid" placeholder="請務必填寫正確哦！">
+                
+                <!-- 🎀 類型一：UID 直儲表單 (第五人格、原神等) 🎀 -->
+                <div id="form-uid" style="display: none;">
+                    <div class="input-group">
+                        <label>📝 玩家 UID <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="uid-uid" placeholder="請務必填寫正確 UID！">
+                    </div>
+                    <div class="input-group">
+                        <label>🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="uid-server" placeholder="例如：台港澳服 / Asia">
+                    </div>
+                    <div class="input-group">
+                        <label>🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="uid-nickname" placeholder="填寫暱稱方便客服核對">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>🌸 角色暱稱 (選填)</label>
-                    <input type="text" id="player-name" placeholder="填寫暱稱方便客服核對">
+
+                <!-- 🎀 類型二：帳號密碼代登表單 (Roblox、PUBG等) 🎀 -->
+                <div id="form-account" style="display: none;">
+                    <div class="input-group">
+                        <label>🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-nickname" placeholder="填寫遊戲內暱稱">
+                    </div>
+                    <div class="input-group">
+                        <label>🔑 登入方式 <span style="color:var(--primary-pink)">*</span></label>
+                        <select id="acc-login-method">
+                            <option value="" disabled selected>請選擇登入綁定方式</option>
+                            <option value="Facebook">Facebook (FB)</option>
+                            <option value="Google">Google</option>
+                            <option value="Garena">Garena</option>
+                            <option value="官方帳號/其他">官方帳號 / 其他</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-server" placeholder="例如：台服 / 國際服">
+                    </div>
+                    <div class="input-group">
+                        <label>👤 登入帳號 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-account" placeholder="請輸入登入帳號或信箱">
+                    </div>
+                    <div class="input-group">
+                        <label>🔒 登入密碼 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-password" placeholder="請注意大小寫是否正確">
+                    </div>
+                    <div class="input-group">
+                        <label>🛡️ 臉書復原碼 / Google 備用碼 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-recovery" placeholder="請務必填寫以利快速登入">
+                    </div>
                 </div>
-                <div class="input-group" style="margin-bottom: 0;">
+
+                <!-- 🎀 類型三：免填資料直接發序號 (傳說對決等) 🎀 -->
+                <div id="form-none" style="display: none; background: var(--light-pink); padding: 15px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
+                    <p style="margin: 0; font-size: 14px; font-weight: bold; color: var(--primary-pink); text-align: center;">
+                        💡 溫馨提醒<br><br>
+                        <span style="color: var(--text-main); font-weight: normal;">此遊戲將直接發送「專屬序號」，<br>結帳後請自行至官方儲值中心兌換即可，無需填寫任何帳號資料喔！</span>
+                    </p>
+                </div>
+
+                <!-- 🎀 共通選項：付款方式 🎀 -->
+                <div class="input-group" style="margin-bottom: 0; margin-top: 16px;">
                     <label>💳 付款方式 <span style="color:var(--primary-pink)">*</span></label>
                     <select id="payment-method">
                         <option value="" disabled selected>請選擇付款方式</option>
@@ -325,6 +367,7 @@
                         <option value="街口支付">街口支付</option>
                     </select>
                 </div>
+
             </div>
 
             <h3 style="font-size: 18px; color: var(--primary-purple); margin-top: 24px;">🛍️ 選擇想要的面額</h3>
@@ -346,13 +389,14 @@
 
     <script>
         // 👉 老闆，這裡一定要填入你真實的 LIFF ID 才會接通 LINE 喔！
-        // ⚠️ 請注意：LIFF ID 的格式通常是「數字-英數組合」，例如 "1234567890-abcdefg"
-        // 千萬不要填成 Channel ID 喔！
         const LIFF_ID = "2009198027-AdmXuJNK"; 
 
+        // 💡 遊戲資料庫設定：
+        // loginType: 'uid' (UID直儲), 'account' (帳密代登), 'none' (免填資料發序號)
         const db = {
+            // ================== UID 直儲遊戲 ==================
             'idv': {
-                name: '第五人格',
+                name: '第五人格', loginType: 'uid',
                 desc: '官方授權，UID免密碼快速到帳',
                 banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Identity+V', 
                 icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=IDV',
@@ -362,110 +406,11 @@
                     { id: 'idv_3', name: '3036 迴聲', price: 1320, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
                     { id: 'idv_4', name: '3795 迴聲', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
                     { id: 'idv_5', name: '7590 迴聲', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
-                    { id: 'idv_6', name: '15180 迴聲', price: 5980, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' },
-                    { id: 'idv_7', name: '3615 迴聲 (安卓)', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=📱' },
-                    { id: 'idv_8', name: '7230 迴聲 (安卓)', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=📱' },
-                    { id: 'idv_9', name: '14460 迴聲 (安卓)', price: 5980, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=📱' }
-                ]
-            },
-            'roblox': {
-                name: 'Roblox',
-                desc: '超低價 Robux 全自動代儲',
-                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Roblox', 
-                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=RBX',
-                products: [
-                    { id: 'rbx_1', name: '800 Robux', price: 280, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
-                    { id: 'rbx_2', name: '1700 Robux', price: 580, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
-                    { id: 'rbx_3', name: '4500 Robux', price: 1450, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
-                    { id: 'rbx_4', name: '10000 Robux', price: 3200, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
-                    { id: 'rbx_5', name: '22500 Robux', price: 6800, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' }
-                ]
-            },
-            'supernatural': {
-                name: '超自然行動組',
-                desc: 'UID直儲，快速安全有保障',
-                banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Supernatural', 
-                icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=SNO',
-                products: [
-                    { id: 'sno_0', name: '特權月卡', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎫' },
-                    { id: 'sno_1', name: '300 點數', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
-                    { id: 'sno_2', name: '980 點數', price: 490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
-                    { id: 'sno_3', name: '1980 點數', price: 990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
-                    { id: 'sno_4', name: '3280 點數', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' },
-                    { id: 'sno_5', name: '6480 點數', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💎' }
-                ]
-            },
-            'aov': {
-                name: '傳說對決',
-                desc: '正規點券，秒速發貨不封號',
-                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Arena+of+Valor', 
-                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=AOV',
-                products: [
-                    { id: 'aov_1', name: '364 點券', price: 170, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
-                    { id: 'aov_2', name: '728 點券', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
-                    { id: 'aov_3', name: '1466 點券', price: 650, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
-                    { id: 'aov_4', name: '2250 點券', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
-                    { id: 'aov_5', name: '2932 點券', price: 1300, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
-                    { id: 'aov_6', name: '4543 點券', price: 2000, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
-                    { id: 'aov_7', name: '9086 點券', price: 4000, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' }
-                ]
-            },
-            'codm': {
-                name: '決勝時刻',
-                desc: 'CP點數直儲，超值特惠中',
-                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=CODM', 
-                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=CODM',
-                products: [
-                    { id: 'codm_1', name: '880 CP', price: 300, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
-                    { id: 'codm_2', name: '2400 CP', price: 750, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
-                    { id: 'codm_3', name: '5000 CP', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
-                    { id: 'codm_4', name: '10800 CP', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
-                    { id: 'codm_5', name: '15800 CP', price: 4290, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
-                    { id: 'codm_6', name: '21600 CP', price: 5890, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' }
-                ]
-            },
-            'pubgm': {
-                name: 'PUBG M',
-                desc: 'UC幣直儲，全球服通用',
-                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=PUBG+Mobile', 
-                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=PUBG',
-                products: [
-                    { id: 'pubg_1', name: '700 UC', price: 300, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
-                    { id: 'pubg_2', name: '1875 UC', price: 750, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
-                    { id: 'pubg_3', name: '3990 UC', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
-                    { id: 'pubg_4', name: '8400 UC', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
-                    { id: 'pubg_5', name: '16800 UC', price: 5890, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' }
-                ]
-            },
-            'hok': {
-                name: '王者榮耀',
-                desc: '官方授權點券，快速入帳',
-                banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Honor+of+Kings', 
-                icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=HOK',
-                products: [
-                    { id: 'hok_1', name: '830 點券', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
-                    { id: 'hok_2', name: '1245 點券', price: 490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
-                    { id: 'hok_3', name: '2508 點券', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
-                    { id: 'hok_4', name: '4180 點券', price: 1490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
-                    { id: 'hok_5', name: '8360 點券', price: 2990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' }
-                ]
-            },
-            'ww': {
-                name: '鳴潮',
-                desc: '月相直儲，五星保底帶回家',
-                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Wuthering+Waves', 
-                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=WW',
-                products: [
-                    { id: 'ww_0', name: '月相觀測卡', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎟️' },
-                    { id: 'ww_1', name: '980 月相', price: 490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
-                    { id: 'ww_2', name: '1980 月相', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
-                    { id: 'ww_3', name: '3280 月相', price: 1490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
-                    { id: 'ww_4', name: '6480 月相', price: 2990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
-                    { id: 'ww_5', name: '月相一條龍', price: 5980, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' }
+                    { id: 'idv_6', name: '15180 迴聲', price: 5980, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🔮' }
                 ]
             },
             'genshin': {
-                name: '原神',
+                name: '原神', loginType: 'uid',
                 desc: '創世結晶 UID秒儲免帳密',
                 banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Genshin+Impact', 
                 icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=Genshin',
@@ -474,12 +419,135 @@
                     { id: 'gs_1', name: '980 創世結晶', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
                     { id: 'gs_2', name: '1980 創世結晶', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
                     { id: 'gs_3', name: '3280 創世結晶', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
-                    { id: 'gs_4', name: '6480 創世結晶', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' },
-                    { id: 'gs_5', name: '結晶一條龍', price: 5980, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🐉' }
+                    { id: 'gs_4', name: '6480 創世結晶', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=✨' }
+                ]
+            },
+            'arenabreakout': {
+                name: '暗區突圍', loginType: 'uid',
+                desc: '科恩幣直儲，快速到帳',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Arena+Breakout', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=AB',
+                products: [
+                    { id: 'ab_1', name: '特權月卡', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎫' },
+                    { id: 'ab_2', name: '進階手冊', price: 330, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=📚' },
+                    { id: 'ab_3', name: '300 點券', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💰' },
+                    { id: 'ab_4', name: '980 點券', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💰' }
+                ]
+            },
+            'zzz': {
+                name: '絕區零', loginType: 'uid',
+                desc: '菲林直儲，安全保底',
+                banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Zenless+Zone+Zero', 
+                icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=ZZZ',
+                products: [
+                    { id: 'zzz_1', name: '繩網會員 (月卡)', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎫' },
+                    { id: 'zzz_2', name: '980 菲林', price: 490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎞️' },
+                    { id: 'zzz_3', name: '1980 菲林', price: 990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎞️' },
+                    { id: 'zzz_4', name: '3280 菲林', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎞️' }
+                ]
+            },
+            'honkai': {
+                name: '崩壞系列', loginType: 'uid',
+                desc: '星瓊/水晶 UID直儲',
+                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Honkai+Series', 
+                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=Honkai',
+                products: [
+                    { id: 'hk_1', name: '列車補給憑證', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎫' },
+                    { id: 'hk_2', name: '980 古老夢華', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
+                    { id: 'hk_3', name: '1980 古老夢華', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
+                    { id: 'hk_4', name: '3280 古老夢華', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' }
+                ]
+            },
+            'eggy': {
+                name: '蛋仔派對', loginType: 'uid',
+                desc: '蛋幣秒儲，派對走起',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Eggy+Party', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=Eggy',
+                products: [
+                    { id: 'eg_1', name: '派對手冊', price: 150, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'eg_2', name: '600 蛋幣', price: 300, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🪙' },
+                    { id: 'eg_3', name: '1200 蛋幣', price: 590, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🪙' },
+                    { id: 'eg_4', name: '3000 蛋幣', price: 1490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🪙' }
+                ]
+            },
+            'ww': {
+                name: '鳴潮', loginType: 'uid',
+                desc: '月相直儲，五星保底帶回家',
+                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Wuthering+Waves', 
+                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=WW',
+                products: [
+                    { id: 'ww_0', name: '月相觀測卡', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎟️' },
+                    { id: 'ww_1', name: '980 月相', price: 490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
+                    { id: 'ww_2', name: '1980 月相', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' },
+                    { id: 'ww_3', name: '3280 月相', price: 1490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🌙' }
+                ]
+            },
+            
+            // ================== 發送序號 (傳說對決) ==================
+            'aov': {
+                name: '傳說對決', loginType: 'none',
+                desc: '發送貝殼幣序號，請至官網自行兌換',
+                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Arena+of+Valor', 
+                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=AOV',
+                products: [
+                    { id: 'aov_1', name: '364 點券', price: 170, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_2', name: '728 點券', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_3', name: '1466 點券', price: 650, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' },
+                    { id: 'aov_4', name: '2250 點券', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎟️' }
+                ]
+            },
+
+            // ================== 帳密代登遊戲 ==================
+            'roblox': {
+                name: 'Roblox', loginType: 'account',
+                desc: '超低價 Robux 全自動代儲',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Roblox', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=RBX',
+                products: [
+                    { id: 'rbx_1', name: '800 Robux', price: 280, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
+                    { id: 'rbx_2', name: '1700 Robux', price: 580, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
+                    { id: 'rbx_3', name: '4500 Robux', price: 1450, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' },
+                    { id: 'rbx_4', name: '10000 Robux', price: 3200, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=⭐' }
+                ]
+            },
+            'codm': {
+                name: '決勝時刻', loginType: 'account',
+                desc: 'CP點數代儲，超值特惠中',
+                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=CODM', 
+                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=CODM',
+                products: [
+                    { id: 'codm_1', name: '880 CP', price: 300, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_2', name: '2400 CP', price: 750, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_3', name: '5000 CP', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' },
+                    { id: 'codm_4', name: '10800 CP', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🪙' }
+                ]
+            },
+            'pubgm': {
+                name: 'PUBG M', loginType: 'account',
+                desc: 'UC幣代儲，全球服通用',
+                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=PUBG+Mobile', 
+                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=PUBG',
+                products: [
+                    { id: 'pubg_1', name: '700 UC', price: 300, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
+                    { id: 'pubg_2', name: '1875 UC', price: 750, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
+                    { id: 'pubg_3', name: '3990 UC', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' },
+                    { id: 'pubg_4', name: '8400 UC', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💵' }
+                ]
+            },
+            'hok': {
+                name: '王者榮耀', loginType: 'account',
+                desc: '官方授權點券，快速入帳',
+                banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Honor+of+Kings', 
+                icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=HOK',
+                products: [
+                    { id: 'hok_1', name: '830 點券', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'hok_2', name: '1245 點券', price: 490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'hok_3', name: '2508 點券', price: 990, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
+                    { id: 'hok_4', name: '4180 點券', price: 1490, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' }
                 ]
             },
             'maple': {
-                name: '楓之谷放置冒險記',
+                name: '楓之谷放置冒險記', loginType: 'account',
                 desc: '超值禮包，輕鬆掛機練等',
                 banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=MapleStory', 
                 icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=Maple',
@@ -487,68 +555,19 @@
                     { id: 'maple_0', name: '免廣告月卡', price: 330, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
                     { id: 'maple_1', name: '1000 鑽石', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
                     { id: 'maple_2', name: '3300 鑽石', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
-                    { id: 'maple_3', name: '6600 鑽石', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
-                    { id: 'maple_4', name: '10000 鑽石', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' },
-                    { id: 'maple_5', name: '20000 鑽石', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' }
+                    { id: 'maple_3', name: '6600 鑽石', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🍁' }
                 ]
             },
             'brawl': {
-                name: '荒野亂鬥',
-                desc: '寶石直儲，暢快對戰',
+                name: '荒野亂鬥', loginType: 'account',
+                desc: '寶石代儲，暢快對戰',
                 banner: 'https://placehold.co/600x300/F3E5F5/5D4037?text=Brawl+Stars', 
                 icon: 'https://placehold.co/200x200/F3E5F5/5D4037?text=Brawl',
                 products: [
                     { id: 'bs_0', name: '亂鬥通行券', price: 230, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎫' },
-                    { id: 'bs_00', name: '高級通行券', price: 330, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎟️' },
                     { id: 'bs_1', name: '80 寶石', price: 150, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
                     { id: 'bs_2', name: '170 寶石', price: 300, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
-                    { id: 'bs_3', name: '360 寶石', price: 590, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
-                    { id: 'bs_4', name: '950 寶石', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' },
-                    { id: 'bs_5', name: '2000 寶石', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' }
-                ]
-            },
-            'heartbeat': {
-                name: '心動小鎮',
-                desc: '心鑽代儲，享受療癒生活',
-                banner: 'https://placehold.co/600x300/FFF0F5/5D4037?text=Heartbeat+Town', 
-                icon: 'https://placehold.co/200x200/FFF0F5/5D4037?text=Heart',
-                products: [
-                    { id: 'ht_0', name: '金橡果商會會員', price: 150, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
-                    { id: 'ht_1', name: '300+20 心鑽', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
-                    { id: 'ht_2', name: '680+50 心鑽', price: 330, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
-                    { id: 'ht_3', name: '1280+90 心鑽', price: 590, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
-                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
-                    { id: 'ht_5', name: '3280+270 心鑽', price: 1490, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' },
-                    { id: 'ht_6', name: '6480+570 心鑽', price: 2990, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=💖' }
-                ]
-            },
-            'love': {
-                name: '戀與深空',
-                desc: '晶鑽代儲，浪漫邂逅不錯過',
-                banner: 'https://placehold.co/600x300/E1D4F5/5D4037?text=Love+and+Deepspace', 
-                icon: 'https://placehold.co/200x200/E1D4F5/5D4037?text=Love',
-                products: [
-                    { id: 'love_0', name: '季卡/月卡', price: 150, img: 'https://placehold.co/100x100/FFD1E3/5D4037?text=🎫' },
-                    { id: 'love_1', name: '450 晶鑽', price: 230, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
-                    { id: 'love_2', name: '980 晶鑽', price: 490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
-                    { id: 'love_3', name: '1980 晶鑽', price: 990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
-                    { id: 'love_4', name: '3280 晶鑽', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' },
-                    { id: 'love_5', name: '6480 晶鑽', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💌' }
-                ]
-            },
-            'yysls': {
-                name: '燕雲十六聲',
-                desc: '長鳴珠直儲，武俠必備',
-                banner: 'https://placehold.co/600x300/FFD1E3/5D4037?text=Where+Winds+Meet', 
-                icon: 'https://placehold.co/200x200/FFD1E3/5D4037?text=YYSLS',
-                products: [
-                    { id: 'yy_0', name: '月度禮金', price: 150, img: 'https://placehold.co/100x100/E1D4F5/5D4037?text=🎫' },
-                    { id: 'yy_1', name: '600 長鳴珠', price: 300, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
-                    { id: 'yy_2', name: '900 長鳴珠', price: 450, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
-                    { id: 'yy_3', name: '1800 長鳴珠', price: 890, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
-                    { id: 'yy_4', name: '3000 長鳴珠', price: 1490, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
-                    { id: 'yy_5', name: '6000 長鳴珠', price: 2990, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' },
-                    { id: 'yy_6', name: '12000 長鳴珠', price: 5980, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=🎐' }
+                    { id: 'bs_3', name: '360 寶石', price: 590, img: 'https://placehold.co/100x100/FFF0F5/5D4037?text=💎' }
                 ]
             }
         };
@@ -557,12 +576,11 @@
         let cart = {}; 
         let totalAmount = 0;
 
-        // 🎀 自動產生每日訂單編號 (格式: 月日-隨機三碼，例如 0304-852)
         function generateOrderId() {
             const now = new Date();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
-            const randomNum = Math.floor(Math.random() * 900) + 100; // 產生 100~999 隨機數
+            const randomNum = Math.floor(Math.random() * 900) + 100;
             return `${month}${day}-${randomNum}`;
         }
 
@@ -613,17 +631,48 @@
             }
         }
 
+        function clearInputs() {
+            // 清空所有輸入框
+            document.getElementById('uid-uid').value = '';
+            document.getElementById('uid-server').value = '';
+            document.getElementById('uid-nickname').value = '';
+
+            document.getElementById('acc-nickname').value = '';
+            document.getElementById('acc-login-method').value = '';
+            document.getElementById('acc-server').value = '';
+            document.getElementById('acc-account').value = '';
+            document.getElementById('acc-password').value = '';
+            document.getElementById('acc-recovery').value = '';
+
+            document.getElementById('payment-method').value = '';
+        }
+
         function selectGame(gameId) {
-            // 如果點選的是「不同的遊戲」，才清空購物車與玩家資料
+            // 切換遊戲時重置
             if (currentActiveGame !== gameId) {
                 currentActiveGame = gameId;
                 cart = {}; 
-                document.getElementById('player-uid').value = '';
-                document.getElementById('player-name').value = '';
-                document.getElementById('payment-method').value = '';
+                clearInputs();
             }
             updateTotal();
             
+            // 判斷該顯示哪一種表單 (UID直儲 或 帳密登入 或 免填資料)
+            const loginType = db[gameId].loginType;
+            if (loginType === 'uid') {
+                document.getElementById('form-uid').style.display = 'block';
+                document.getElementById('form-account').style.display = 'none';
+                document.getElementById('form-none').style.display = 'none';
+            } else if (loginType === 'account') {
+                document.getElementById('form-uid').style.display = 'none';
+                document.getElementById('form-account').style.display = 'block';
+                document.getElementById('form-none').style.display = 'none';
+            } else {
+                // 發序號，不需填寫資料
+                document.getElementById('form-uid').style.display = 'none';
+                document.getElementById('form-account').style.display = 'none';
+                document.getElementById('form-none').style.display = 'block';
+            }
+
             document.getElementById('selected-game-title').innerText = db[gameId].name;
             document.getElementById('selected-game-img').src = db[gameId].icon;
             
@@ -631,7 +680,6 @@
             pList.innerHTML = '';
             
             db[gameId].products.forEach(p => {
-                // 保留已選擇的數量，若是第一次點擊則設為 0
                 if (cart[p.id] === undefined) {
                     cart[p.id] = 0; 
                 }
@@ -652,7 +700,6 @@
                 `;
             });
 
-            // 確保回到頂部
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             document.getElementById('step-1').classList.remove('active');
@@ -673,13 +720,11 @@
             totalAmount = 0;
             if (currentActiveGame) {
                 db[currentActiveGame].products.forEach(p => {
-                    // 防呆：確保數量和價格都是有效的數字
                     const qty = parseInt(cart[p.id]) || 0;
                     const price = parseFloat(p.price) || 0;
                     totalAmount += qty * price;
                 });
             }
-            // 確保 totalAmount 絕對不是 NaN
             if (isNaN(totalAmount) || totalAmount < 0) {
                 totalAmount = 0;
             }
@@ -692,27 +737,71 @@
             document.getElementById('footer').style.display = 'none';
         }
 
-        // 🎀 修改：回到首頁功能 (不清除資料) 🎀
         function goHome() {
-            // 僅切換畫面，不清除選擇與購物車
             document.getElementById('step-2').classList.remove('active');
             document.getElementById('step-1').classList.add('active');
             document.getElementById('footer').style.display = 'none';
-            
-            // 頁面捲回最上方
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 🎀 全新大升級：發送超精美的 LINE Flex Message 訂單 🎀
-        function submitOrder() {
-            const uid = document.getElementById('player-uid').value.trim();
-            const nickname = document.getElementById('player-name').value.trim();
-            const paymentMethod = document.getElementById('payment-method').value;
+        // 幫 Flex Message 創建橫向資訊列的輔助函數
+        function createFlexRow(label, value) {
+            return {
+                "type": "box", "layout": "horizontal", "margin": "sm",
+                "contents": [
+                    { "type": "text", "text": label, "color": "#8D6E63", "size": "sm", "flex": 1 },
+                    { "type": "text", "text": value || '未填寫', "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 2, "wrap": true }
+                ]
+            };
+        }
 
-            if (!uid) {
-                alert("🌸 哎呀！忘記填寫玩家 UID 囉！");
-                return;
+        function submitOrder() {
+            const loginType = db[currentActiveGame].loginType;
+            let flexInfoRows = []; // 用來裝 Flex 裡面的詳細資料
+            
+            // 驗證與收集 UID 表單資料
+            if (loginType === 'uid') {
+                const uidVal = document.getElementById('uid-uid').value.trim();
+                const serverVal = document.getElementById('uid-server').value.trim();
+                const nicknameVal = document.getElementById('uid-nickname').value.trim();
+                
+                if (!uidVal || !serverVal || !nicknameVal) {
+                    alert("🌸 哎呀！UID、伺服器和暱稱都要填寫喔！");
+                    return;
+                }
+                
+                flexInfoRows.push(createFlexRow("🆔 UID", uidVal));
+                flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal));
+                flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal));
+            } 
+            // 驗證與收集帳密表單資料
+            else if (loginType === 'account') {
+                const nicknameVal = document.getElementById('acc-nickname').value.trim();
+                const loginMethodVal = document.getElementById('acc-login-method').value;
+                const serverVal = document.getElementById('acc-server').value.trim();
+                const accountVal = document.getElementById('acc-account').value.trim();
+                const passwordVal = document.getElementById('acc-password').value.trim();
+                const recoveryVal = document.getElementById('acc-recovery').value.trim();
+
+                if (!nicknameVal || !loginMethodVal || !serverVal || !accountVal || !passwordVal || !recoveryVal) {
+                    alert("🌸 哎呀！帳號密碼登入的所有欄位都必須填寫喔！");
+                    return;
+                }
+
+                flexInfoRows.push(createFlexRow("🔑 登入", loginMethodVal));
+                flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal));
+                flexInfoRows.push(createFlexRow("👤 帳號", accountVal));
+                flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal));
+                flexInfoRows.push(createFlexRow("🛡️ 復原碼", recoveryVal));
+                flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal));
+            } 
+            // 免填資料 (發序號)
+            else if (loginType === 'none') {
+                flexInfoRows.push(createFlexRow("📝 儲值方式", "發送序號 (請至官方儲值中心兌換)"));
             }
+
+            // 共通驗證：付款方式與購物車
+            const paymentMethod = document.getElementById('payment-method').value;
             if (!paymentMethod) {
                 alert("💳 請選擇一個付款方式喔！");
                 return;
@@ -722,17 +811,17 @@
                 return;
             }
 
+            flexInfoRows.push(createFlexRow("💳 付款", paymentMethod));
+
             // 產生專屬訂單編號
             const orderId = generateOrderId();
 
-            // 1. 準備 Flex Message 裡面的「商品列表陣列」
+            // 準備 Flex Message 裡面的「商品列表陣列」
             let flexItems = [];
             db[currentActiveGame].products.forEach(p => {
                 if (cart[p.id] > 0) {
                     flexItems.push({
-                        "type": "box",
-                        "layout": "horizontal",
-                        "margin": "sm",
+                        "type": "box", "layout": "horizontal", "margin": "sm",
                         "contents": [
                             { "type": "text", "text": `▪ ${p.name}`, "size": "sm", "color": "#5D4037", "flex": 3, "wrap": true },
                             { "type": "text", "text": `x ${cart[p.id]}`, "size": "sm", "color": "#FF85B3", "weight": "bold", "flex": 1, "align": "end" }
@@ -741,53 +830,33 @@
                 }
             });
 
-            // 2. 組合超可愛的 Flex Message JSON 格式
+            // 組合 Flex Message JSON
             const flexMessage = {
                 "type": "flex",
-                "altText": `🎀 九霄科技 新訂單：${orderId}`, // 在電腦版或預覽通知顯示的文字
+                "altText": `🎀 九霄科技 新訂單：${orderId}`, 
                 "contents": {
                     "type": "bubble",
-                    "size": "kilo", // 大小適中，不會太寬
+                    "size": "kilo",
                     "header": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "backgroundColor": "#FF85B3", // 櫻花粉標題背景
+                        "type": "box", "layout": "vertical", "backgroundColor": "#FF85B3",
                         "contents": [
                             { "type": "text", "text": "🎀 九霄科技 新訂單 🎀", "weight": "bold", "color": "#FFFFFF", "size": "md", "align": "center" }
                         ]
                     },
                     "body": {
-                        "type": "box",
-                        "layout": "vertical",
+                        "type": "box", "layout": "vertical",
                         "contents": [
                             { "type": "text", "text": `訂單編號：${orderId}`, "size": "xxs", "color": "#B39DDB", "align": "end" },
                             { "type": "text", "text": `🎮 ${db[currentActiveGame].name}`, "weight": "bold", "size": "md", "color": "#5D4037", "margin": "md" },
                             { "type": "separator", "margin": "md" },
-                            {
-                                "type": "box", "layout": "horizontal", "margin": "md",
-                                "contents": [
-                                    { "type": "text", "text": "🆔 UID", "color": "#8D6E63", "size": "sm", "flex": 1 },
-                                    { "type": "text", "text": uid, "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 2, "wrap": true }
-                                ]
-                            },
-                            {
-                                "type": "box", "layout": "horizontal", "margin": "sm",
-                                "contents": [
-                                    { "type": "text", "text": "👤 暱稱", "color": "#8D6E63", "size": "sm", "flex": 1 },
-                                    { "type": "text", "text": nickname || '未填寫', "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 2, "wrap": true }
-                                ]
-                            },
-                            {
-                                "type": "box", "layout": "horizontal", "margin": "sm",
-                                "contents": [
-                                    { "type": "text", "text": "💳 付款方式", "color": "#8D6E63", "size": "sm", "flex": 1 },
-                                    { "type": "text", "text": paymentMethod, "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 2, "wrap": true }
-                                ]
-                            },
+                            
+                            // 這裡自動放入剛剛收集好的玩家資料
+                            ...flexInfoRows,
+
                             { "type": "separator", "margin": "md" },
                             { "type": "text", "text": "🛒 購買內容：", "size": "sm", "color": "#8D6E63", "margin": "md" },
                             
-                            // 這裡自動展開所有購買的商品
+                            // 自動展開商品
                             ...flexItems,
                             
                             { "type": "separator", "margin": "md", "color": "#FFD1E3" },
@@ -801,9 +870,7 @@
                         ]
                     },
                     "footer": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "backgroundColor": "#FFF0F5", // 極淺粉腳註背景
+                        "type": "box", "layout": "vertical", "backgroundColor": "#FFF0F5",
                         "contents": [
                             { "type": "text", "text": "✨ 老闆，請給我匯款帳號！", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
                         ]
@@ -811,7 +878,7 @@
                 }
             };
 
-            // 3. 發送 Flex 訊息
+            // 發送 Flex 訊息
             if (liff && liff.isInClient && liff.isInClient()) {
                 liff.sendMessages([flexMessage])
                     .then(() => {
@@ -824,7 +891,7 @@
                     });
             } else {
                 console.log("模擬送出訊息 (Flex Message JSON)：\n", JSON.stringify(flexMessage, null, 2));
-                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n\n💡 記得：精美的 Flex 卡片必須在 LINE 裡面測試才看得到唷！`);
+                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！`);
             }
         }
 
