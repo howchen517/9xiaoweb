@@ -889,7 +889,7 @@
             };
         }
 
-        function submitOrder() {
+       function submitOrder() {
             const loginType = db[currentActiveGame].loginType;
             let flexInfoRows = []; 
             
@@ -927,7 +927,7 @@
                 flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal));
                 flexInfoRows.push(createFlexRow("🛡️ 復原碼", recoveryVal));
             } else if (loginType === 'none') {
-                flexInfoRows.push(createFlexRow("📝 儲值方式", "發送序號 (請至官方儲值中心兌換)"));
+                flexInfoRows.push(createFlexRow("📝 儲值方式", "發送序號 (請至官網兌換)"));
             }
 
             const paymentMethod = document.getElementById('payment-method').value;
@@ -955,7 +955,7 @@
                 }
             });
 
-            // 完美的 Flex Message 組合結構
+            // 🎀 最安全的 Flex JSON 格式 🎀
             const flexMessage = {
                 "type": "flex",
                 "altText": `🎀 九霄科技 新訂單：${orderId}`, 
@@ -971,7 +971,7 @@
                     "body": {
                         "type": "box", "layout": "vertical",
                         "contents": [
-                            { "type": "text", "text": `訂單編號：${orderId}`, "size": "xxs", "color": "#B39DDB", "align": "end" },
+                            { "type": "text", "text": `訂單編號：${orderId}`, "size": "xs", "color": "#B39DDB", "align": "end" },
                             { "type": "text", "text": `🎮 ${db[currentActiveGame].name}`, "weight": "bold", "size": "md", "color": "#5D4037", "margin": "md" },
                             { "type": "separator", "margin": "md" },
                             
@@ -996,29 +996,27 @@
                         "type": "box",
                         "layout": "vertical",
                         "backgroundColor": "#FFF0F5",
-                        "spacing": "sm",
-                        "paddingAll": "md",
                         "contents": [
                             {
                                 "type": "button",
                                 "style": "primary",
                                 "color": "#FF85B3",
-                                "height": "sm",
+                                "margin": "md",
                                 "action": {
                                     "type": "message",
-                                    "label": "💳 點我取得繳費帳號",
+                                    "label": "點擊取得繳費帳號",
                                     "text": `老闆，我要「${paymentMethod}」的繳費資訊！`
                                 }
                             },
                             {
                                 "type": "text",
-                                "text": "✨ 點擊上方按鈕，系統將自動回覆給您",
+                                "text": "✨ 點擊上方按鈕，系統將自動回覆",
                                 "wrap": true,
-                                "size": "xxs",
+                                "size": "xs",
                                 "color": "#B39DDB",
                                 "weight": "bold",
                                 "align": "center",
-                                "margin": "sm"
+                                "margin": "md"
                             }
                         ]
                     }
@@ -1037,11 +1035,6 @@
                     });
             } else {
                 console.log("模擬送出 Flex：\n", JSON.stringify(flexMessage, null, 2));
-                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n這是一個極致完美的卡片版本！`);
+                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！`);
             }
         }
-
-        initApp();
-    </script>
-</body>
-</html>
