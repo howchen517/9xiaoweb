@@ -1004,6 +1004,13 @@
                 }
             };
 
+            // 🎀 防止未填寫 LIFF ID 導致報錯的防呆機制 🎀
+            if (LIFF_ID === "請在這裡填入正確的LIFF_ID" || LIFF_ID === "你的_LIFF_ID_填在這裡" || !LIFF_ID) {
+                console.log("模擬送出 Flex：\n", JSON.stringify(flexMessage, null, 2));
+                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n\n⚠️ 提醒老闆：您尚未在程式碼中填寫真實的 LIFF_ID，因此系統無法為您發送真實的 LINE 訊息，請記得去修改唷！`);
+                return; // 直接中斷，避免執行到後面的 liff.sendMessages 導致報錯
+            }
+
             if (liff && liff.isInClient && liff.isInClient()) {
                 liff.sendMessages([flexMessage])
                     .then(() => {
@@ -1024,4 +1031,3 @@
     </script>
 </body>
 </html>
-
