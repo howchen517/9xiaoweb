@@ -391,7 +391,7 @@
 
     <script>
         // 👉 老闆，這裡一定要填入你真實的 LIFF ID (這行非常重要喔！)
-        const LIFF_ID = "2009198027-AdmXuJNK"; 
+        const LIFF_ID = "請在這裡填入正確的LIFF_ID"; 
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
 
@@ -668,7 +668,8 @@
                     { id: 'ht_1', name: '300+20 心鑽', price: 150, img: getEmoji('1f496') },
                     { id: 'ht_2', name: '680+50 心鑽', price: 330, img: getEmoji('1f496') },
                     { id: 'ht_3', name: '1280+90 心鑽', price: 590, img: getEmoji('1f496') },
-                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: getEmoji('1f496') }
+                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: getEmoji('1f496') },
+                    { id: 'ht_5', name: '3280+270 心鑽', price: 1490, img: getEmoji('1f496') }
                 ]
             },
             'arknights2': {
@@ -997,27 +998,7 @@
                         "layout": "vertical",
                         "backgroundColor": "#FFF0F5",
                         "contents": [
-                            {
-                                "type": "button",
-                                "style": "primary",
-                                "color": "#FF85B3",
-                                "margin": "md",
-                                "action": {
-                                    "type": "message",
-                                    "label": "點擊取得繳費帳號",
-                                    "text": `我要「${paymentMethod}」的繳費資訊！`
-                                }
-                            },
-                            {
-                                "type": "text",
-                                "text": "✨ 點擊上方按鈕，系統將自動回覆",
-                                "wrap": true,
-                                "size": "xs",
-                                "color": "#B39DDB",
-                                "weight": "bold",
-                                "align": "center",
-                                "margin": "md"
-                            }
+                            { "type": "text", "text": "✨ 老闆，請給我匯款帳號！", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
                         ]
                     }
                 }
@@ -1026,7 +1007,7 @@
             if (liff && liff.isInClient && liff.isInClient()) {
                 liff.sendMessages([flexMessage])
                     .then(() => {
-                        window.alert(`🎉 訂單已送出！(編號: ${orderId})\n點擊卡片下方按鈕即可取得繳費帳號唷！`);
+                        window.alert(`🎉 訂單已送出！(編號: ${orderId})\n請在聊天室查看付款資訊。`);
                         liff.closeWindow();
                     })
                     .catch((err) => {
