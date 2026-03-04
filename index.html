@@ -173,14 +173,15 @@
             display: block; margin-bottom: 8px; font-size: 14px; 
             font-weight: bold; color: var(--text-main); 
         }
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%; padding: 14px; border-radius: 16px;
             border: 2px solid var(--light-purple); 
             background: var(--light-pink);
             color: var(--text-main); font-size: 16px; box-sizing: border-box;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
-        .input-group input:focus { 
+        .input-group input:focus, .input-group select:focus { 
             outline: none; 
             border-color: var(--primary-pink); 
             background: var(--bg-white);
@@ -307,9 +308,22 @@
                     <label>📝 玩家 UID / 帳號 <span style="color:var(--primary-pink)">*</span></label>
                     <input type="text" id="player-uid" placeholder="請務必填寫正確哦！">
                 </div>
-                <div class="input-group" style="margin-bottom: 0;">
+                <div class="input-group">
                     <label>🌸 角色暱稱 (選填)</label>
                     <input type="text" id="player-name" placeholder="填寫暱稱方便客服核對">
+                </div>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label>💳 付款方式 <span style="color:var(--primary-pink)">*</span></label>
+                    <select id="payment-method">
+                        <option value="" disabled selected>請選擇付款方式</option>
+                        <option value="轉帳/匯款">轉帳/匯款</option>
+                        <option value="無卡存款">無卡存款</option>
+                        <option value="全家繳費">全家繳費</option>
+                        <option value="8591寶物交易網">8591寶物交易網</option>
+                        <option value="iPASS MONEY">iPASS MONEY</option>
+                        <option value="LINE Pay">LINE Pay</option>
+                        <option value="街口支付">街口支付</option>
+                    </select>
                 </div>
             </div>
 
@@ -334,7 +348,7 @@
         // 👉 老闆，這裡一定要填入你真實的 LIFF ID 才會接通 LINE 喔！
         // ⚠️ 請注意：LIFF ID 的格式通常是「數字-英數組合」，例如 "1234567890-abcdefg"
         // 千萬不要填成 Channel ID 喔！
-        const LIFF_ID = "2009198027-AdmXuJNK"; 
+        const LIFF_ID = "請在這裡填入正確的LIFF_ID"; 
 
         const db = {
             'idv': {
@@ -606,6 +620,7 @@
                 cart = {}; 
                 document.getElementById('player-uid').value = '';
                 document.getElementById('player-name').value = '';
+                document.getElementById('payment-method').value = '';
             }
             updateTotal();
             
@@ -688,12 +703,18 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // 🎀 全新大升級：發送超精美的 LINE Flex Message 訂單 🎀
         function submitOrder() {
             const uid = document.getElementById('player-uid').value.trim();
             const nickname = document.getElementById('player-name').value.trim();
+            const paymentMethod = document.getElementById('payment-method').value;
 
             if (!uid) {
                 alert("🌸 哎呀！忘記填寫玩家 UID 囉！");
+                return;
+            }
+            if (!paymentMethod) {
+                alert("💳 請選擇一個付款方式喔！");
                 return;
             }
             if (totalAmount === 0) {
@@ -701,37 +722,113 @@
                 return;
             }
 
-            let orderDetails = "";
-            db[currentActiveGame].products.forEach(p => {
-                if (cart[p.id] > 0) {
-                    orderDetails += `▪ ${p.name} x ${cart[p.id]}\n`;
-                }
-            });
-
             // 產生專屬訂單編號
             const orderId = generateOrderId();
 
-            const messageText = `🎀【九霄科技 新訂單：${orderId}】🎀\n\n🎮 遊戲：${db[currentActiveGame].name}\n🆔 UID：${uid}\n👤 暱稱：${nickname || '未填'}\n\n🛒 購買內容：\n${orderDetails}\n💰 應付總額：NT$ ${totalAmount}\n\n老闆，我已經確認無誤了，請給我匯款帳號！✨`;
+            // 1. 準備 Flex Message 裡面的「商品列表陣列」
+            let flexItems = [];
+            db[currentActiveGame].products.forEach(p => {
+                if (cart[p.id] > 0) {
+                    flexItems.push({
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "sm",
+                        "contents": [
+                            { "type": "text", "text": `▪ ${p.name}`, "size": "sm", "color": "#5D4037", "flex": 3, "wrap": true },
+                            { "type": "text", "text": `x ${cart[p.id]}`, "size": "sm", "color": "#FF85B3", "weight": "bold", "flex": 1, "align": "end" }
+                        ]
+                    });
+                }
+            });
 
+            // 2. 組合超可愛的 Flex Message JSON 格式
+            const flexMessage = {
+                "type": "flex",
+                "altText": `🎀 九霄科技 新訂單：${orderId}`, // 在電腦版或預覽通知顯示的文字
+                "contents": {
+                    "type": "bubble",
+                    "size": "kilo", // 大小適中，不會太寬
+                    "header": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#FF85B3", // 櫻花粉標題背景
+                        "contents": [
+                            { "type": "text", "text": "🎀 九霄科技 新訂單 🎀", "weight": "bold", "color": "#FFFFFF", "size": "md", "align": "center" }
+                        ]
+                    },
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            { "type": "text", "text": `訂單編號：${orderId}`, "size": "xxs", "color": "#B39DDB", "align": "end" },
+                            { "type": "text", "text": `🎮 ${db[currentActiveGame].name}`, "weight": "bold", "size": "md", "color": "#5D4037", "margin": "md" },
+                            { "type": "separator", "margin": "md" },
+                            {
+                                "type": "box", "layout": "horizontal", "margin": "md",
+                                "contents": [
+                                    { "type": "text", "text": "🆔 UID", "color": "#8D6E63", "size": "sm", "flex": 1 },
+                                    { "type": "text", "text": uid, "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 2, "wrap": true }
+                                ]
+                            },
+                            {
+                                "type": "box", "layout": "horizontal", "margin": "sm",
+                                "contents": [
+                                    { "type": "text", "text": "👤 暱稱", "color": "#8D6E63", "size": "sm", "flex": 1 },
+                                    { "type": "text", "text": nickname || '未填寫', "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 2, "wrap": true }
+                                ]
+                            },
+                            {
+                                "type": "box", "layout": "horizontal", "margin": "sm",
+                                "contents": [
+                                    { "type": "text", "text": "💳 付款方式", "color": "#8D6E63", "size": "sm", "flex": 1 },
+                                    { "type": "text", "text": paymentMethod, "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 2, "wrap": true }
+                                ]
+                            },
+                            { "type": "separator", "margin": "md" },
+                            { "type": "text", "text": "🛒 購買內容：", "size": "sm", "color": "#8D6E63", "margin": "md" },
+                            
+                            // 這裡自動展開所有購買的商品
+                            ...flexItems,
+                            
+                            { "type": "separator", "margin": "md", "color": "#FFD1E3" },
+                            {
+                                "type": "box", "layout": "horizontal", "margin": "md",
+                                "contents": [
+                                    { "type": "text", "text": "應付總額", "color": "#8D6E63", "size": "md", "flex": 1, "align": "start", "gravity": "center" },
+                                    { "type": "text", "text": `NT$ ${totalAmount}`, "weight": "bold", "size": "lg", "color": "#FF85B3", "flex": 2, "align": "end" }
+                                ]
+                            }
+                        ]
+                    },
+                    "footer": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#FFF0F5", // 極淺粉腳註背景
+                        "contents": [
+                            { "type": "text", "text": "✨ 老闆，請給我匯款帳號！", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
+                        ]
+                    }
+                }
+            };
+
+            // 3. 發送 Flex 訊息
             if (liff && liff.isInClient && liff.isInClient()) {
-                liff.sendMessages([{ type: 'text', text: messageText }])
+                liff.sendMessages([flexMessage])
                     .then(() => {
                         window.alert(`🎉 訂單已送出！(編號: ${orderId})\n請在聊天室查看付款資訊。`);
                         liff.closeWindow();
                     })
                     .catch((err) => {
                         console.error('送出失敗', err);
-                        // 加入精準錯誤提示，讓你知道為什麼失敗
-                        alert("傳送失敗 😢\n錯誤原因：" + err.message + "\n\n💡 請檢查 LINE Developers 中是否已將 chat_message.write 打勾！");
+                        alert("傳送失敗 😢\n錯誤原因：" + err.message);
                     });
             } else {
-                console.log("模擬送出訊息：\n" + messageText);
-                alert(`🌸 網頁版測試：訂單已建立 (編號: ${orderId})！\n\n💡 記得：要真正發送訊息，必須把網址貼到你的「官方帳號」聊天室裡面點開測試唷！`);
+                console.log("模擬送出訊息 (Flex Message JSON)：\n", JSON.stringify(flexMessage, null, 2));
+                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n\n💡 記得：精美的 Flex 卡片必須在 LINE 裡面測試才看得到唷！`);
             }
         }
 
         initApp();
     </script>
 </body>
-
 </html>
