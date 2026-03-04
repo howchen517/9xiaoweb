@@ -312,13 +312,14 @@
                 </div>
 
                 <!-- 🎀 類型二：帳號密碼代登表單 (Roblox、PUBG等) 🎀 -->
+                <!-- 老闆指定的 6 個欄位順序！ -->
                 <div id="form-account" style="display: none;">
                     <div class="input-group">
-                        <label>🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
+                        <label>1. 🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
                         <input type="text" id="acc-nickname" placeholder="填寫遊戲內暱稱">
                     </div>
                     <div class="input-group">
-                        <label>🔑 登入方式 <span style="color:var(--primary-pink)">*</span></label>
+                        <label>2. 🔑 登入方式 <span style="color:var(--primary-pink)">*</span></label>
                         <select id="acc-login-method">
                             <option value="" disabled selected>請選擇登入綁定方式</option>
                             <option value="Facebook">Facebook (FB)</option>
@@ -328,19 +329,19 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label>
+                        <label>3. 🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label>
                         <input type="text" id="acc-server" placeholder="例如：台服 / 國際服">
                     </div>
                     <div class="input-group">
-                        <label>👤 登入帳號 <span style="color:var(--primary-pink)">*</span></label>
+                        <label>4. 👤 登入帳號 <span style="color:var(--primary-pink)">*</span></label>
                         <input type="text" id="acc-account" placeholder="請輸入登入帳號或信箱">
                     </div>
                     <div class="input-group">
-                        <label>🔒 登入密碼 <span style="color:var(--primary-pink)">*</span></label>
+                        <label>5. 🔒 登入密碼 <span style="color:var(--primary-pink)">*</span></label>
                         <input type="text" id="acc-password" placeholder="請注意大小寫是否正確">
                     </div>
                     <div class="input-group">
-                        <label>🛡️ 臉書復原碼 / Google 備用碼 <span style="color:var(--primary-pink)">*</span></label>
+                        <label>6. 🛡️ 臉書復原碼 / Google 備用碼 <span style="color:var(--primary-pink)">*</span></label>
                         <input type="text" id="acc-recovery" placeholder="請務必填寫以利快速登入">
                     </div>
                 </div>
@@ -353,11 +354,11 @@
                     </p>
                 </div>
 
-                <!-- 🎀 共通選項：付款方式 🎀 -->
-                <div class="input-group" style="margin-bottom: 0; margin-top: 16px;">
-                    <label>💳 付款方式 <span style="color:var(--primary-pink)">*</span></label>
+                <!-- 🎀 共通選項：付款方式 (3種表單都會顯示這個) 🎀 -->
+                <div class="input-group" style="margin-bottom: 0; margin-top: 16px; border-top: 2px solid var(--light-purple); padding-top: 16px;">
+                    <label>💳 選擇付款方式 <span style="color:var(--primary-pink)">*</span></label>
                     <select id="payment-method">
-                        <option value="" disabled selected>請選擇付款方式</option>
+                        <option value="" disabled selected>請選擇您方便的付款方式</option>
                         <option value="轉帳/匯款">轉帳/匯款</option>
                         <option value="無卡存款">無卡存款</option>
                         <option value="全家繳費">全家繳費</option>
@@ -788,12 +789,13 @@
                     return;
                 }
 
+                // 依照您要求的 1~6 順序放入 Flex Message 卡片中
+                flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal));
                 flexInfoRows.push(createFlexRow("🔑 登入", loginMethodVal));
                 flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal));
                 flexInfoRows.push(createFlexRow("👤 帳號", accountVal));
                 flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal));
                 flexInfoRows.push(createFlexRow("🛡️ 復原碼", recoveryVal));
-                flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal));
             } 
             // 免填資料 (發序號)
             else if (loginType === 'none') {
