@@ -14,23 +14,22 @@
             --primary-purple: #B39DDB;  /* 薰衣草紫 輔助色 */
             --light-purple: #F3E5F5;    /* 淺紫 */
             --bg-white: #FFFFFF;        /* 奶油白 卡片底色 */
-            --text-main: #5D4037;       /* 咖啡色 文字 (比純黑更柔和可愛) */
+            --text-main: #5D4037;       /* 咖啡色 文字 */
             --text-muted: #8D6E63;      /* 淺咖啡色 次要文字 */
-            --gradient-btn: linear-gradient(135deg, #FF85B3 0%, #B39DDB 100%); /* 漸層按鈕 */
+            --gradient-btn: linear-gradient(135deg, #FF85B3 0%, #B39DDB 100%);
         }
         
         body {
             margin: 0;
             padding: 0;
             font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--light-pink); /* 整個網頁的背景色 */
+            background-color: var(--light-pink);
             color: var(--text-main);
             display: flex;
             flex-direction: column;
             height: 100vh;
         }
 
-        /* 🎀 2. 頂部導航 (加上可愛的圓角邊框) 🎀 */
         .header {
             padding: 15px 20px;
             background: var(--bg-white);
@@ -45,6 +44,38 @@
             z-index: 100;
         }
 
+        /* 🎀 新增：首頁按鈕容器 🎀 */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* 🎀 新增：回到首頁按鈕 🎀 */
+        .btn-home {
+            background: var(--light-pink);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--primary-pink);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 133, 179, 0.2);
+            text-decoration: none;
+        }
+        .btn-home:active {
+            transform: scale(0.9);
+        }
+        .btn-home svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
         .brand {
             font-size: 20px;
             font-weight: bold;
@@ -54,7 +85,6 @@
             gap: 8px;
         }
 
-        /* 吉祥物小頭像 */
         .brand-mascot {
             width: 36px;
             height: 36px;
@@ -82,7 +112,6 @@
             border: 2px solid var(--primary-purple);
         }
 
-        /* 🎀 3. 內容區 🎀 */
         .container {
             flex: 1;
             overflow-y: auto;
@@ -98,13 +127,12 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* 🎀 4. 遊戲卡片 (加入圖片橫幅) 🎀 */
         .game-card {
             background: var(--bg-white);
             border-radius: 20px;
             margin-bottom: 16px;
             box-shadow: 0 8px 20px rgba(179, 157, 219, 0.15);
-            overflow: hidden; /* 讓圖片不超出圓角 */
+            overflow: hidden;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             border: 2px solid transparent;
@@ -114,11 +142,10 @@
             border-color: var(--primary-pink);
         }
         
-        /* 遊戲圖片橫幅設定 */
         .game-banner {
             width: 100%;
             height: 140px;
-            object-fit: cover; /* 讓圖片自動裁切填滿，不變形 */
+            object-fit: cover;
             display: block;
         }
 
@@ -133,7 +160,6 @@
         .game-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
         .arrow-icon { color: var(--primary-pink); font-size: 20px; font-weight: bold; }
 
-        /* 🎀 5. 商品列表與輸入框 🎀 */
         .form-panel {
             background: var(--bg-white);
             padding: 20px;
@@ -164,29 +190,28 @@
         .product-item {
             background: var(--bg-white);
             border-radius: 20px;
-            padding: 12px 16px; /* 稍微縮小上下 padding 讓圖片更緊湊 */
+            padding: 12px 16px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 2px solid var(--light-purple);
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            gap: 12px; /* 新增 gap 讓內容有呼吸感 */
+            gap: 12px;
         }
         
-        /* 🎀 新增商品縮圖樣式 🎀 */
         .product-icon {
             width: 48px;
             height: 48px;
             border-radius: 12px;
             object-fit: cover;
-            flex-shrink: 0; /* 防止圖片被擠壓 */
+            flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            background-color: var(--light-purple); /* 預設底色，避免圖片載入前空白 */
+            background-color: var(--light-purple);
         }
 
         .product-info {
-            flex: 1; /* 讓文字區塊佔滿剩餘空間 */
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -197,11 +222,9 @@
             font-weight: bold; 
             margin-bottom: 4px; 
             color: var(--text-main);
-            /* 如果不需要 Emoji，可以把 display: flex; align-items: center; gap: 8px; 拿掉 */
         }
         .price { color: var(--primary-pink); font-weight: bold; font-size: 16px; }
         
-        /* 數量控制器 (圓潤可愛版) */
         .qty-ctrl { display: flex; align-items: center; gap: 12px; background: var(--light-pink); padding: 4px; border-radius: 20px;}
         .btn-qty {
             width: 32px; height: 32px; border-radius: 50%;
@@ -213,7 +236,6 @@
         .btn-qty:active { transform: scale(0.9); }
         .btn-qty.add { background: var(--gradient-btn); color: white; }
 
-        /* 🎀 6. 底部操作區 🎀 */
         .footer {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: var(--bg-white);
@@ -246,12 +268,19 @@
 </head>
 <body>
 
-    <!-- 頂部導航 -->
     <div class="header">
-        <div class="brand">
-            <!-- 老闆可以在這裡換成九霄的吉祥物圖片網址 -->
-            <img src="https://placehold.co/100x100/FFD1E3/FF85B3?text=Fox" alt="九霄小狐" class="brand-mascot">
-            九霄科技 ✨
+        <div class="header-left">
+            <!-- 🏠 回到首頁按鈕 -->
+            <button class="btn-home" onclick="goHome()" title="回到首頁">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 3L20 10.5V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V10.5L12 3ZM12 5.5186L6 11.1444V19H18V11.1444L12 5.5186ZM10 13H14V19H10V13Z"></path>
+                </svg>
+            </button>
+            <div class="brand">
+                <!-- 老闆可以在這裡換成九霄的吉祥物圖片網址 -->
+                <img src="https://placehold.co/100x100/FFD1E3/FF85B3?text=Fox" alt="九霄小狐" class="brand-mascot">
+                九霄科技 ✨
+            </div>
         </div>
         <div class="user-profile">
             <span id="user-name">讀取中...</span>
@@ -268,7 +297,6 @@
 
         <!-- 步驟二：選擇商品與填寫資料 -->
         <div id="step-2" class="step">
-            <!-- 顯示當前選擇的遊戲圖片與標題 -->
             <div style="text-align: center; margin-bottom: 20px;">
                 <img id="selected-game-img" src="" style="width: 80px; height: 80px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 <h2 id="selected-game-title" style="font-size: 24px; margin: 10px 0 0 0; color: var(--primary-pink);"></h2>
@@ -303,13 +331,11 @@
     </div>
 
     <script>
-        // 你的 LIFF ID
+        // 👉 老闆，這裡一定要填入你真實的 LIFF ID 才會接通 LINE 喔！
+        // ⚠️ 請注意：LIFF ID 的格式通常是「數字-英數組合」，例如 "1234567890-abcdefg"
+        // 千萬不要填成 Channel ID 喔！
         const LIFF_ID = "2009198027-AdmXuJNK"; 
 
-        // 💡 【老闆看這裡】商品資料庫 (教你怎麼放圖片)
-        // banner: 是步驟一遊戲列表的大橫幅圖片 (建議比例 16:9)
-        // icon: 是步驟二上面的小方形圖片 (建議比例 1:1)
-        // 只要把網址替換成你上傳到 Imgur 或圖床的網址就可以了！
         const db = {
             'idv': {
                 name: '第五人格',
@@ -517,47 +543,49 @@
         let cart = {}; 
         let totalAmount = 0;
 
-        // 1. 初始化 LIFF
+        // 🎀 自動產生每日訂單編號 (格式: 月日-隨機三碼，例如 0304-852)
+        function generateOrderId() {
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const randomNum = Math.floor(Math.random() * 900) + 100; // 產生 100~999 隨機數
+            return `${month}${day}-${randomNum}`;
+        }
+
         async function initApp() {
             try {
-                // 檢查是否已填寫真實的 LIFF ID
-                if (LIFF_ID === "2009198027-AdmXuJNK" || !LIFF_ID) {
+                if (LIFF_ID === "2009198027-AdmXuJNK" || LIFF_ID === "2009198027-AdmXuJNK" || !LIFF_ID) {
                     console.warn("尚未填寫真實的 LIFF ID，目前處於網頁測試模式。");
-                    document.getElementById('user-name').innerText = "九霄的客人 (測試模式)";
+                    document.getElementById('user-name').innerText = "九霄的客人 (測試)";
                     renderGames();
                     return;
                 }
 
-                // 正式環境：啟動 LIFF 並要求登入
                 await liff.init({ liffId: LIFF_ID });
                 if (!liff.isLoggedIn()) { 
                     liff.login(); 
                     return; 
                 }
                 
-                // 獲取使用者資料
                 const profile = await liff.getProfile();
                 document.getElementById('user-name').innerText = profile.displayName;
-                document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
-                
-                // 渲染遊戲列表
+                if(profile.pictureUrl) {
+                    document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
+                }
                 renderGames();
             } catch (err) {
                 console.error("LIFF Init Error:", err);
-                document.getElementById('user-name').innerText = "未登入 (LIFF 載入失敗)";
-                // 即使發生錯誤也先渲染列表，避免畫面空白
+                document.getElementById('user-name').innerText = "未登入 (請在官方LINE內開啟)";
                 renderGames();
             }
         }
 
-        // 2. 渲染遊戲列表 (加入圖片)
         function renderGames() {
             const list = document.getElementById('game-list');
             list.innerHTML = '';
             for (const [gameId, gameInfo] of Object.entries(db)) {
                 list.innerHTML += `
                     <div class="game-card" onclick="selectGame('${gameId}')">
-                        <!-- 顯示橫幅圖片 -->
                         <img src="${gameInfo.banner}" class="game-banner" alt="${gameInfo.name}">
                         <div class="game-info">
                             <div>
@@ -571,25 +599,28 @@
             }
         }
 
-        // 3. 選擇遊戲，進入步驟二
         function selectGame(gameId) {
-            currentActiveGame = gameId;
-            cart = {}; // 清空購物車
+            // 如果點選的是「不同的遊戲」，才清空購物車與玩家資料
+            if (currentActiveGame !== gameId) {
+                currentActiveGame = gameId;
+                cart = {}; 
+                document.getElementById('player-uid').value = '';
+                document.getElementById('player-name').value = '';
+            }
             updateTotal();
             
-            // 設定標題和小圖片
             document.getElementById('selected-game-title').innerText = db[gameId].name;
             document.getElementById('selected-game-img').src = db[gameId].icon;
-            
-            document.getElementById('player-uid').value = '';
-            document.getElementById('player-name').value = '';
             
             const pList = document.getElementById('product-list');
             pList.innerHTML = '';
             
             db[gameId].products.forEach(p => {
-                cart[p.id] = 0; // 初始數量為 0
-                // 🎀 在這裡渲染商品的圖片 (p.img) 🎀
+                // 保留已選擇的數量，若是第一次點擊則設為 0
+                if (cart[p.id] === undefined) {
+                    cart[p.id] = 0; 
+                }
+                
                 pList.innerHTML += `
                     <div class="product-item">
                         <img src="${p.img}" class="product-icon" alt="${p.name}">
@@ -599,19 +630,21 @@
                         </div>
                         <div class="qty-ctrl">
                             <button class="btn-qty" onclick="changeQty('${p.id}', -1)">-</button>
-                            <span id="qty-${p.id}" style="width: 24px; text-align: center; font-weight: bold; color: var(--text-main);">0</span>
+                            <span id="qty-${p.id}" style="width: 24px; text-align: center; font-weight: bold; color: var(--text-main);">${cart[p.id]}</span>
                             <button class="btn-qty add" onclick="changeQty('${p.id}', 1)">+</button>
                         </div>
                     </div>
                 `;
             });
 
+            // 確保回到頂部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
             document.getElementById('step-1').classList.remove('active');
             document.getElementById('step-2').classList.add('active');
             document.getElementById('footer').style.display = 'flex';
         }
 
-        // 4. 增減數量
         function changeQty(productId, delta) {
             let newQty = cart[productId] + delta;
             if (newQty < 0) newQty = 0;
@@ -625,8 +658,15 @@
             totalAmount = 0;
             if (currentActiveGame) {
                 db[currentActiveGame].products.forEach(p => {
-                    totalAmount += cart[p.id] * p.price;
+                    // 防呆：確保數量和價格都是有效的數字
+                    const qty = parseInt(cart[p.id]) || 0;
+                    const price = parseFloat(p.price) || 0;
+                    totalAmount += qty * price;
                 });
+            }
+            // 確保 totalAmount 絕對不是 NaN
+            if (isNaN(totalAmount) || totalAmount < 0) {
+                totalAmount = 0;
             }
             document.getElementById('total-price').innerText = `NT$ ${totalAmount}`;
         }
@@ -637,7 +677,17 @@
             document.getElementById('footer').style.display = 'none';
         }
 
-        // 5. 送出訂單給 LINE Bot
+        // 🎀 修改：回到首頁功能 (不清除資料) 🎀
+        function goHome() {
+            // 僅切換畫面，不清除選擇與購物車
+            document.getElementById('step-2').classList.remove('active');
+            document.getElementById('step-1').classList.add('active');
+            document.getElementById('footer').style.display = 'none';
+            
+            // 頁面捲回最上方
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function submitOrder() {
             const uid = document.getElementById('player-uid').value.trim();
             const nickname = document.getElementById('player-name').value.trim();
@@ -651,7 +701,6 @@
                 return;
             }
 
-            // 整理訂單明細
             let orderDetails = "";
             db[currentActiveGame].products.forEach(p => {
                 if (cart[p.id] > 0) {
@@ -659,30 +708,29 @@
                 }
             });
 
-            // 組合給 LINE Bot 看的訊息格式 (加入可愛的表情符號)
-            const messageText = `🎀【九霄科技 新訂單】🎀\n\n🎮 遊戲：${db[currentActiveGame].name}\n🆔 UID：${uid}\n👤 暱稱：${nickname || '未填'}\n\n🛒 購買內容：\n${orderDetails}\n💰 應付總額：NT$ ${totalAmount}\n\n老闆，我已經確認無誤了，請給我匯款帳號！✨`;
+            // 產生專屬訂單編號
+            const orderId = generateOrderId();
 
-            // 如果在 LINE LIFF 環境內，直接傳送訊息
-            if (liff.isInClient()) {
+            const messageText = `🎀【九霄科技 新訂單：${orderId}】🎀\n\n🎮 遊戲：${db[currentActiveGame].name}\n🆔 UID：${uid}\n👤 暱稱：${nickname || '未填'}\n\n🛒 購買內容：\n${orderDetails}\n💰 應付總額：NT$ ${totalAmount}\n\n老闆，我已經確認無誤了，請給我匯款帳號！✨`;
+
+            if (liff && liff.isInClient && liff.isInClient()) {
                 liff.sendMessages([{ type: 'text', text: messageText }])
                     .then(() => {
-                        window.alert("🎉 訂單已送出！請在聊天室查看付款資訊。");
+                        window.alert(`🎉 訂單已送出！(編號: ${orderId})\n請在聊天室查看付款資訊。`);
                         liff.closeWindow();
                     })
                     .catch((err) => {
                         console.error('送出失敗', err);
-                        alert("傳送失敗，請稍後再試 😢");
+                        // 加入精準錯誤提示，讓你知道為什麼失敗
+                        alert("傳送失敗 😢\n錯誤原因：" + err.message + "\n\n💡 請檢查 LINE Developers 中是否已將 chat_message.write 打勾！");
                     });
             } else {
-                // 網頁版測試用
                 console.log("模擬送出訊息：\n" + messageText);
-                alert("🌸 網頁版測試：訂單已建立 (請看 Console)！\n實際在 LINE 裡會自動將訂單傳送至聊天室。");
+                alert(`🌸 網頁版測試：訂單已建立 (編號: ${orderId})！\n\n💡 記得：要真正發送訊息，必須把網址貼到你的「官方帳號」聊天室裡面點開測試唷！`);
             }
         }
 
-        // 啟動
         initApp();
     </script>
 </body>
-
 </html>
