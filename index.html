@@ -390,7 +390,7 @@
     </div>
 
     <script>
-        // 👉 老闆，這裡一定要填入你真實的 LIFF ID (換成你自己的哦！)
+        // 👉 老闆，這裡一定要填入你真實的 LIFF ID (這行非常重要喔！)
         const LIFF_ID = "2009198027-AdmXuJNK"; 
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
@@ -668,8 +668,7 @@
                     { id: 'ht_1', name: '300+20 心鑽', price: 150, img: getEmoji('1f496') },
                     { id: 'ht_2', name: '680+50 心鑽', price: 330, img: getEmoji('1f496') },
                     { id: 'ht_3', name: '1280+90 心鑽', price: 590, img: getEmoji('1f496') },
-                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: getEmoji('1f496') },
-                    { id: 'ht_5', name: '3280+270 心鑽', price: 1490, img: getEmoji('1f496') }
+                    { id: 'ht_4', name: '1980+150 心鑽', price: 990, img: getEmoji('1f496') }
                 ]
             },
             'arknights2': {
@@ -889,7 +888,8 @@
             };
         }
 
-       function submitOrder() {
+        // 🎀 最安全、保證不報錯的結帳送出函式 🎀
+        function submitOrder() {
             const loginType = db[currentActiveGame].loginType;
             let flexInfoRows = []; 
             
@@ -927,7 +927,7 @@
                 flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal));
                 flexInfoRows.push(createFlexRow("🛡️ 復原碼", recoveryVal));
             } else if (loginType === 'none') {
-                flexInfoRows.push(createFlexRow("📝 儲值方式", "發送序號 (請至官網兌換)"));
+                flexInfoRows.push(createFlexRow("📝 儲值", "發送序號 (請至官網兌換)"));
             }
 
             const paymentMethod = document.getElementById('payment-method').value;
@@ -955,7 +955,7 @@
                 }
             });
 
-            // 🎀 最安全的 Flex JSON 格式 🎀
+            // 最嚴謹的 Flex Message JSON 結構
             const flexMessage = {
                 "type": "flex",
                 "altText": `🎀 九霄科技 新訂單：${orderId}`, 
@@ -1005,7 +1005,7 @@
                                 "action": {
                                     "type": "message",
                                     "label": "點擊取得繳費帳號",
-                                    "text": `老闆，我要「${paymentMethod}」的繳費資訊！`
+                                    "text": `我要「${paymentMethod}」的繳費資訊！`
                                 }
                             },
                             {
@@ -1038,3 +1038,8 @@
                 alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！`);
             }
         }
+
+        initApp();
+    </script>
+</body>
+</html>
