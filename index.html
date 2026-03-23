@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>九霄科技｜致力於給顧客最好的服務</title>
-    <!-- 引入 LINE LIFF SDK -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+        /* 🎀 全域防撐破設定 🎀 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
 
         /* 🎀 1. 核心可愛配色與字體設定 🎀 */
         :root {
@@ -32,6 +36,8 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            width: 100%;
+            overflow-x: hidden; /* 強制隱藏水平捲軸，防跑版 */
             letter-spacing: 0.5px;
         }
 
@@ -50,6 +56,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            width: 100%;
         }
 
         .header-left {
@@ -72,6 +79,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 10px rgba(255, 133, 179, 0.1);
             text-decoration: none;
+            flex-shrink: 0;
         }
         .btn-home:active { transform: scale(0.9); background: var(--light-pink); }
         .btn-home svg { width: 20px; height: 20px; fill: currentColor; }
@@ -83,6 +91,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
 
         .brand-mascot {
@@ -93,8 +102,10 @@
             border: 2px solid var(--bg-white);
             box-shadow: 0 4px 12px rgba(255, 133, 179, 0.2);
             background-color: var(--light-pink);
+            flex-shrink: 0;
         }
 
+        /* 🎀 客人頭像按鈕 (點擊查看歷史) 🎀 */
         .user-profile {
             font-size: 13px;
             color: var(--text-muted);
@@ -102,7 +113,15 @@
             align-items: center;
             gap: 8px;
             font-weight: 700;
+            cursor: pointer;
+            background: rgba(243, 229, 245, 0.6);
+            padding: 4px 12px;
+            border-radius: 30px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            white-space: nowrap;
         }
+        .user-profile:active { transform: scale(0.95); background: var(--light-purple); border-color: var(--primary-purple); }
 
         .user-avatar {
             width: 36px;
@@ -113,13 +132,16 @@
             background-position: center;
             border: 2px solid var(--bg-white);
             box-shadow: 0 4px 12px rgba(179, 157, 219, 0.2);
+            flex-shrink: 0;
         }
 
         .container {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 24px;
             padding-bottom: 140px;
+            width: 100%;
         }
 
         .step { display: none; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -128,6 +150,45 @@
         @keyframes popIn {
             from { opacity: 0; transform: scale(0.96) translateY(15px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* 🎀 搜尋欄專屬樣式 🎀 */
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 14px 14px 14px 44px; /* 左邊留空間給放大鏡 */
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(179, 157, 219, 0.08);
+            font-size: 14px;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 600;
+        }
+        .search-container input::placeholder { color: #BCAAA4; font-weight: 600; }
+        .search-container input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            background: var(--bg-white);
+            box-shadow: 0 0 0 4px rgba(255, 133, 179, 0.15), 0 6px 16px rgba(179, 157, 219, 0.12);
+        }
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: var(--primary-purple);
+            pointer-events: none;
         }
 
         .game-card {
@@ -140,6 +201,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid rgba(255, 255, 255, 0.5); /* 增加反光邊框感 */
             position: relative;
+            width: 100%;
         }
         .game-card:active { 
             transform: scale(0.97); 
@@ -173,6 +235,7 @@
             display: flex; align-items: center; justify-content: center;
             border-radius: 50%;
             font-weight: bold; 
+            flex-shrink: 0;
         }
 
         .form-panel {
@@ -184,9 +247,10 @@
             box-shadow: var(--shadow-soft);
             margin-bottom: 24px;
             border: 1px solid rgba(255, 255, 255, 0.6);
+            width: 100%;
         }
 
-        .input-group { margin-bottom: 16px; }
+        .input-group { margin-bottom: 16px; width: 100%;}
         .input-group label { 
             display: block; margin-bottom: 8px; font-size: 14px; 
             font-weight: 800; color: var(--text-main); 
@@ -221,6 +285,7 @@
             box-shadow: 0 4px 12px rgba(179, 157, 219, 0.08);
             gap: 12px;
             transition: transform 0.2s;
+            width: 100%;
         }
         
         .product-icon {
@@ -239,6 +304,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-width: 0;
         }
 
         .product-name { 
@@ -247,10 +313,13 @@
             margin-bottom: 4px; 
             letter-spacing: 0.5px;
             color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .price { color: var(--primary-pink); font-weight: 800; font-size: 15px; letter-spacing: 0.5px; }
         
-        .qty-ctrl { display: flex; align-items: center; gap: 10px; background: rgba(243, 229, 245, 0.5); padding: 5px; border-radius: 20px;}
+        .qty-ctrl { display: flex; align-items: center; gap: 10px; background: rgba(243, 229, 245, 0.5); padding: 5px; border-radius: 20px; flex-shrink: 0;}
         .btn-qty {
             width: 32px; height: 32px; border-radius: 50%;
             border: none; background: var(--bg-white); color: var(--primary-purple);
@@ -295,43 +364,117 @@
         }
         .btn-back:active { transform: scale(0.95); background: var(--secondary-purple); }
 
-        /* 🎀 新增：搜尋欄專屬樣式 🎀 */
-        .search-container {
-            position: relative;
+        /* 🎀 歷史訂單浮動面板 🎀 */
+        .history-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: flex-end;
+            z-index: 2000;
+            transition: opacity 0.3s;
+        }
+        .history-overlay.active { display: flex; }
+        
+        .history-modal {
+            background: var(--light-pink);
+            width: 100%; max-height: 85vh;
+            border-top-left-radius: 32px; border-top-right-radius: 32px;
+            padding: 24px; box-sizing: border-box;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .history-header {
+            display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 20px;
         }
-        .search-container input {
-            width: 100%;
-            padding: 14px 14px 14px 44px; /* 左邊留空間給放大鏡 */
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(179, 157, 219, 0.08);
-            font-size: 14px;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-            font-family: inherit;
-            font-weight: 600;
+        .history-title { font-size: 20px; font-weight: 800; color: var(--primary-purple); }
+        .close-history-btn {
+            background: var(--bg-white); border: none; width: 32px; height: 32px; border-radius: 50%;
+            font-size: 20px; color: var(--text-muted); cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        .search-container input::placeholder { color: #BCAAA4; font-weight: 600; }
-        .search-container input:focus {
-            outline: none;
-            border-color: var(--primary-pink);
+
+        .spend-card {
+            background: var(--gradient-btn);
+            padding: 20px; border-radius: 20px; color: white;
+            box-shadow: 0 8px 20px rgba(255, 133, 179, 0.3);
+            margin-bottom: 20px; text-align: center;
+        }
+        .spend-card div { font-size: 13px; font-weight: 700; opacity: 0.9; margin-bottom: 4px; }
+        .spend-card h2 { margin: 0; font-size: 28px; font-weight: 800; letter-spacing: 1px; }
+
+        .history-list {
+            flex: 1; overflow-y: auto; padding-bottom: 20px;
+        }
+        .history-item {
+            background: var(--bg-white); border-radius: 16px; padding: 16px; margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(179, 157, 219, 0.1); border: 1px solid rgba(255,255,255,0.8);
+        }
+        .history-item-header { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; }
+        .history-date { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; }
+        .h-pending { background: #FFF3E0; color: #D84315; }
+        .h-completed { background: #E8F5E9; color: #2E7D32; }
+        .h-cancelled { background: #FFEBEE; color: #C62828; }
+        
+        .history-game { font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 6px; }
+        .history-item-footer { display: flex; justify-content: space-between; align-items: center; }
+        .history-orderid { font-size: 12px; color: var(--primary-purple); font-family: monospace; font-weight: bold; }
+        .history-price { font-weight: 800; color: var(--primary-pink); font-size: 15px; }
+
+        /* 🎀 送出確認彈出視窗 🎀 */
+        .confirm-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center;
+            z-index: 3000;
+            transition: opacity 0.3s;
+        }
+        .confirm-overlay.active { display: flex; }
+        
+        .confirm-modal {
             background: var(--bg-white);
-            box-shadow: 0 0 0 4px rgba(255, 133, 179, 0.15), 0 6px 16px rgba(179, 157, 219, 0.12);
+            width: 85%; max-width: 320px;
+            border-radius: 32px;
+            padding: 32px 24px; box-sizing: border-box;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.8);
         }
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            fill: var(--primary-purple);
-            pointer-events: none; /* 讓點擊能直接穿透到輸入框 */
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
+        .confirm-icon { font-size: 50px; margin-bottom: 12px; line-height: 1; }
+        .confirm-title { font-size: 20px; font-weight: 800; color: var(--primary-purple); margin: 0 0 10px 0; }
+        .confirm-text { font-size: 14px; font-weight: 600; color: var(--text-muted); margin: 0 0 24px 0; line-height: 1.6; }
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+        
+        .btn-cancel-modal { 
+            background: var(--light-pink); color: var(--primary-purple); 
+            border: none; padding: 12px; border-radius: 24px; 
+            font-size: 14px; font-weight: 800; flex: 1; cursor: pointer; transition: 0.2s;
+        }
+        .btn-cancel-modal:active { transform: scale(0.95); }
+        
+        .btn-confirm-modal { 
+            background: var(--gradient-btn); color: white; 
+            border: none; padding: 12px; border-radius: 24px; 
+            font-size: 14px; font-weight: 800; flex: 1; cursor: pointer; 
+            box-shadow: 0 6px 16px rgba(255, 133, 179, 0.3); transition: 0.2s;
+        }
+        .btn-confirm-modal:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(255, 133, 179, 0.2); }
+
     </style>
 </head>
 <body>
@@ -348,18 +491,46 @@
                 九霄科技 9xiaoGame
             </div>
         </div>
-        <div class="user-profile">
+        <div class="user-profile" onclick="openHistoryModal()" title="查看歷史訂單">
             <span id="user-name">讀取中...</span>
             <div id="user-img" class="user-avatar"></div>
         </div>
     </div>
 
+    <div class="history-overlay" id="history-overlay">
+        <div class="history-modal">
+            <div class="history-header">
+                <div class="history-title">🛍️ 我的購物紀錄</div>
+                <button class="close-history-btn" onclick="closeHistoryModal()">&times;</button>
+            </div>
+            <div class="spend-card">
+                <div>✨ 累積成功消費 ✨</div>
+                <h2 id="history-total-spend">NT$ 0</h2>
+            </div>
+            <div class="history-list" id="history-list-container">
+                <div style="text-align:center; padding: 20px; color: var(--primary-purple); font-weight: bold;">讀取中...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirm-overlay">
+        <div class="confirm-modal">
+            <div class="confirm-icon">🛍️</div>
+            <h3 class="confirm-title">確認結帳送出嗎？</h3>
+            <p class="confirm-text">
+                訂單建立後即無法修改內容，<br>請確認填寫的遊戲資料皆正確喔！
+            </p>
+            <div class="confirm-actions">
+                <button class="btn-cancel-modal" onclick="closeConfirmModal()">再檢查一下</button>
+                <button class="btn-confirm-modal" onclick="submitOrder()">確認送出</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- 步驟一：選擇遊戲 -->
         <div id="step-1" class="step active">
             <h2 style="font-size: 20px; margin-top: 0; margin-bottom: 16px; color: var(--primary-purple); font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(179,157,219,0.2);">你想儲值哪款遊戲呢？🎮</h2>
             
-            <!-- 🎀 新增：搜尋欄 UI 區塊 🎀 -->
             <div class="search-container">
                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M18.031 16.6168L22.3137 20.8995L20.8995 23.1837L16.6168 18.901C15.0769 19.9691 13.1678 20.6025 11.1012 20.6025C5.52391 20.6025 1 16.0786 1 10.5013C1 4.92398 5.52391 0.400085 11.1012 0.400085C16.6786 0.400085 21.2025 4.92398 21.2025 10.5013C21.2025 12.7533 20.4616 14.8327 19.206 16.4526L18.031 16.6168ZM16.0123 15.6989C17.3828 14.3411 18.2025 12.5113 18.2025 10.5013C18.2025 6.57967 15.0229 3.40009 11.1012 3.40009C7.17961 3.40009 4 6.57967 4 10.5013C4 14.4229 7.17961 17.6025 11.1012 17.6025C13.0645 17.6025 14.8434 16.8123 16.1477 15.5392L16.0123 15.6989Z"></path>
@@ -370,7 +541,6 @@
             <div id="game-list"></div>
         </div>
 
-        <!-- 步驟二：選擇商品與填寫資料 -->
         <div id="step-2" class="step">
             <div style="text-align: center; margin-bottom: 20px;">
                 <img id="selected-game-img" src="" style="width: 70px; height: 70px; object-fit: cover; border-radius: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
@@ -379,7 +549,6 @@
             
             <div class="form-panel">
                 
-                <!-- 🎀 類型一：UID 直儲表單 -->
                 <div id="form-uid" style="display: none;">
                     <div class="input-group">
                         <label>📝 玩家 UID <span style="color:var(--primary-pink)">*</span></label>
@@ -395,7 +564,6 @@
                     </div>
                 </div>
 
-                <!-- 🎀 類型二：帳號密碼代登表單 -->
                 <div id="form-account" style="display: none;">
                     <div class="input-group">
                         <label>1. 🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
@@ -429,7 +597,6 @@
                     </div>
                 </div>
 
-                <!-- 🎀 類型三：免填資料直接發序號 -->
                 <div id="form-none" style="display: none; background: var(--light-pink); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
                     <p style="margin: 0; font-size: 13px; font-weight: bold; color: var(--primary-pink); text-align: center;">
                         💡 溫馨提醒<br><br>
@@ -437,7 +604,6 @@
                     </p>
                 </div>
 
-                <!-- 🎀 共通選項：付款方式 -->
                 <div class="input-group" style="margin-bottom: 0; margin-top: 16px; border-top: 2px solid var(--light-purple); padding-top: 16px;">
                     <label>💳 選擇付款方式 <span style="color:var(--primary-pink)">*</span></label>
                     <select id="payment-method">
@@ -459,7 +625,6 @@
         </div>
     </div>
 
-    <!-- 底部操作區 -->
     <div class="footer" id="footer" style="display: none;">
         <div class="total-box">
             <span class="total-label">總計金額</span>
@@ -467,17 +632,21 @@
         </div>
         <div style="display: flex; gap: 10px;">
             <button class="btn-back" id="btn-back" onclick="goBack()">返回</button>
-            <button class="btn-next" id="btn-next" onclick="submitOrder()">結帳</button>
+            <button class="btn-next" id="btn-next" onclick="openConfirmModal()">結帳</button>
         </div>
     </div>
 
     <script>
-        // 👉 老闆，這裡一定要填入你真實的 LIFF ID
+        // 👉 1. 老闆，這裡一定要填入你真實的 LIFF ID 👈
         const LIFF_ID = "2009198027-AdmXuJNK"; 
+        
+        // 👉 2. 老闆，這裡一定要填入你 Google Apps Script 發布的「網頁應用程式」網址 👈
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbz_XXXXXXXXXXXXXX/exec"; 
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
+        let currentLineUser = null; 
 
-        // 💡 遊戲資料庫設定 
+        // 💡 遊戲資料庫設定 (已保留您的最新修改)
         const db = {
             'idv': {
                 name: '第五人格', loginType: 'uid',
@@ -668,7 +837,6 @@
                     { id: 'tk_7', name: '52500 金幣', price: 19000, img: getEmoji('1fa99') }
                 ]
             },
-            // 保留原本就在清單內且尚未要求更動的遊戲
             'zzz': {
                 name: '絕區零', loginType: 'uid',
                 desc: '底片代儲，安全保底',
@@ -679,7 +847,7 @@
                     { id: 'zzz_2', name: '980 底片', price: 460, img: getEmoji('1f39e') },
                     { id: 'zzz_3', name: '1980 底片', price: 850, img: getEmoji('1f39e') },
                     { id: 'zzz_4', name: '3280 底片', price: 1300, img: getEmoji('1f39e') },
-                    { id: 'zzz_3', name: '6480 底片', price: 2450, img: getEmoji('1f39e') },
+                    { id: 'zzz_5', name: '6480 底片', price: 2450, img: getEmoji('1f39e') },
                 ]
             },
             'honkai': {
@@ -837,7 +1005,8 @@
             try {
                 if (LIFF_ID === "請在這裡填入正確的LIFF_ID" || LIFF_ID === "你的_LIFF_ID_填在這裡" || !LIFF_ID) {
                     console.warn("尚未填寫真實的 LIFF ID，目前處於網頁測試模式。");
-                    document.getElementById('user-name').innerText = "九霄的客人 (測試)";
+                    document.getElementById('user-name').innerText = "九霄的客人 (測試) ▾";
+                    currentLineUser = { userId: "test_user_001", displayName: "九霄的客人 (測試)" };
                     renderGames();
                     return;
                 }
@@ -849,7 +1018,8 @@
                 }
                 
                 const profile = await liff.getProfile();
-                document.getElementById('user-name').innerText = profile.displayName;
+                currentLineUser = profile;
+                document.getElementById('user-name').innerText = profile.displayName + " ▾";
                 if(profile.pictureUrl) {
                     document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
                 }
@@ -861,15 +1031,13 @@
             }
         }
 
-        // 🎀 更新：加入搜尋字串過濾的邏輯 🎀
         function renderGames(filterText = '') {
             const list = document.getElementById('game-list');
             list.innerHTML = '';
-            const lowerFilter = filterText.toLowerCase().trim(); // 把搜尋字轉小寫，並去掉前後空白
+            const lowerFilter = filterText.toLowerCase().trim();
             let hasResult = false;
 
             for (const [gameId, gameInfo] of Object.entries(db)) {
-                // 只要遊戲名稱裡面有包含客人輸入的字，就會顯示出來
                 if (gameInfo.name.toLowerCase().includes(lowerFilter)) {
                     hasResult = true;
                     list.innerHTML += `
@@ -887,13 +1055,11 @@
                 }
             }
 
-            // 如果客人的字打錯了，顯示溫馨提示
             if (!hasResult) {
                 list.innerHTML = `<div style="text-align: center; padding: 40px 20px; color: var(--text-muted); font-weight: bold; font-size: 15px;">🔍 找不到包含「${filterText}」的遊戲唷<br><span style="font-size: 12px; font-weight: normal; margin-top: 8px; display: inline-block;">請確認名稱是否有錯字</span></div>`;
             }
         }
 
-        // 🎀 新增：觸發搜尋的事件 🎀
         function filterGames() {
             const query = document.getElementById('game-search-input').value;
             renderGames(query);
@@ -903,14 +1069,12 @@
             document.getElementById('uid-uid').value = '';
             document.getElementById('uid-server').value = '';
             document.getElementById('uid-nickname').value = '';
-
             document.getElementById('acc-nickname').value = '';
             document.getElementById('acc-login-method').value = '';
             document.getElementById('acc-server').value = '';
             document.getElementById('acc-account').value = '';
             document.getElementById('acc-password').value = '';
             document.getElementById('acc-recovery').value = '';
-
             document.getElementById('payment-method').value = '';
         }
 
@@ -1006,7 +1170,6 @@
             document.getElementById('step-1').classList.add('active');
             document.getElementById('footer').style.display = 'none';
             
-            // 🎀 回到首頁時，自動清空搜尋欄 🎀
             const searchInput = document.getElementById('game-search-input');
             if(searchInput) {
                 searchInput.value = '';
@@ -1026,25 +1189,130 @@
             };
         }
 
-        // 🎀 最安全、保證不報錯的結帳送出函式 🎀
-        function submitOrder() {
+        // 🎀 【查詢歷史紀錄邏輯】 🎀
+        window.openHistoryModal = async function() {
+            if (!currentLineUser) {
+                return alert("⚠️ 請先透過 LINE 登入才能查看專屬您的歷史紀錄唷！");
+            }
+            if (GAS_URL === "https://script.google.com/macros/s/AKfycbz_XXXXXXXXXXXXXX/exec") {
+                return alert("⚠️ 老闆，您尚未填寫 Google Apps Script 網址，目前無法連線到試算表讀取資料喔！");
+            }
+
+            document.getElementById('history-overlay').classList.add('active');
+            const historyContainer = document.getElementById('history-list-container');
+            historyContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--primary-purple); font-weight: bold; font-size: 15px;">🔄 正在從雲端抓取您的專屬紀錄...</div>';
+
+            try {
+                const response = await fetch(`${GAS_URL}?action=getHistory&uid=${currentLineUser.userId}`);
+                const myOrders = await response.json();
+                
+                let totalSpent = 0;
+                
+                myOrders.forEach(o => {
+                    if (o.status === 'completed' || o.status === '已完成') {
+                        totalSpent += parseFloat(o.totalAmount) || 0;
+                    }
+                });
+
+                document.getElementById('history-total-spend').innerText = `NT$ ${totalSpent.toLocaleString()}`;
+
+                if (myOrders.length === 0) {
+                    historyContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted); font-weight: bold; font-size: 15px;">🌸 您目前還沒有下過訂單唷！快去選購吧！</div>';
+                    return;
+                }
+
+                let html = '';
+                myOrders.forEach(o => {
+                    const d = new Date(o.timestamp);
+                    let dateStr = "未知時間";
+                    if (!isNaN(d.getTime())) {
+                        dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+                    }
+
+                    let statusHtml = '';
+                    if (o.status === 'pending' || o.status === '處理中') statusHtml = '<span class="badge h-pending">🟡 處理中</span>';
+                    else if (o.status === 'completed' || o.status === '已完成') statusHtml = '<span class="badge h-completed">🟢 已完成</span>';
+                    else statusHtml = '<span class="badge h-cancelled">🔴 已取消</span>';
+
+                    html += `
+                        <div class="history-item">
+                            <div class="history-item-header">
+                                <span class="history-date">🕒 ${dateStr}</span>
+                                ${statusHtml}
+                            </div>
+                            <div class="history-game">🎮 ${o.gameName}</div>
+                            <div class="history-item-footer">
+                                <span class="history-orderid">#${o.orderId}</span>
+                                <span class="history-price">NT$ ${o.totalAmount}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                historyContainer.innerHTML = html;
+
+            } catch (err) {
+                console.error("抓取歷史紀錄失敗:", err);
+                historyContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: red; font-weight:bold;">❌ 抓取失敗，請確認 Google 表單設定正確。</div>';
+            }
+        }
+
+        window.closeHistoryModal = function() {
+            document.getElementById('history-overlay').classList.remove('active');
+        }
+
+        // 🎀 【防呆確認送出視窗】 🎀
+        window.openConfirmModal = function() {
+            const loginType = db[currentActiveGame].loginType;
+            if (loginType === 'uid') {
+                if (!document.getElementById('uid-uid').value.trim() || !document.getElementById('uid-server').value.trim() || !document.getElementById('uid-nickname').value.trim()) {
+                    return alert("🌸 哎呀！UID、伺服器和暱稱都要填寫喔！");
+                }
+            } else if (loginType === 'account') {
+                if (!document.getElementById('acc-nickname').value.trim() || !document.getElementById('acc-login-method').value || !document.getElementById('acc-server').value.trim() || !document.getElementById('acc-account').value.trim() || !document.getElementById('acc-password').value.trim() || !document.getElementById('acc-recovery').value.trim()) {
+                    return alert("🌸 哎呀！帳號密碼登入的所有欄位都必須填寫喔！");
+                }
+            }
+            if (!document.getElementById('payment-method').value) return alert("💳 請選擇一個付款方式喔！");
+            if (totalAmount === 0) return alert("🛍️ 請至少選擇一個想要的面額喔！");
+
+            document.getElementById('confirm-overlay').classList.add('active');
+        };
+
+        window.closeConfirmModal = function() {
+            document.getElementById('confirm-overlay').classList.remove('active');
+        };
+
+        // 🎀 【確認結帳送出：存雲端表單 + 發 Flex 訊息】 🎀
+        async function submitOrder() {
+            closeConfirmModal();
+
             const loginType = db[currentActiveGame].loginType;
             let flexInfoRows = []; 
-            
             const orderId = generateOrderId();
+            
+            let cloudOrderData = {
+                timestamp: new Date().toISOString(),
+                orderId: orderId,
+                lineUserId: currentLineUser ? currentLineUser.userId : 'test_user_001',
+                customerName: currentLineUser ? currentLineUser.displayName : '匿名訪客',
+                gameName: db[currentActiveGame].name,
+                totalAmount: totalAmount,
+                paymentMethod: document.getElementById('payment-method').value || '未填寫',
+                status: '處理中',
+                cart: {},
+                formDetails: {}
+            };
             
             if (loginType === 'uid') {
                 const uidVal = document.getElementById('uid-uid').value.trim();
                 const serverVal = document.getElementById('uid-server').value.trim();
                 const nicknameVal = document.getElementById('uid-nickname').value.trim();
                 
-                if (!uidVal || !serverVal || !nicknameVal) {
-                    alert("🌸 哎呀！UID、伺服器和暱稱都要填寫喔！");
-                    return;
-                }
                 flexInfoRows.push(createFlexRow("🆔 UID", uidVal));
                 flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal));
                 flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal));
+                cloudOrderData.formDetails = { '玩家 UID': uidVal, '伺服器': serverVal, '遊戲暱稱': nicknameVal };
+
             } else if (loginType === 'account') {
                 const nicknameVal = document.getElementById('acc-nickname').value.trim();
                 const loginMethodVal = document.getElementById('acc-login-method').value;
@@ -1053,32 +1321,19 @@
                 const passwordVal = document.getElementById('acc-password').value.trim();
                 const recoveryVal = document.getElementById('acc-recovery').value.trim();
 
-                if (!nicknameVal || !loginMethodVal || !serverVal || !accountVal || !passwordVal || !recoveryVal) {
-                    alert("🌸 哎呀！帳號密碼登入的所有欄位都必須填寫喔！");
-                    return;
-                }
-
                 flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal));
                 flexInfoRows.push(createFlexRow("🔑 登入", loginMethodVal));
                 flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal));
                 flexInfoRows.push(createFlexRow("👤 帳號", accountVal));
                 flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal));
                 flexInfoRows.push(createFlexRow("🛡️ 復原碼", recoveryVal));
+                cloudOrderData.formDetails = { '遊戲暱稱': nicknameVal, '登入方式': loginMethodVal, '伺服器': serverVal, '登入帳號': accountVal, '登入密碼': passwordVal, '備用碼': recoveryVal };
+
             } else if (loginType === 'none') {
                 flexInfoRows.push(createFlexRow("📝 儲值", "發送序號 (請至官網兌換)"));
             }
 
-            const paymentMethod = document.getElementById('payment-method').value;
-            if (!paymentMethod) {
-                alert("💳 請選擇一個付款方式喔！");
-                return;
-            }
-            if (totalAmount === 0) {
-                alert("🛍️ 請至少選擇一個想要的面額喔！");
-                return;
-            }
-
-            flexInfoRows.push(createFlexRow("💳 付款", paymentMethod));
+            flexInfoRows.push(createFlexRow("💳 付款", cloudOrderData.paymentMethod));
 
             let flexItems = [];
             db[currentActiveGame].products.forEach(p => {
@@ -1090,10 +1345,25 @@
                             { "type": "text", "text": `x ${cart[p.id]}`, "size": "sm", "color": "#FF85B3", "weight": "bold", "flex": 1, "align": "end" }
                         ]
                     });
+                    cloudOrderData.cart[p.name] = cart[p.id];
                 }
             });
 
-            // 最嚴謹的 Flex Message JSON 結構
+            // 傳送資料到 Google 表單
+            if (GAS_URL !== "https://script.google.com/macros/s/AKfycbz_XXXXXXXXXXXXXX/exec") {
+                try {
+                    fetch(GAS_URL, {
+                        redirect: "follow",
+                        method: 'POST',
+                        headers: { "Content-Type": "text/plain;charset=utf-8" }, 
+                        body: JSON.stringify(cloudOrderData)
+                    });
+                    console.log("☁️ 訂單已發送至 Google 試算表");
+                } catch (e) {
+                    console.error("寫入 Google 表單失敗:", e);
+                }
+            }
+
             const flexMessage = {
                 "type": "flex",
                 "altText": `🎀 九霄科技 新訂單：${orderId}`, 
@@ -1109,7 +1379,29 @@
                     "body": {
                         "type": "box", "layout": "vertical",
                         "contents": [
-                            { "type": "text", "text": `訂單編號：${orderId}`, "size": "xs", "color": "#B39DDB", "align": "end" },
+                            {
+                                "type": "box", "layout": "horizontal", "margin": "md",
+                                "contents": [
+                                    { "type": "text", "text": "訂單編號", "color": "#8D6E63", "size": "xs", "flex": 2, "gravity": "center" },
+                                    { "type": "text", "text": orderId, "weight": "bold", "size": "sm", "color": "#5D4037", "flex": 4, "gravity": "center" },
+                                    { 
+                                        "type": "text", 
+                                        "text": "📋 複製", 
+                                        "color": "#FF85B3", 
+                                        "size": "sm", 
+                                        "weight": "bold", 
+                                        "align": "end",
+                                        "gravity": "center",
+                                        "flex": 2,
+                                        "action": {
+                                            "type": "clipboard",
+                                            "label": "複製",
+                                            "clipboardText": orderId
+                                        }
+                                    }
+                                ]
+                            },
+                            { "type": "separator", "margin": "md" },
                             { "type": "text", "text": `🎮 ${db[currentActiveGame].name}`, "weight": "bold", "size": "md", "color": "#5D4037", "margin": "md" },
                             { "type": "separator", "margin": "md" },
                             
@@ -1131,9 +1423,7 @@
                         ]
                     },
                     "footer": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "backgroundColor": "#FFF0F5",
+                        "type": "box", "layout": "vertical", "backgroundColor": "#FFF0F5",
                         "contents": [
                             { "type": "text", "text": "✨ 訂單確認中！請稍候 . . . ", "wrap": true, "size": "xs", "color": "#B39DDB", "weight": "bold", "align": "center" }
                         ]
@@ -1141,11 +1431,8 @@
                 }
             };
 
-            // 🎀 防止未填寫 LIFF ID 導致報錯的防呆機制 🎀
-            if (LIFF_ID === "請在這裡填入正確的LIFF_ID" || LIFF_ID === "你的_LIFF_ID_填在這裡" || !LIFF_ID) {
-                console.log("模擬送出 Flex：\n", JSON.stringify(flexMessage, null, 2));
-                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n\n⚠️ 提醒老闆：您尚未在程式碼中填寫真實的 LIFF_ID，因此系統無法為您發送真實的 LINE 訊息，請記得去修改唷！`);
-                return; // 直接中斷，避免執行到後面的 liff.sendMessages 導致報錯
+            if (LIFF_ID === "請在這裡填入正確的LIFF_ID" || LIFF_ID === "2009198027-AdmXuJNK" || !LIFF_ID) {
+                return alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n如果有設定好 Google 表單網址，這筆資料就會進到您的表單喔！`);
             }
 
             if (liff && liff.isInClient && liff.isInClient()) {
@@ -1159,8 +1446,7 @@
                         alert("傳送失敗 😢\n錯誤原因：" + err.message);
                     });
             } else {
-                console.log("模擬送出 Flex：\n", JSON.stringify(flexMessage, null, 2));
-                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！`);
+                alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！您可以點擊右上角大頭貼查看這筆歷史紀錄。`);
             }
         }
 
@@ -1168,11 +1454,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
