@@ -1194,7 +1194,7 @@
             if (!currentLineUser) {
                 return alert("⚠️ 請先透過 LINE 登入才能查看專屬您的歷史紀錄唷！");
             }
-            if (GAS_URL === "https://script.google.com/macros/s/AKfycbz_XXXXXXXXXXXXXX/exec") {
+            if (GAS_URL === "https://script.google.com/macros/s/AKfycbyfng78_OTpUCE-jmcxbnuJVU1CMCmmUEp0kUatQ3QK9gaVf4u-L_Hg-s5QO0nIxPCv4w/exec") {
                 return alert("⚠️ 老闆，您尚未填寫 Google Apps Script 網址，目前無法連線到試算表讀取資料喔！");
             }
 
@@ -1350,7 +1350,7 @@
             });
 
             // 傳送資料到 Google 表單
-            if (GAS_URL !== "https://script.google.com/macros/s/AKfycbz_XXXXXXXXXXXXXX/exec") {
+            if (GAS_URL !== "https://script.google.com/macros/s/AKfycbyfng78_OTpUCE-jmcxbnuJVU1CMCmmUEp0kUatQ3QK9gaVf4u-L_Hg-s5QO0nIxPCv4w/exec") {
                 try {
                     fetch(GAS_URL, {
                         redirect: "follow",
