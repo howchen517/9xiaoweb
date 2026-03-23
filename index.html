@@ -637,16 +637,16 @@
     </div>
 
     <script>
-        // 👉 1. 老闆，這裡一定要填入你真實的 LIFF ID 👈
+        // 👉 您正確的 LIFF ID
         const LIFF_ID = "2009198027-AdmXuJNK"; 
         
-        // 👉 2. 老闆，這裡一定要填入你 Google Apps Script 發布的「網頁應用程式」網址 👈
+        // 👉 您正確的 Google Apps Script 網址
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyfng78_OTpUCE-jmcxbnuJVU1CMCmmUEp0kUatQ3QK9gaVf4u-L_Hg-s5QO0nIxPCv4w/exec"; 
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
         let currentLineUser = null; 
 
-        // 💡 遊戲資料庫設定 (已保留您的最新修改)
+        // 💡 遊戲資料庫設定
         const db = {
             'idv': {
                 name: '第五人格', loginType: 'uid',
@@ -1003,7 +1003,8 @@
 
         async function initApp() {
             try {
-                if (LIFF_ID === "請在這裡填入正確的LIFF_ID" || LIFF_ID === "你的_LIFF_ID_填在這裡" || !LIFF_ID) {
+                // 🎀 這裡已經幫您修復邏輯，只要有填就會正常過關 🎀
+                if (!LIFF_ID || LIFF_ID === "請在這裡填入正確的LIFF_ID") {
                     console.warn("尚未填寫真實的 LIFF ID，目前處於網頁測試模式。");
                     document.getElementById('user-name').innerText = "九霄的客人 (測試) ▾";
                     currentLineUser = { userId: "test_user_001", displayName: "九霄的客人 (測試)" };
@@ -1189,12 +1190,13 @@
             };
         }
 
-        // 🎀 【查詢歷史紀錄邏輯】 🎀
         window.openHistoryModal = async function() {
             if (!currentLineUser) {
                 return alert("⚠️ 請先透過 LINE 登入才能查看專屬您的歷史紀錄唷！");
             }
-            if (GAS_URL === "https://script.google.com/macros/s/AKfycbyfng78_OTpUCE-jmcxbnuJVU1CMCmmUEp0kUatQ3QK9gaVf4u-L_Hg-s5QO0nIxPCv4w/exec") {
+            
+            // 🎀 修復：不再將真實網址視為錯誤 🎀
+            if (!GAS_URL || GAS_URL === "請填入GAS_URL") {
                 return alert("⚠️ 老闆，您尚未填寫 Google Apps Script 網址，目前無法連線到試算表讀取資料喔！");
             }
 
@@ -1260,7 +1262,6 @@
             document.getElementById('history-overlay').classList.remove('active');
         }
 
-        // 🎀 【防呆確認送出視窗】 🎀
         window.openConfirmModal = function() {
             const loginType = db[currentActiveGame].loginType;
             if (loginType === 'uid') {
@@ -1282,7 +1283,6 @@
             document.getElementById('confirm-overlay').classList.remove('active');
         };
 
-        // 🎀 【確認結帳送出：存雲端表單 + 發 Flex 訊息】 🎀
         async function submitOrder() {
             closeConfirmModal();
 
@@ -1349,8 +1349,8 @@
                 }
             });
 
-            // 傳送資料到 Google 表單
-            if (GAS_URL !== "https://script.google.com/macros/s/AKfycbyfng78_OTpUCE-jmcxbnuJVU1CMCmmUEp0kUatQ3QK9gaVf4u-L_Hg-s5QO0nIxPCv4w/exec") {
+            // 🎀 修復：不再將真實網址視為錯誤，只要有值就發送 🎀
+            if (GAS_URL && GAS_URL !== "請填入GAS_URL") {
                 try {
                     fetch(GAS_URL, {
                         redirect: "follow",
@@ -1431,7 +1431,8 @@
                 }
             };
 
-            if (LIFF_ID === "請在這裡填入正確的LIFF_ID" || LIFF_ID === "2009198027-AdmXuJNK" || !LIFF_ID) {
+            // 🎀 修復：不再將真實 ID 視為錯誤 🎀
+            if (!LIFF_ID || LIFF_ID === "請在這裡填入正確的LIFF_ID") {
                 return alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${orderId})！\n如果有設定好 Google 表單網址，這筆資料就會進到您的表單喔！`);
             }
 
