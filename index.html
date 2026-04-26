@@ -370,117 +370,38 @@
     </div>
 
     <script>
-        // 👉 您的 LIFF ID
         const LIFF_ID = "2009198027-AdmXuJNK"; 
-        
-        // 👉 您的 Google Apps Script 網址
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyfng78_OTpUCE-jmcxbnuJVU1CMCmmUEp0kUatQ3QK9gaVf4u-L_Hg-s5QO0nIxPCv4w/exec"; 
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
         let currentLineUser = null; 
 
-        // 💡 遊戲資料庫
         const db = {
-            'idv': {
-                name: '第五人格', loginType: 'uid', desc: 'UID免帳密，首次儲值需掃碼', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png',
-                products: [ { id: 'idv_1', name: '759 迴聲', price: 280, img: getEmoji('1f52e') }, { id: 'idv_2', name: '2277 迴聲', price: 860, img: getEmoji('1f52e') }, { id: 'idv_3', name: '3036 迴聲', price: 1100, img: getEmoji('1f52e') }, { id: 'idv_4', name: '3795 迴聲', price: 1350, img: getEmoji('1f52e') }, { id: 'idv_5', name: '7590 迴聲', price: 2600, img: getEmoji('1f52e') }, { id: 'idv_6', name: '15180 迴聲', price: 5200, img: getEmoji('1f52e') } ]
-            },
-            'aov': {
-                name: '傳說對決', loginType: 'none', desc: '發送貝殼幣序號，請至官網自行兌換', banner: 'https://i.meee.com.tw/Jxw6G5P.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png',
-                products: [ { id: 'aov_1', name: '364 點券', price: 250, img: getEmoji('1f39f') }, { id: 'aov_2', name: '728 點券', price: 500, img: getEmoji('1f39f') }, { id: 'aov_3', name: '1466 點券', price: 970, img: getEmoji('1f39f') }, { id: 'aov_4', name: '2250 點券', price: 1450, img: getEmoji('1f39f') }, { id: 'aov_5', name: '2932 點券', price: 1930, img: getEmoji('1f39f') }, { id: 'aov_6', name: '4543 點券', price: 2870, img: getEmoji('1f39f') }, { id: 'aov_7', name: '9086 點券', price: 5700, img: getEmoji('1f39f') } ]
-            },
-            'valorant': {
-                name: '特戰英豪', loginType: 'account', desc: '顆秒 難道你真的是賦能哥', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg',
-                products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1400, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2750, img: getEmoji('1f52b') } ]
-            },
-            'delta': {
-                name: '三角洲行動', loginType: 'account', desc: '帳密代儲，安全快速', banner: 'https://i.meee.com.tw/0Dux7tW.png', icon: 'https://i.meee.com.tw/OKtEmR8.jpg',
-                products: [ { id: 'df_1', name: '750 金幣', price: 300, img: getEmoji('1fa99') }, { id: 'df_2', name: '1480 金幣', price: 600, img: getEmoji('1fa99') }, { id: 'df_3', name: '3950 金幣', price: 1450, img: getEmoji('1fa99') }, { id: 'df_4', name: '8100 金幣', price: 2750, img: getEmoji('1fa99') } ]
-            },
-            'arenabreakout': {
-                name: '暗區突圍', loginType: 'uid', desc: 'UID直儲，快速到帳', banner: 'https://i.meee.com.tw/cx2BdEH.jpg', icon: 'https://i.meee.com.tw/MGVGPgp.png',
-                products: [ { id: 'ab_1', name: '675 點券', price: 330, img: getEmoji('1f4b0') }, { id: 'ab_2', name: '1690 點券', price: 800, img: getEmoji('1f4b0') }, { id: 'ab_3', name: '3400 點券', price: 1500, img: getEmoji('1f4b0') }, { id: 'ab_4', name: '6820 點券', price: 2800, img: getEmoji('1f4b0') } ]
-            },
-            'ww': {
-                name: '鳴潮', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/8PYVm5u.jpg', icon: 'https://i.meee.com.tw/aiapfAH.png',
-                products: [ { id: 'ww_0', name: '月相觀測卡', price: 150, img: getEmoji('1f39f') }, { id: 'ww_1', name: '980 月相', price: 470, img: getEmoji('1f319') }, { id: 'ww_2', name: '1980 月相', price: 870, img: getEmoji('1f319') }, { id: 'ww_3', name: '3280 月相', price: 1450, img: getEmoji('1f319') }, { id: 'ww_4', name: '6480 月相', price: 2750, img: getEmoji('1f319') } ]
-            },
-            'yysls': {
-                name: '燕雲十六聲', loginType: 'account', desc: '長鳴珠代儲，武俠必備', banner: 'https://i.meee.com.tw/bOjYSf1.jpg', icon: 'https://i.meee.com.tw/EIBNCGm.jpg',
-                products: [ { id: 'yy_0', name: '月度禮金 (限購1次)', price: 160, img: getEmoji('1f3ab') }, { id: 'yy_bp1', name: '精英戰令 (限購1次)', price: 300, img: getEmoji('1f396') }, { id: 'yy_bp2', name: '典藏戰令 (限購1次)', price: 570, img: getEmoji('1f3c5') }, { id: 'yy_1', name: '600 長鳴珠', price: 300, img: getEmoji('1f390') }, { id: 'yy_2', name: '900 長鳴珠', price: 430, img: getEmoji('1f390') }, { id: 'yy_3', name: '1800 長鳴珠', price: 830, img: getEmoji('1f390') }, { id: 'yy_4', name: '3000 長鳴珠', price: 1450, img: getEmoji('1f390') }, { id: 'yy_5', name: '6000 長鳴珠', price: 2750, img: getEmoji('1f390') }, { id: 'yy_6', name: '12000 長鳴珠', price: 5400, img: getEmoji('1f390') } ]
-            },
-            'nsh': {
-                name: '逆水寒', loginType: 'account', desc: '紋玉代儲，官方安全', banner: 'https://i.meee.com.tw/PpMgpxT.jpg', icon: 'https://i.meee.com.tw/3jAJ1zu.jpg',
-                products: [ { id: 'nsh_1', name: '980 紋玉', price: 450, img: getEmoji('1f48e') }, { id: 'nsh_2', name: '1980 紋玉', price: 950, img: getEmoji('1f48e') }, { id: 'nsh_3', name: '3280 紋玉', price: 1530, img: getEmoji('1f48e') }, { id: 'nsh_4', name: '6480 紋玉', price: 2850, img: getEmoji('1f48e') } ]
-            },
-            'racingmaster': {
-                name: '巔峰極速', loginType: 'account', desc: '寶石代儲，極速飆車', banner: 'https://i.meee.com.tw/xDoA8Lx.jpg', icon: 'https://i.meee.com.tw/3a27dHf.jpg',
-                products: [ { id: 'rm_0', name: '月卡', price: 160, img: getEmoji('1f3ab') }, { id: 'rm_bp1', name: '高級合約', price: 300, img: getEmoji('1f4dc') }, { id: 'rm_bp2', name: '特級合約', price: 600, img: getEmoji('1f4dc') }, { id: 'rm_1', name: '680 寶石', price: 300, img: getEmoji('1f48e') }, { id: 'rm_2', name: '980 寶石', price: 450, img: getEmoji('1f48e') }, { id: 'rm_3', name: '1280 寶石', price: 630, img: getEmoji('1f48e') }, { id: 'rm_4', name: '1980 寶石', price: 900, img: getEmoji('1f48e') }, { id: 'rm_5', name: '3280 寶石', price: 1400, img: getEmoji('1f48e') }, { id: 'rm_6', name: '6480 寶石', price: 2750, img: getEmoji('1f48e') }, { id: 'rm_7', name: '6800 寶石', price: 2800, img: getEmoji('1f48e') } ]
-            },
-            'eggy': {
-                name: '蛋仔派對', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/kBcg5ab.jpg', icon: 'https://i.meee.com.tw/vqT7vcH.webp',
-                products: [ { id: 'eg_0', name: '閃耀存錢罐', price: 100, img: getEmoji('1f4b1') }, { id: 'eg_1', name: '757 蛋幣', price: 300, img: getEmoji('1fa99') }, { id: 'eg_2', name: '1524 蛋幣', price: 550, img: getEmoji('1fa99') }, { id: 'eg_3', name: '2296 蛋幣', price: 850, img: getEmoji('1fa99') }, { id: 'eg_4', name: '3873 蛋幣', price: 1280, img: getEmoji('1fa99') }, { id: 'eg_5', name: '7783 蛋幣', price: 2450, img: getEmoji('1fa99') } ]
-            },
-            'roblox': {
-                name: 'Roblox', loginType: 'account', desc: '贈禮請截圖裡包詢問客服', banner: 'https://i.meee.com.tw/iHVBqUY.jpg', icon: 'https://i.meee.com.tw/BJDCTYR.png',
-                products: [ { id: 'rbx_1', name: '1000 Robux', price: 350, img: getEmoji('2b50') }, { id: 'rbx_2', name: '2000 Robux', price: 600, img: getEmoji('2b50') }, { id: 'rbx_3', name: '5000 Robux', price: 1450, img: getEmoji('2b50') }, { id: 'rbx_4', name: '8000 Robux', price: 2350, img: getEmoji('2b50') }, { id: 'rbx_5', name: '11000 Robux', price: 3000, img: getEmoji('2b50') } ]
-            },
-            'genshin': {
-                name: '原神', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/9nzDwHm.jpg', icon: 'https://i.meee.com.tw/kCOBoGC.jpg',
-                products: [ { id: 'gs_0', name: '空月祝福', price: 150, img: getEmoji('1f319') }, { id: 'gs_1', name: '980 結晶', price: 430, img: getEmoji('2728') }, { id: 'gs_2', name: '1980 結晶', price: 850, img: getEmoji('2728') }, { id: 'gs_3', name: '3280 結晶', price: 1300, img: getEmoji('2728') }, { id: 'gs_4', name: '6480 結晶', price: 2450, img: getEmoji('2728') }, { id: 'gs_5', name: '60-3280 結晶半條龍', price: 2500, img: getEmoji('2728') }, { id: 'gs_6', name: '60-6480 結晶一條龍', price: 4800, img: getEmoji('2728') }, { id: 'gs_7', name: '980 凝核', price: 450, img: getEmoji('1f48e') }, { id: 'gs_8', name: '1980 凝核', price: 850, img: getEmoji('1f48e') }, { id: 'gs_9', name: '3280 凝核', price: 1280, img: getEmoji('1f48e') }, { id: 'gs_10', name: '6480 凝核', price: 2500, img: getEmoji('1f48e') }, { id: 'gs_11', name: '60-6480 凝核一條龍', price: 4900, img: getEmoji('1f48e') } ]
-            },
-            'ptcg': {
-                name: 'PTCG Pocket', loginType: 'account', desc: '金塊代儲，快速抽卡', banner: 'https://i.meee.com.tw/fRWyEK1.jpg', icon: 'https://i.meee.com.tw/WWIupRQ.png',
-                products: [ { id: 'ptcg_1', name: '26 金塊', price: 150, img: getEmoji('1fa99') }, { id: 'ptcg_2', name: '57 金塊', price: 300, img: getEmoji('1fa99') }, { id: 'ptcg_3', name: '120 金塊', price: 550, img: getEmoji('1fa99') }, { id: 'ptcg_4', name: '250 金塊', price: 1100, img: getEmoji('1fa99') }, { id: 'ptcg_5', name: '690 金塊', price: 2580, img: getEmoji('1fa99') } ]
-            },
-            'tiktok': {
-                name: 'TikTok', loginType: 'account', desc: '安全代儲，快速到帳', banner: 'https://i.meee.com.tw/2h8hjAv.jpg', icon: 'https://i.meee.com.tw/pT3KP1z.png',
-                products: [ { id: 'tk_1', name: '350 金幣', price: 160, img: getEmoji('1fa99') }, { id: 'tk_2', name: '700 金幣', price: 300, img: getEmoji('1fa99') }, { id: 'tk_3', name: '1400 金幣', price: 580, img: getEmoji('1fa99') }, { id: 'tk_4', name: '3500 金幣', price: 1350, img: getEmoji('1fa99') }, { id: 'tk_5', name: '7000 金幣', price: 2500, img: getEmoji('1fa99') }, { id: 'tk_6', name: '17500 金幣', price: 6500, img: getEmoji('1fa99') }, { id: 'tk_7', name: '52500 金幣', price: 19000, img: getEmoji('1fa99') } ]
-            },
-            'zzz': {
-                name: '絕區零', loginType: 'uid', desc: '底片代儲，安全保底', banner: 'https://i.meee.com.tw/994g6dG.jpg', icon: 'https://i.meee.com.tw/fSGxm0Y.png',
-                products: [ { id: 'zzz_1', name: '繩網會員 ', price: 150, img: getEmoji('1f3ab') }, { id: 'zzz_2', name: '980 底片', price: 460, img: getEmoji('1f39e') }, { id: 'zzz_3', name: '1980 底片', price: 850, img: getEmoji('1f39e') }, { id: 'zzz_4', name: '3280 底片', price: 1300, img: getEmoji('1f39e') }, { id: 'zzz_5', name: '6480 底片', price: 2450, img: getEmoji('1f39e') } ]
-            },
-            'honkai': {
-                name: '崩壞:星穹鐵道', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/FE8NXFx.jpg', icon: 'https://i.meee.com.tw/Rg23zwU.png',
-                products: [ { id: 'hk_1', name: '列車補給憑證', price: 160, img: getEmoji('1f3ab') }, { id: 'hk_2', name: '980 古老夢華', price: 490, img: getEmoji('1f48e') }, { id: 'hk_3', name: '1980 古老夢華', price: 900, img: getEmoji('1f48e') }, { id: 'hk_4', name: '3280 古老夢華', price: 1300, img: getEmoji('1f48e') }, { id: 'hk_5', name: '6480 古老夢華', price: 2500, img: getEmoji('1f48e') } ]
-            },
-            'maple': {
-                name: '楓之谷:放置冒險記', loginType: 'account', desc: '超值禮包，輕鬆掛機練等', banner: 'https://i.meee.com.tw/qMauUBO.jpg', icon: 'https://i.meee.com.tw/QLNgRgO.png',
-                products: [ { id: 'maple_1', name: '15000 鑽石', price: 270, img: getEmoji('1f341') }, { id: 'maple_2', name: '30000 鑽石', price: 520, img: getEmoji('1f341') }, { id: 'maple_3', name: '45000 鑽石', price: 800, img: getEmoji('1f341') }, { id: 'maple_4', name: '75000 鑽石', price: 1350, img: getEmoji('1f341') }, { id: 'maple_5', name: '150000 鑽石', price: 2600, img: getEmoji('1f341') } ]
-            },
-            'brawl': {
-                name: '荒野亂鬥', loginType: 'account', desc: '寶石代儲，暢快對戰', banner: 'https://i.meee.com.tw/uT3NrQo.jpg', icon: 'https://i.meee.com.tw/b9TEun8.jpg',
-                products: [ { id: 'bs_0', name: '通行券 (限購1次)', price: 300, img: getEmoji('1f3ab') }, { id: 'bs_bp1', name: '高級通行券 (限購1次)', price: 400, img: getEmoji('1f3ab') }, { id: 'bs_bp2', name: 'PRO通行證', price: 750, img: getEmoji('1f3ab') }, { id: 'bs_1', name: '80 寶石', price: 200, img: getEmoji('1f48e') }, { id: 'bs_2', name: '170 寶石', price: 300, img: getEmoji('1f48e') }, { id: 'bs_3', name: '360 寶石', price: 600, img: getEmoji('1f48e') }, { id: 'bs_4', name: '950 寶石', price: 1500, img: getEmoji('1f48e') }, { id: 'bs_5', name: '2000 寶石', price: 2900, img: getEmoji('1f48e') } ]
-            },
-            'supernatural': {
-                name: '超自然行動組', loginType: 'account', desc: '推特登入無法儲值', banner: 'https://i.meee.com.tw/7FNn1LF.png', icon: 'https://i.meee.com.tw/kNMe2fQ.png',
-                products: [ { id: 'sno_1', name: '620 金磚', price: 300, img: getEmoji('1f48e') }, { id: 'sno_2', name: '1300 金磚', price: 640, img: getEmoji('1f48e') }, { id: 'sno_3', name: '1980 金磚', price: 845, img: getEmoji('1f48e') }, { id: 'sno_4', name: '3330 金磚', price: 1415, img: getEmoji('1f48e') }, { id: 'sno_5', name: '6680 金磚', price: 2840, img: getEmoji('1f48e') } ]
-            },
-            'love': {
-                name: '戀與深空', loginType: 'account', desc: '晶鑽代儲，浪漫邂逅不錯過', banner: 'https://i.meee.com.tw/5zPpO3Y.jpg', icon: 'https://i.meee.com.tw/9B86vmK.png',
-                products: [ { id: 'love_0', name: '月卡', price: 160, img: getEmoji('1f3ab') }, { id: 'love_1', name: '450 晶鑽', price: 220, img: getEmoji('1f48c') }, { id: 'love_2', name: '980 晶鑽', price: 460, img: getEmoji('1f48c') }, { id: 'love_3', name: '1980 晶鑽', price: 850, img: getEmoji('1f48c') }, { id: 'love_4', name: '3280 晶鑽', price: 1400, img: getEmoji('1f48c') }, { id: 'love_5', name: '6480 晶鑽', price: 2780, img: getEmoji('1f48c') } ]
-            },
-            'heartbeat': {
-                name: '心動小鎮', loginType: 'account', desc: '心鑽代儲，享受療癒生活', banner: 'https://i.meee.com.tw/PF1RLtF.jpg', icon: 'https://i.meee.com.tw/N9n8flZ.png',
-                products: [ { id: 'ht_1', name: '300+20 心鑽', price: 160, img: getEmoji('1f496') }, { id: 'ht_2', name: '680+50 心鑽', price: 320, img: getEmoji('1f496') }, { id: 'ht_3', name: '1280+90 心鑽', price: 600, img: getEmoji('1f496') }, { id: 'ht_4', name: '1980+150 心鑽', price: 910, img: getEmoji('1f496') }, { id: 'ht_5', name: '3280+270 心鑽', price: 1530, img: getEmoji('1f496') }, { id: 'ht_6', name: '6480+570 心鑽', price: 2850, img: getEmoji('1f496') } ]
-            },
-            'pokemongo': {
-                name: 'Pokemon GO', loginType: 'account', desc: '寶可幣代儲，捕捉神獸', banner: 'https://i.meee.com.tw/L4DDSt6.jpg', icon: 'https://i.meee.com.tw/Nn2NZwu.png',
-                products: [ { id: 'pgo_1', name: '200 寶可幣', price: 290, img: getEmoji('1f7e1') }, { id: 'pgo_2', name: '2500 寶可幣', price: 380, img: getEmoji('1f7e1') }, { id: 'pgo_3', name: '5200 寶可幣', price: 580, img: getEmoji('1f7e1') }, { id: 'pgo_4', name: '7700 寶可幣', price: 900, img: getEmoji('1f7e1') }, { id: 'pgo_5', name: '14500 寶可幣', price: 1220, img: getEmoji('1f7e1') }, { id: 'pgo_6', name: '29000 寶可幣', price: 2400, img: getEmoji('1f7e1') } ]
-            },
-            'arknights2': {
-                name: '明日方舟:終末地', loginType: 'account', desc: '源石代登，官方安全', banner: 'https://i.meee.com.tw/E3DZPsN.jpg', icon: 'https://img.youtube.com/vi/1O3U_H5Dq4g/hqdefault.jpg',
-                products: [ { id: 'ak_0', name: '月卡', price: 150, img: getEmoji('1f3ab') }, { id: 'ak_1', name: '6 源石', price: 150, img: getEmoji('1f538') }, { id: 'ak_2', name: '20 源石', price: 490, img: getEmoji('1f538') }, { id: 'ak_3', name: '40 源石', price: 990, img: getEmoji('1f538') }, { id: 'ak_4', name: '66 源石', price: 1490, img: getEmoji('1f538') } ]
-            },
-            'aion2': {
-                name: 'AION2', loginType: 'account', desc: 'Mycard儲值 正規安全', banner: 'https://i.meee.com.tw/7pAaguN.jpg', icon: 'https://i.meee.com.tw/9ICXwJF.png',
-                products: [ { id: 'a2_1', name: 'AION飛翔時光', price: 730, img: getEmoji('1f381') }, { id: 'a2_2', name: '400 永恆寶石', price: 200, img: getEmoji('1f48e') }, { id: 'a2_3', name: '1000 永恆寶石', price: 460, img: getEmoji('1f48e') }, { id: 'a2_4', name: '2000 永恆寶石', price: 930, img: getEmoji('1f48e') }, { id: 'a2_5', name: '4000 永恆寶石', price: 1800, img: getEmoji('1f48e') } ]
-            },
-            'nobunaga': {
-                name: '信長之野望:真戰', loginType: 'account', desc: '大判代儲，稱霸戰國', banner: 'https://i.meee.com.tw/xLqihq0.jpg', icon: 'https://i.meee.com.tw/OBeZMj9.png',
-                products: [ { id: 'nob_1', name: '初級登用狀禮包', price: 950, img: getEmoji('1f3ab') }, { id: 'nob_2', name: '中級登用狀禮包', price: 1600, img: getEmoji('1f3ab') }, { id: 'nob_3', name: '高級登用狀禮包', price: 3050, img: getEmoji('1f3ab') }, { id: 'nob_4', name: '1980 大判', price: 950, img: getEmoji('1fa99') }, { id: 'nob_5', name: '3280 大判', price: 1600, img: getEmoji('1fa99') }, { id: 'nob_6', name: '6480 大判', price: 3050, img: getEmoji('1fa99') } ]
-            }
+            'idv': { name: '第五人格', loginType: 'uid', desc: 'UID免帳密，首次儲值需掃碼', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png', products: [ { id: 'idv_1', name: '759 迴聲', price: 280, img: getEmoji('1f52e') }, { id: 'idv_2', name: '2277 迴聲', price: 860, img: getEmoji('1f52e') }, { id: 'idv_3', name: '3036 迴聲', price: 1100, img: getEmoji('1f52e') }, { id: 'idv_4', name: '3795 迴聲', price: 1350, img: getEmoji('1f52e') }, { id: 'idv_5', name: '7590 迴聲', price: 2600, img: getEmoji('1f52e') }, { id: 'idv_6', name: '15180 迴聲', price: 5200, img: getEmoji('1f52e') } ] },
+            'aov': { name: '傳說對決', loginType: 'none', desc: '發送貝殼幣序號，請至官網自行兌換', banner: 'https://i.meee.com.tw/Jxw6G5P.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_1', name: '364 點券', price: 250, img: getEmoji('1f39f') }, { id: 'aov_2', name: '728 點券', price: 500, img: getEmoji('1f39f') }, { id: 'aov_3', name: '1466 點券', price: 970, img: getEmoji('1f39f') }, { id: 'aov_4', name: '2250 點券', price: 1450, img: getEmoji('1f39f') }, { id: 'aov_5', name: '2932 點券', price: 1930, img: getEmoji('1f39f') }, { id: 'aov_6', name: '4543 點券', price: 2870, img: getEmoji('1f39f') }, { id: 'aov_7', name: '9086 點券', price: 5700, img: getEmoji('1f39f') } ] },
+            'valorant': { name: '特戰英豪', loginType: 'account', desc: '顆秒 難道你真的是賦能哥', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg', products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1400, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2750, img: getEmoji('1f52b') } ] },
+            'delta': { name: '三角洲行動', loginType: 'account', desc: '帳密代儲，安全快速', banner: 'https://i.meee.com.tw/0Dux7tW.png', icon: 'https://i.meee.com.tw/OKtEmR8.jpg', products: [ { id: 'df_1', name: '750 金幣', price: 300, img: getEmoji('1fa99') }, { id: 'df_2', name: '1480 金幣', price: 600, img: getEmoji('1fa99') }, { id: 'df_3', name: '3950 金幣', price: 1450, img: getEmoji('1fa99') }, { id: 'df_4', name: '8100 金幣', price: 2750, img: getEmoji('1fa99') } ] },
+            'arenabreakout': { name: '暗區突圍', loginType: 'uid', desc: 'UID直儲，快速到帳', banner: 'https://i.meee.com.tw/cx2BdEH.jpg', icon: 'https://i.meee.com.tw/MGVGPgp.png', products: [ { id: 'ab_1', name: '675 點券', price: 330, img: getEmoji('1f4b0') }, { id: 'ab_2', name: '1690 點券', price: 800, img: getEmoji('1f4b0') }, { id: 'ab_3', name: '3400 點券', price: 1500, img: getEmoji('1f4b0') }, { id: 'ab_4', name: '6820 點券', price: 2800, img: getEmoji('1f4b0') } ] },
+            'ww': { name: '鳴潮', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/8PYVm5u.jpg', icon: 'https://i.meee.com.tw/aiapfAH.png', products: [ { id: 'ww_0', name: '月相觀測卡', price: 150, img: getEmoji('1f39f') }, { id: 'ww_1', name: '980 月相', price: 470, img: getEmoji('1f319') }, { id: 'ww_2', name: '1980 月相', price: 870, img: getEmoji('1f319') }, { id: 'ww_3', name: '3280 月相', price: 1450, img: getEmoji('1f319') }, { id: 'ww_4', name: '6480 月相', price: 2750, img: getEmoji('1f319') } ] },
+            'yysls': { name: '燕雲十六聲', loginType: 'account', desc: '長鳴珠代儲，武俠必備', banner: 'https://i.meee.com.tw/bOjYSf1.jpg', icon: 'https://i.meee.com.tw/EIBNCGm.jpg', products: [ { id: 'yy_0', name: '月度禮金 (限購1次)', price: 160, img: getEmoji('1f3ab') }, { id: 'yy_bp1', name: '精英戰令 (限購1次)', price: 300, img: getEmoji('1f396') }, { id: 'yy_bp2', name: '典藏戰令 (限購1次)', price: 570, img: getEmoji('1f3c5') }, { id: 'yy_1', name: '600 長鳴珠', price: 300, img: getEmoji('1f390') }, { id: 'yy_2', name: '900 長鳴珠', price: 430, img: getEmoji('1f390') }, { id: 'yy_3', name: '1800 長鳴珠', price: 830, img: getEmoji('1f390') }, { id: 'yy_4', name: '3000 長鳴珠', price: 1450, img: getEmoji('1f390') }, { id: 'yy_5', name: '6000 長鳴珠', price: 2750, img: getEmoji('1f390') }, { id: 'yy_6', name: '12000 長鳴珠', price: 5400, img: getEmoji('1f390') } ] },
+            'nsh': { name: '逆水寒', loginType: 'account', desc: '紋玉代儲，官方安全', banner: 'https://i.meee.com.tw/PpMgpxT.jpg', icon: 'https://i.meee.com.tw/3jAJ1zu.jpg', products: [ { id: 'nsh_1', name: '980 紋玉', price: 450, img: getEmoji('1f48e') }, { id: 'nsh_2', name: '1980 紋玉', price: 950, img: getEmoji('1f48e') }, { id: 'nsh_3', name: '3280 紋玉', price: 1530, img: getEmoji('1f48e') }, { id: 'nsh_4', name: '6480 紋玉', price: 2850, img: getEmoji('1f48e') } ] },
+            'racingmaster': { name: '巔峰極速', loginType: 'account', desc: '寶石代儲，極速飆車', banner: 'https://i.meee.com.tw/xDoA8Lx.jpg', icon: 'https://i.meee.com.tw/3a27dHf.jpg', products: [ { id: 'rm_0', name: '月卡', price: 160, img: getEmoji('1f3ab') }, { id: 'rm_bp1', name: '高級合約', price: 300, img: getEmoji('1f4dc') }, { id: 'rm_bp2', name: '特級合約', price: 600, img: getEmoji('1f4dc') }, { id: 'rm_1', name: '680 寶石', price: 300, img: getEmoji('1f48e') }, { id: 'rm_2', name: '980 寶石', price: 450, img: getEmoji('1f48e') }, { id: 'rm_3', name: '1280 寶石', price: 630, img: getEmoji('1f48e') }, { id: 'rm_4', name: '1980 寶石', price: 900, img: getEmoji('1f48e') }, { id: 'rm_5', name: '3280 寶石', price: 1400, img: getEmoji('1f48e') }, { id: 'rm_6', name: '6480 寶石', price: 2750, img: getEmoji('1f48e') }, { id: 'rm_7', name: '6800 寶石', price: 2800, img: getEmoji('1f48e') } ] },
+            'eggy': { name: '蛋仔派對', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/kBcg5ab.jpg', icon: 'https://i.meee.com.tw/vqT7vcH.webp', products: [ { id: 'eg_0', name: '閃耀存錢罐', price: 100, img: getEmoji('1f4b1') }, { id: 'eg_1', name: '757 蛋幣', price: 300, img: getEmoji('1fa99') }, { id: 'eg_2', name: '1524 蛋幣', price: 550, img: getEmoji('1fa99') }, { id: 'eg_3', name: '2296 蛋幣', price: 850, img: getEmoji('1fa99') }, { id: 'eg_4', name: '3873 蛋幣', price: 1280, img: getEmoji('1fa99') }, { id: 'eg_5', name: '7783 蛋幣', price: 2450, img: getEmoji('1fa99') } ] },
+            'roblox': { name: 'Roblox', loginType: 'account', desc: '贈禮請截圖裡包詢問客服', banner: 'https://i.meee.com.tw/iHVBqUY.jpg', icon: 'https://i.meee.com.tw/BJDCTYR.png', products: [ { id: 'rbx_1', name: '1000 Robux', price: 350, img: getEmoji('2b50') }, { id: 'rbx_2', name: '2000 Robux', price: 600, img: getEmoji('2b50') }, { id: 'rbx_3', name: '5000 Robux', price: 1450, img: getEmoji('2b50') }, { id: 'rbx_4', name: '8000 Robux', price: 2350, img: getEmoji('2b50') }, { id: 'rbx_5', name: '11000 Robux', price: 3000, img: getEmoji('2b50') } ] },
+            'genshin': { name: '原神', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/9nzDwHm.jpg', icon: 'https://i.meee.com.tw/kCOBoGC.jpg', products: [ { id: 'gs_0', name: '空月祝福', price: 150, img: getEmoji('1f319') }, { id: 'gs_1', name: '980 結晶', price: 430, img: getEmoji('2728') }, { id: 'gs_2', name: '1980 結晶', price: 850, img: getEmoji('2728') }, { id: 'gs_3', name: '3280 結晶', price: 1300, img: getEmoji('2728') }, { id: 'gs_4', name: '6480 結晶', price: 2450, img: getEmoji('2728') }, { id: 'gs_5', name: '60-3280 結晶半條龍', price: 2500, img: getEmoji('2728') }, { id: 'gs_6', name: '60-6480 結晶一條龍', price: 4800, img: getEmoji('2728') }, { id: 'gs_7', name: '980 凝核', price: 450, img: getEmoji('1f48e') }, { id: 'gs_8', name: '1980 凝核', price: 850, img: getEmoji('1f48e') }, { id: 'gs_9', name: '3280 凝核', price: 1280, img: getEmoji('1f48e') }, { id: 'gs_10', name: '6480 凝核', price: 2500, img: getEmoji('1f48e') }, { id: 'gs_11', name: '60-6480 凝核一條龍', price: 4900, img: getEmoji('1f48e') } ] },
+            'ptcg': { name: 'PTCG Pocket', loginType: 'account', desc: '金塊代儲，快速抽卡', banner: 'https://i.meee.com.tw/fRWyEK1.jpg', icon: 'https://i.meee.com.tw/WWIupRQ.png', products: [ { id: 'ptcg_1', name: '26 金塊', price: 150, img: getEmoji('1fa99') }, { id: 'ptcg_2', name: '57 金塊', price: 300, img: getEmoji('1fa99') }, { id: 'ptcg_3', name: '120 金塊', price: 550, img: getEmoji('1fa99') }, { id: 'ptcg_4', name: '250 金塊', price: 1100, img: getEmoji('1fa99') }, { id: 'ptcg_5', name: '690 金塊', price: 2580, img: getEmoji('1fa99') } ] },
+            'tiktok': { name: 'TikTok', loginType: 'account', desc: '安全代儲，快速到帳', banner: 'https://i.meee.com.tw/2h8hjAv.jpg', icon: 'https://i.meee.com.tw/pT3KP1z.png', products: [ { id: 'tk_1', name: '350 金幣', price: 160, img: getEmoji('1fa99') }, { id: 'tk_2', name: '700 金幣', price: 300, img: getEmoji('1fa99') }, { id: 'tk_3', name: '1400 金幣', price: 580, img: getEmoji('1fa99') }, { id: 'tk_4', name: '3500 金幣', price: 1350, img: getEmoji('1fa99') }, { id: 'tk_5', name: '7000 金幣', price: 2500, img: getEmoji('1fa99') }, { id: 'tk_6', name: '17500 金幣', price: 6500, img: getEmoji('1fa99') }, { id: 'tk_7', name: '52500 金幣', price: 19000, img: getEmoji('1fa99') } ] },
+            'zzz': { name: '絕區零', loginType: 'uid', desc: '底片代儲，安全保底', banner: 'https://i.meee.com.tw/994g6dG.jpg', icon: 'https://i.meee.com.tw/fSGxm0Y.png', products: [ { id: 'zzz_1', name: '繩網會員 ', price: 150, img: getEmoji('1f3ab') }, { id: 'zzz_2', name: '980 底片', price: 460, img: getEmoji('1f39e') }, { id: 'zzz_3', name: '1980 底片', price: 850, img: getEmoji('1f39e') }, { id: 'zzz_4', name: '3280 底片', price: 1300, img: getEmoji('1f39e') }, { id: 'zzz_5', name: '6480 底片', price: 2450, img: getEmoji('1f39e') } ] },
+            'honkai': { name: '崩壞:星穹鐵道', loginType: 'uid', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/FE8NXFx.jpg', icon: 'https://i.meee.com.tw/Rg23zwU.png', products: [ { id: 'hk_1', name: '列車補給憑證', price: 160, img: getEmoji('1f3ab') }, { id: 'hk_2', name: '980 古老夢華', price: 490, img: getEmoji('1f48e') }, { id: 'hk_3', name: '1980 古老夢華', price: 900, img: getEmoji('1f48e') }, { id: 'hk_4', name: '3280 古老夢華', price: 1300, img: getEmoji('1f48e') }, { id: 'hk_5', name: '6480 古老夢華', price: 2500, img: getEmoji('1f48e') } ] },
+            'maple': { name: '楓之谷:放置冒險記', loginType: 'account', desc: '超值禮包，輕鬆掛機練等', banner: 'https://i.meee.com.tw/qMauUBO.jpg', icon: 'https://i.meee.com.tw/QLNgRgO.png', products: [ { id: 'maple_1', name: '15000 鑽石', price: 270, img: getEmoji('1f341') }, { id: 'maple_2', name: '30000 鑽石', price: 520, img: getEmoji('1f341') }, { id: 'maple_3', name: '45000 鑽石', price: 800, img: getEmoji('1f341') }, { id: 'maple_4', name: '75000 鑽石', price: 1350, img: getEmoji('1f341') }, { id: 'maple_5', name: '150000 鑽石', price: 2600, img: getEmoji('1f341') } ] },
+            'brawl': { name: '荒野亂鬥', loginType: 'account', desc: '寶石代儲，暢快對戰', banner: 'https://i.meee.com.tw/uT3NrQo.jpg', icon: 'https://i.meee.com.tw/b9TEun8.jpg', products: [ { id: 'bs_0', name: '通行券 (限購1次)', price: 300, img: getEmoji('1f3ab') }, { id: 'bs_bp1', name: '高級通行券 (限購1次)', price: 400, img: getEmoji('1f3ab') }, { id: 'bs_bp2', name: 'PRO通行證', price: 750, img: getEmoji('1f3ab') }, { id: 'bs_1', name: '80 寶石', price: 200, img: getEmoji('1f48e') }, { id: 'bs_2', name: '170 寶石', price: 300, img: getEmoji('1f48e') }, { id: 'bs_3', name: '360 寶石', price: 600, img: getEmoji('1f48e') }, { id: 'bs_4', name: '950 寶石', price: 1500, img: getEmoji('1f48e') }, { id: 'bs_5', name: '2000 寶石', price: 2900, img: getEmoji('1f48e') } ] },
+            'supernatural': { name: '超自然行動組', loginType: 'account', desc: '推特登入無法儲值', banner: 'https://i.meee.com.tw/7FNn1LF.png', icon: 'https://i.meee.com.tw/kNMe2fQ.png', products: [ { id: 'sno_1', name: '620 金磚', price: 300, img: getEmoji('1f48e') }, { id: 'sno_2', name: '1300 金磚', price: 640, img: getEmoji('1f48e') }, { id: 'sno_3', name: '1980 金磚', price: 845, img: getEmoji('1f48e') }, { id: 'sno_4', name: '3330 金磚', price: 1415, img: getEmoji('1f48e') }, { id: 'sno_5', name: '6680 金磚', price: 2840, img: getEmoji('1f48e') } ] },
+            'love': { name: '戀與深空', loginType: 'account', desc: '晶鑽代儲，浪漫邂逅不錯過', banner: 'https://i.meee.com.tw/5zPpO3Y.jpg', icon: 'https://i.meee.com.tw/9B86vmK.png', products: [ { id: 'love_0', name: '月卡', price: 160, img: getEmoji('1f3ab') }, { id: 'love_1', name: '450 晶鑽', price: 220, img: getEmoji('1f48c') }, { id: 'love_2', name: '980 晶鑽', price: 460, img: getEmoji('1f48c') }, { id: 'love_3', name: '1980 晶鑽', price: 850, img: getEmoji('1f48c') }, { id: 'love_4', name: '3280 晶鑽', price: 1400, img: getEmoji('1f48c') }, { id: 'love_5', name: '6480 晶鑽', price: 2780, img: getEmoji('1f48c') } ] },
+            'heartbeat': { name: '心動小鎮', loginType: 'account', desc: '心鑽代儲，享受療癒生活', banner: 'https://i.meee.com.tw/PF1RLtF.jpg', icon: 'https://i.meee.com.tw/N9n8flZ.png', products: [ { id: 'ht_1', name: '300+20 心鑽', price: 160, img: getEmoji('1f496') }, { id: 'ht_2', name: '680+50 心鑽', price: 320, img: getEmoji('1f496') }, { id: 'ht_3', name: '1280+90 心鑽', price: 600, img: getEmoji('1f496') }, { id: 'ht_4', name: '1980+150 心鑽', price: 910, img: getEmoji('1f496') }, { id: 'ht_5', name: '3280+270 心鑽', price: 1530, img: getEmoji('1f496') }, { id: 'ht_6', name: '6480+570 心鑽', price: 2850, img: getEmoji('1f496') } ] },
+            'pokemongo': { name: 'Pokemon GO', loginType: 'account', desc: '寶可幣代儲，捕捉神獸', banner: 'https://i.meee.com.tw/L4DDSt6.jpg', icon: 'https://i.meee.com.tw/Nn2NZwu.png', products: [ { id: 'pgo_1', name: '200 寶可幣', price: 290, img: getEmoji('1f7e1') }, { id: 'pgo_2', name: '2500 寶可幣', price: 380, img: getEmoji('1f7e1') }, { id: 'pgo_3', name: '5200 寶可幣', price: 580, img: getEmoji('1f7e1') }, { id: 'pgo_4', name: '7700 寶可幣', price: 900, img: getEmoji('1f7e1') }, { id: 'pgo_5', name: '14500 寶可幣', price: 1220, img: getEmoji('1f7e1') }, { id: 'pgo_6', name: '29000 寶可幣', price: 2400, img: getEmoji('1f7e1') } ] },
+            'arknights2': { name: '明日方舟:終末地', loginType: 'account', desc: '源石代登，官方安全', banner: 'https://i.meee.com.tw/E3DZPsN.jpg', icon: 'https://img.youtube.com/vi/1O3U_H5Dq4g/hqdefault.jpg', products: [ { id: 'ak_0', name: '月卡', price: 150, img: getEmoji('1f3ab') }, { id: 'ak_1', name: '6 源石', price: 150, img: getEmoji('1f538') }, { id: 'ak_2', name: '20 源石', price: 490, img: getEmoji('1f538') }, { id: 'ak_3', name: '40 源石', price: 990, img: getEmoji('1f538') }, { id: 'ak_4', name: '66 源石', price: 1490, img: getEmoji('1f538') } ] },
+            'aion2': { name: 'AION2', loginType: 'account', desc: 'Mycard儲值 正規安全', banner: 'https://i.meee.com.tw/7pAaguN.jpg', icon: 'https://i.meee.com.tw/9ICXwJF.png', products: [ { id: 'a2_1', name: 'AION飛翔時光', price: 730, img: getEmoji('1f381') }, { id: 'a2_2', name: '400 永恆寶石', price: 200, img: getEmoji('1f48e') }, { id: 'a2_3', name: '1000 永恆寶石', price: 460, img: getEmoji('1f48e') }, { id: 'a2_4', name: '2000 永恆寶石', price: 930, img: getEmoji('1f48e') }, { id: 'a2_5', name: '4000 永恆寶石', price: 1800, img: getEmoji('1f48e') } ] },
+            'nobunaga': { name: '信長之野望:真戰', loginType: 'account', desc: '大判代儲，稱霸戰國', banner: 'https://i.meee.com.tw/xLqihq0.jpg', icon: 'https://i.meee.com.tw/OBeZMj9.png', products: [ { id: 'nob_1', name: '初級登用狀禮包', price: 950, img: getEmoji('1f3ab') }, { id: 'nob_2', name: '中級登用狀禮包', price: 1600, img: getEmoji('1f3ab') }, { id: 'nob_3', name: '高級登用狀禮包', price: 3050, img: getEmoji('1f3ab') }, { id: 'nob_4', name: '1980 大判', price: 950, img: getEmoji('1fa99') }, { id: 'nob_5', name: '3280 大判', price: 1600, img: getEmoji('1fa99') }, { id: 'nob_6', name: '6480 大判', price: 3050, img: getEmoji('1fa99') } ] }
         };
 
         let currentActiveGame = null; let cart = {}; let totalAmount = 0;
@@ -554,12 +475,10 @@
         function goBack() { document.getElementById('step-2').classList.remove('active'); document.getElementById('step-1').classList.add('active'); document.getElementById('footer').style.display = 'none'; }
         function goHome() { goBack(); document.getElementById('game-search-input').value = ''; renderGames(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // 💬 客服按鈕邏輯
         window.contactCS = function() {
-            window.location.href = "https://lin.ee/oYNxJZx"; 
+            window.location.href = "https://lin.ee/您的專屬LINE連結網址"; 
         }
 
-        // 🌟 1. 公開評價牆功能 (加入真實大頭貼)
         window.openPublicReviews = async function() {
             document.getElementById('public-reviews-overlay').classList.add('active');
             const listEl = document.getElementById('public-reviews-list');
@@ -583,7 +502,6 @@
                         purchaseInfo = `<div class="review-purchase-info">🎮 ${r.gameName || ''} | 🛒 ${r.items || ''}</div>`;
                     }
 
-                    // 🎀 判斷是否有大頭貼網址，沒有就顯示狐狸
                     let avatarHtml = r.pictureUrl ? 
                         `<div class="reviewer-avatar" style="background-image: url('${r.pictureUrl}'); background-size: cover; background-position: center; color: transparent;"></div>` : 
                         `<div class="reviewer-avatar">🦊</div>`;
@@ -609,7 +527,7 @@
         }
         window.closePublicReviews = function() { document.getElementById('public-reviews-overlay').classList.remove('active'); }
 
-        // 🌟 2. 歷史紀錄 
+        // 🌟 2. 歷史紀錄 (🎀 新增防重複評價機制 🎀)
         window.openHistoryModal = async function() {
             if (!currentLineUser) return alert("⚠️ 請先透過 LINE 登入才能查看歷史紀錄唷！");
             if (!GAS_URL || GAS_URL === "請填入GAS_URL") return alert("⚠️ 請先填寫 Google Apps Script 網址！");
@@ -649,10 +567,15 @@
                     if (o.status === 'pending' || o.status === '處理中') statusHtml = '<span class="badge h-pending">🟡 處理中</span>';
                     else if (o.status === 'completed' || o.status === '已完成') {
                         statusHtml = '<span class="badge h-completed">🟢 已完成</span>';
-                        let itemsStr = '';
-                        for(let k in o.cart) { itemsStr += `${k} x${o.cart[k]} `; }
                         
-                        actionBtn = `<button id="btn-review-${o.orderId}" style="background:var(--light-purple); color:var(--primary-purple); border:none; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);" onclick="openReviewModal('${o.orderId}', '${o.gameName}', '${itemsStr.trim()}')">⭐ 寫評價</button>`;
+                        // 🎀 這裡會檢查後端送來的 isReviewed 標籤
+                        if (o.isReviewed) {
+                            actionBtn = '<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">✅ 已評價</span>';
+                        } else {
+                            let itemsStr = '';
+                            for(let k in o.cart) { itemsStr += `${k} x${o.cart[k]} `; }
+                            actionBtn = `<button id="btn-review-${o.orderId}" style="background:var(--light-purple); color:var(--primary-purple); border:none; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);" onclick="openReviewModal('${o.orderId}', '${o.gameName}', '${itemsStr.trim()}')">⭐ 寫評價</button>`;
+                        }
                     } else statusHtml = '<span class="badge h-cancelled">🔴 已取消</span>';
 
                     html += `
@@ -757,19 +680,13 @@
             }
         }
 
-        // 🌟 3. 寫評價功能 (包含傳送真實大頭貼)
         let currentReviewOrderId = null;
         let currentReviewGame = '';
         let currentReviewItems = '';
 
         window.openReviewModal = function(orderId, gameName, items) { 
-            currentReviewOrderId = orderId; 
-            currentReviewGame = gameName; 
-            currentReviewItems = items; 
-            
-            document.getElementById('review-overlay').classList.add('active'); 
-            document.getElementById('review-text').value = ''; 
-            document.getElementById('star5').checked = true; 
+            currentReviewOrderId = orderId; currentReviewGame = gameName; currentReviewItems = items; 
+            document.getElementById('review-overlay').classList.add('active'); document.getElementById('review-text').value = ''; document.getElementById('star5').checked = true; 
         };
         window.closeReviewModal = function() { document.getElementById('review-overlay').classList.remove('active'); currentReviewOrderId = null; };
         
@@ -784,18 +701,7 @@
             alert(`💖 感謝您的 ${stars} 星評價！`);
 
             if (GAS_URL && GAS_URL !== "請填入GAS_URL") {
-                const reviewData = { 
-                    action: 'submitReview', 
-                    orderId: orderId, 
-                    lineUserId: currentLineUser ? currentLineUser.userId : 'unknown', 
-                    customerName: currentLineUser ? currentLineUser.displayName : '匿名', 
-                    pictureUrl: currentLineUser && currentLineUser.pictureUrl ? currentLineUser.pictureUrl : '', // 🎀 傳送客人的真實大頭貼
-                    stars: stars, 
-                    comment: comment, 
-                    gameName: currentReviewGame,   
-                    items: currentReviewItems,     
-                    timestamp: new Date().toISOString() 
-                };
+                const reviewData = { action: 'submitReview', orderId: orderId, lineUserId: currentLineUser ? currentLineUser.userId : 'unknown', customerName: currentLineUser ? currentLineUser.displayName : '匿名', pictureUrl: currentLineUser && currentLineUser.pictureUrl ? currentLineUser.pictureUrl : '', stars: stars, comment: comment, gameName: currentReviewGame, items: currentReviewItems, timestamp: new Date().toISOString() };
                 try { fetch(GAS_URL, { redirect: "follow", method: 'POST', body: JSON.stringify(reviewData) }); } catch (e) { }
             }
         };
