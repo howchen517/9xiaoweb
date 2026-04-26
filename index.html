@@ -130,11 +130,10 @@
         .review-card { background: var(--bg-white); border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(106, 90, 205, 0.08); border: 1px solid rgba(255, 255, 255, 0.8); }
         .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .reviewer-info { display: flex; align-items: center; gap: 8px; }
-        .reviewer-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--light-purple); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .reviewer-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--light-purple); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
         .reviewer-name { font-size: 14px; font-weight: 800; color: var(--text-main); }
         .review-date { font-size: 11px; color: var(--text-muted); }
         .review-stars { color: #FFD700; font-size: 14px; letter-spacing: 2px; margin-bottom: 8px; }
-        /* 🌟 商品明細標籤設計 */
         .review-purchase-info { font-size: 12px; background: rgba(232, 226, 250, 0.5); color: var(--primary-purple); padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; font-weight: 800; display: inline-block; }
         .review-comment { font-size: 13px; color: var(--text-main); line-height: 1.5; font-weight: 600; background: rgba(232, 226, 250, 0.3); padding: 10px; border-radius: 12px; }
 
@@ -285,32 +284,71 @@
             
             <div class="form-panel">
                 <div id="form-uid" style="display: none;">
-                    <div class="input-group"><label>📝 玩家 UID <span style="color:var(--primary-pink)">*</span></label><input type="text" id="uid-uid" placeholder="請務必填寫正確 UID！"></div>
-                    <div class="input-group"><label>🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="uid-server" placeholder="例如：台港澳 / 陸服"></div>
-                    <div class="input-group"><label>🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="uid-nickname" placeholder="填寫暱稱方便客服核對"></div>
+                    <div class="input-group">
+                        <label>📝 玩家 UID <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="uid-uid" placeholder="請務必填寫正確 UID！">
+                    </div>
+                    <div class="input-group">
+                        <label>🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="uid-server" placeholder="例如：台港澳 / 陸服">
+                    </div>
+                    <div class="input-group">
+                        <label>🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="uid-nickname" placeholder="填寫暱稱方便客服核對">
+                    </div>
                 </div>
 
                 <div id="form-account" style="display: none;">
-                    <div class="input-group"><label>1. 🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-nickname" placeholder="填寫遊戲內暱稱"></div>
+                    <div class="input-group">
+                        <label>1. 🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-nickname" placeholder="填寫遊戲內暱稱">
+                    </div>
                     <div class="input-group">
                         <label>2. 🔑 登入方式 <span style="color:var(--primary-pink)">*</span></label>
-                        <select id="acc-login-method"><option value="" disabled selected>請選擇登入方式</option><option value="Facebook">Facebook (FB)</option><option value="Google">Google</option><option value="Garena">Garena</option><option value="官方帳號/其他">官方帳號 / 其他</option></select>
+                        <select id="acc-login-method">
+                            <option value="" disabled selected>請選擇登入方式</option>
+                            <option value="Facebook">Facebook (FB)</option>
+                            <option value="Google">Google</option>
+                            <option value="Garena">Garena</option>
+                            <option value="官方帳號/其他">官方帳號 / 其他</option>
+                        </select>
                     </div>
-                    <div class="input-group"><label>3. 🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-server" placeholder="例如：台服 / 國際服"></div>
-                    <div class="input-group"><label>4. 👤 登入帳號 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-account" placeholder="請輸入登入帳號或信箱"></div>
-                    <div class="input-group"><label>5. 🔒 登入密碼 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-password" placeholder="請注意大小寫是否正確"></div>
-                    <div class="input-group"><label>6. 🛡️ 臉書復原碼 / Google 備用碼 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-recovery" placeholder="沒有的話則需配合在線驗證"></div>
+                    <div class="input-group">
+                        <label>3. 🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-server" placeholder="例如：台服 / 國際服">
+                    </div>
+                    <div class="input-group">
+                        <label>4. 👤 登入帳號 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-account" placeholder="請輸入登入帳號或信箱">
+                    </div>
+                    <div class="input-group">
+                        <label>5. 🔒 登入密碼 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-password" placeholder="請注意大小寫是否正確">
+                    </div>
+                    <div class="input-group">
+                        <label>6. 🛡️ 臉書復原碼 / Google 備用碼 <span style="color:var(--primary-pink)">*</span></label>
+                        <input type="text" id="acc-recovery" placeholder="沒有的話則需配合在線驗證">
+                    </div>
                 </div>
 
                 <div id="form-none" style="display: none; background: var(--light-pink); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
-                    <p style="margin: 0; font-size: 13px; font-weight: bold; color: var(--primary-pink); text-align: center;">💡 溫馨提醒<br><br><span style="color: var(--text-main); font-weight: normal;">此遊戲將直接發送「序號」，<br>結帳後請自行至官方儲值中心兌換即可，無需填寫任何帳號資料喔！</span></p>
+                    <p style="margin: 0; font-size: 13px; font-weight: bold; color: var(--primary-pink); text-align: center;">
+                        💡 溫馨提醒<br><br>
+                        <span style="color: var(--text-main); font-weight: normal;">此遊戲將直接發送「序號」，<br>結帳後請自行至官方儲值中心兌換即可，無需填寫任何帳號資料喔！</span>
+                    </p>
                 </div>
 
                 <div class="input-group" style="margin-bottom: 0; margin-top: 16px; border-top: 2px solid var(--light-purple); padding-top: 16px;">
                     <label>💳 選擇付款方式 <span style="color:var(--primary-pink)">*</span></label>
                     <select id="payment-method">
                         <option value="" disabled selected>請選擇您方便的付款方式</option>
-                        <option value="轉帳/匯款">轉帳/匯款</option><option value="無卡存款">無卡存款</option><option value="全家繳費">全家繳費</option><option value="8591寶物交易網">8591寶物交易網</option><option value="iPASS MONEY">iPASS MONEY</option><option value="LINE Pay">LINE Pay</option><option value="街口支付">街口支付</option>
+                        <option value="轉帳/匯款">轉帳/匯款</option>
+                        <option value="無卡存款">無卡存款</option>
+                        <option value="全家繳費">全家繳費</option>
+                        <option value="8591寶物交易網">8591寶物交易網</option>
+                        <option value="iPASS MONEY">iPASS MONEY</option>
+                        <option value="LINE Pay">LINE Pay</option>
+                        <option value="街口支付">街口支付</option>
                     </select>
                 </div>
             </div>
@@ -321,19 +359,27 @@
     </div>
 
     <div class="footer" id="footer" style="display: none;">
-        <div class="total-box"><span class="total-label">總計金額</span><span class="total-price" id="total-price">NT$ 0</span></div>
-        <div style="display: flex; gap: 10px;"><button class="btn-back" onclick="goBack()">返回</button><button class="btn-next" onclick="openConfirmModal()">結帳</button></div>
+        <div class="total-box">
+            <span class="total-label">總計金額</span>
+            <span class="total-price" id="total-price">NT$ 0</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn-back" onclick="goBack()">返回</button>
+            <button class="btn-next" onclick="openConfirmModal()">結帳</button>
+        </div>
     </div>
 
     <script>
-        // 👉 您的 LIFF ID 與 GAS URL
+        // 👉 您的 LIFF ID
         const LIFF_ID = "2009198027-AdmXuJNK"; 
+        
+        // 👉 您的 Google Apps Script 網址
         const GAS_URL = "https://script.google.com/macros/s/AKfycbyfng78_OTpUCE-jmcxbnuJVU1CMCmmUEp0kUatQ3QK9gaVf4u-L_Hg-s5QO0nIxPCv4w/exec"; 
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
         let currentLineUser = null; 
 
-        // 🎮 所有 25 款遊戲完整資料庫
+        // 💡 遊戲資料庫
         const db = {
             'idv': {
                 name: '第五人格', loginType: 'uid', desc: 'UID免帳密，首次儲值需掃碼', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png',
@@ -513,7 +559,7 @@
             window.location.href = "https://lin.ee/您的專屬LINE連結網址"; 
         }
 
-        // 🌟 1. 公開評價牆功能 (加入商品明細顯示)
+        // 🌟 1. 公開評價牆功能 (加入真實大頭貼)
         window.openPublicReviews = async function() {
             document.getElementById('public-reviews-overlay').classList.add('active');
             const listEl = document.getElementById('public-reviews-list');
@@ -532,17 +578,21 @@
                 reviews.forEach(r => {
                     let starsHtml = '★'.repeat(parseInt(r.stars) || 5) + '☆'.repeat(5 - (parseInt(r.stars) || 5));
                     
-                    // 🎀 判斷如果有遊戲名稱或商品，就顯示專屬紫色的商品標籤
                     let purchaseInfo = '';
                     if (r.gameName || r.items) {
                         purchaseInfo = `<div class="review-purchase-info">🎮 ${r.gameName || ''} | 🛒 ${r.items || ''}</div>`;
                     }
 
+                    // 🎀 判斷是否有大頭貼網址，沒有就顯示狐狸
+                    let avatarHtml = r.pictureUrl ? 
+                        `<div class="reviewer-avatar" style="background-image: url('${r.pictureUrl}'); background-size: cover; background-position: center; color: transparent;"></div>` : 
+                        `<div class="reviewer-avatar">🦊</div>`;
+
                     html += `
                         <div class="review-card">
                             <div class="review-header">
                                 <div class="reviewer-info">
-                                    <div class="reviewer-avatar">🦊</div>
+                                    ${avatarHtml}
                                     <div class="reviewer-name">${r.name || '匿名訪客'}</div>
                                 </div>
                                 <div class="review-stars">${starsHtml}</div>
@@ -559,7 +609,7 @@
         }
         window.closePublicReviews = function() { document.getElementById('public-reviews-overlay').classList.remove('active'); }
 
-        // 🌟 2. 歷史紀錄 (發送商品明細給評價視窗)
+        // 🌟 2. 歷史紀錄 
         window.openHistoryModal = async function() {
             if (!currentLineUser) return alert("⚠️ 請先透過 LINE 登入才能查看歷史紀錄唷！");
             if (!GAS_URL || GAS_URL === "請填入GAS_URL") return alert("⚠️ 請先填寫 Google Apps Script 網址！");
@@ -577,7 +627,6 @@
                 
                 document.getElementById('history-total-spend').innerText = `NT$ ${totalSpent.toLocaleString()}`;
                 
-                // VIP 升級邏輯
                 let tierName = "🥉 萌新小狐", nextTierTotal = 1000, nextTierName = "🥈 白銀小狐", progressPercent = 0;
                 if (totalSpent >= 5000) { tierName = "👑 尊爵神狐"; nextTierTotal = totalSpent; nextTierName = "最高等級"; progressPercent = 100; }
                 else if (totalSpent >= 3000) { tierName = "🥇 黃金小狐"; nextTierTotal = 5000; nextTierName = "👑 尊爵神狐"; progressPercent = (totalSpent / nextTierTotal) * 100; }
@@ -600,8 +649,6 @@
                     if (o.status === 'pending' || o.status === '處理中') statusHtml = '<span class="badge h-pending">🟡 處理中</span>';
                     else if (o.status === 'completed' || o.status === '已完成') {
                         statusHtml = '<span class="badge h-completed">🟢 已完成</span>';
-                        
-                        // 🎀 整理客人買了什麼，並把這段資訊傳遞給評價視窗
                         let itemsStr = '';
                         for(let k in o.cart) { itemsStr += `${k} x${o.cart[k]} `; }
                         
@@ -627,7 +674,6 @@
         }
         window.closeHistoryModal = function() { document.getElementById('history-overlay').classList.remove('active'); }
 
-        // 確認結帳
         window.openConfirmModal = function() {
             const loginType = db[currentActiveGame].loginType;
             if (loginType === 'uid') {
@@ -678,7 +724,6 @@
                 try { fetch(GAS_URL, { redirect: "follow", method: 'POST', headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(cloudOrderData) }); } catch (e) {}
             }
 
-            // Flex Message
             const flexMessage = {
                 "type": "flex", "altText": `🎀 九霄科技 新訂單：${orderId}`, 
                 "contents": {
@@ -712,7 +757,7 @@
             }
         }
 
-        // 🌟 3. 寫評價功能 (將商品明細傳給後端)
+        // 🌟 3. 寫評價功能 (包含傳送真實大頭貼)
         let currentReviewOrderId = null;
         let currentReviewGame = '';
         let currentReviewItems = '';
@@ -744,10 +789,11 @@
                     orderId: orderId, 
                     lineUserId: currentLineUser ? currentLineUser.userId : 'unknown', 
                     customerName: currentLineUser ? currentLineUser.displayName : '匿名', 
+                    pictureUrl: currentLineUser && currentLineUser.pictureUrl ? currentLineUser.pictureUrl : '', // 🎀 傳送客人的真實大頭貼
                     stars: stars, 
                     comment: comment, 
-                    gameName: currentReviewGame,   // 🎀 傳送遊戲名稱
-                    items: currentReviewItems,     // 🎀 傳送購買商品
+                    gameName: currentReviewGame,   
+                    items: currentReviewItems,     
                     timestamp: new Date().toISOString() 
                 };
                 try { fetch(GAS_URL, { redirect: "follow", method: 'POST', body: JSON.stringify(reviewData) }); } catch (e) { }
