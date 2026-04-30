@@ -320,6 +320,17 @@
 
             <h3 style="font-size: 16px; color: var(--primary-purple); margin-top: 20px;">🛍️ 選擇想要的面額</h3>
             <div id="product-list"></div>
+            <!-- 🌟 巨人代抽專屬購買須知 (預設隱藏，字體調小並使用灰色調) 🌟 -->
+            <div id="notice-aov-aot" style="display: none; margin-top: 24px; font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-top: 16px; border-top: 1px dashed var(--light-purple);">
+                <div style="font-weight: 800; margin-bottom: 6px;">💡 巨人代抽專屬購買須知：</div>
+                1. 代抽期間請勿登入帳號，若因搶登造成任何問題我方將不負擔任何責任。<br>
+                2. Garena/Google/FB登入均可，只有Apple登入無法。<br>
+                3. 付款完成後基本上半小時內結單，除非訂單量爆炸需要排隊，請不要催促，我們會以最快的速度幫您處理。<br>
+                4. 遊戲內信箱請記得領取乾淨，不然抽到的獎品會被清空。<br>
+                5. 我方均使用正規貝殼幣進行代抽服務，官方儲值中心都可以查詢到紀錄。<br>
+                6. 我方代抽包中服務是作為變相保底，定價內抽中剩餘的即是我方利潤，反之，超出定價還未抽中，我方也不得要求客人補足點數。<br>
+                7. 結單後一律建議更改密碼，避免後續問題發生。
+            </div>
         </div>
     </div>
 
@@ -475,7 +486,12 @@
             }
             updateTotal();
             const loginType = db[gameId].loginType;
-            document.getElementById('form-uid').style.display = loginType === 'uid' ? 'block' : 'none';
+            // 判斷是否為巨人代抽，來決定要不要顯示購買須知
+            let aotNotice = document.getElementById('notice-aov-aot');
+            if (aotNotice) {
+                aotNotice.style.display = (gameId === 'aov_aot') ? 'block' : 'none';
+            }
+            第五 = loginType === 'uid' ? 'block' : 'none';
             document.getElementById('form-account').style.display = loginType === 'account' ? 'block' : 'none';
             document.getElementById('form-none').style.display = loginType === 'none' ? 'block' : 'none';
 
