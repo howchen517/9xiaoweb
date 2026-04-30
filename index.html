@@ -85,7 +85,7 @@
         .product-item { background: var(--bg-white); border-radius: 20px; padding: 12px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 12px rgba(106, 90, 205, 0.08); gap: 12px; width: 100%; }
         .product-icon { width: 46px; height: 46px; border-radius: 14px; object-fit: contain; padding: 6px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.04); background-color: var(--light-pink); flex-shrink: 0; }
         .product-info { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-        .product-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; color: var(--text-main); line-height: 1.4; word-wrap: break-word; white-space: normal; }
         .price { color: var(--primary-pink); font-weight: 800; font-size: 15px; }
         .qty-ctrl { display: flex; align-items: center; gap: 10px; background: rgba(232, 226, 250, 0.5); padding: 5px; border-radius: 20px; flex-shrink: 0;}
         .btn-qty { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg-white); color: var(--primary-purple); font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
@@ -491,13 +491,33 @@
         function filterGames() { renderGames(document.getElementById('game-search-input').value); }
         
         function selectGame(gameId) {
-            if (currentActiveGame !== gameId) {
-                currentActiveGame = gameId; cart = {}; 
-                document.getElementById('uid-uid').value = ''; document.getElementById('uid-server').value = ''; document.getElementById('uid-nickname').value = '';
-                document.getElementById('acc-nickname').value = ''; document.getElementById('acc-login-method').value = ''; document.getElementById('acc-server').value = '';
-                document.getElementById('acc-account').value = ''; document.getElementById('acc-password').value = ''; document.getElementById('acc-recovery').value = '';
-                document.getElementById('payment-method').value = '';
-            }
+            db[gameId].products.forEach(p => {
+                if (cart[p.id] === undefined) cart[p.id] = 0;
+                
+                // 🎀 自動把名字後面醜醜的括號藏起來
+                let cleanName = p.name.replace(' (價格待定/私訊)', '');
+                
+                // 🎀 如果價格是 0，就顯示「價格待定」，否則顯示正常 NT$ 金額
+                let priceText = (p.price === 0) ? "價格待定" : `NT$ ${p.price}`;
+                
+                // 🎀 如果價格是 0，把加減號隱藏起來變成「準備中」，讓客人無法點擊
+                let qtyHtml = (p.price === 0) ? 
+                    `<span style="font-size:12px; color:var(--text-muted); font-weight:bold;">準備中</span>` : 
+                    `<button class="btn-qty" onclick="changeQty('${p.id}', -1)">-</button><span id="qty-${p.id}" style="width:24px;text-align:center;font-weight:bold;color:var(--text-main);">${cart[p.id]}</span><button class="btn-qty add" onclick="changeQty('${p.id}', 1)">+</button>`;
+
+                pList.innerHTML += `
+                    <div class="product-item">
+                        <img src="${p.img}" class="product-icon">
+                        <div class="product-info">
+                            <div class="product-name">${cleanName}</div>
+                            <!-- 價格是0的時候，字體變成橘紅色提醒客人 -->
+                            <div class="price" style="${p.price === 0 ? 'color:#D84315;' : ''}">${priceText}</div>
+                        </div>
+                        <div class="qty-ctrl" style="${p.price === 0 ? 'background:transparent;' : ''}">
+                            ${qtyHtml}
+                        </div>
+                    </div>`;
+            });
             updateTotal();
             const loginType = db[gameId].loginType;
             // 判斷是否為巨人代抽，來決定要不要顯示購買須知
