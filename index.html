@@ -85,7 +85,10 @@
         .product-item { background: var(--bg-white); border-radius: 20px; padding: 12px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 12px rgba(106, 90, 205, 0.08); gap: 12px; width: 100%; }
         .product-icon { width: 46px; height: 46px; border-radius: 14px; object-fit: contain; padding: 6px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.04); background-color: var(--light-pink); flex-shrink: 0; }
         .product-info { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+        
+        /* 🎀 解決文字被吃掉的問題，讓長檔名漂亮換行 */
         .product-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; color: var(--text-main); line-height: 1.4; word-wrap: break-word; white-space: normal; }
+        
         .price { color: var(--primary-pink); font-weight: 800; font-size: 15px; }
         .qty-ctrl { display: flex; align-items: center; gap: 10px; background: rgba(232, 226, 250, 0.5); padding: 5px; border-radius: 20px; flex-shrink: 0;}
         .btn-qty { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg-white); color: var(--primary-purple); font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
@@ -320,6 +323,7 @@
 
             <h3 style="font-size: 16px; color: var(--primary-purple); margin-top: 20px;">🛍️ 選擇想要的面額</h3>
             <div id="product-list"></div>
+            
             <!-- 🌟 巨人代抽專屬購買須知 (預設隱藏，字體調小並使用灰色調) 🌟 -->
             <div id="notice-aov-aot" style="display: none; margin-top: 24px; font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-top: 16px; border-top: 1px dashed var(--light-purple);">
                 <div style="font-weight: 800; margin-bottom: 6px;">💡 巨人代抽專屬購買須知：</div>
@@ -348,16 +352,13 @@
 
         // 🎮 所有 25 款遊戲完整資料庫
         const db = {
-            'idv': {
-                name: '第五人格', loginType: 'uid', desc: 'UID免帳密，首次儲值需掃碼', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png',
-                products: [ { id: 'idv_1', name: '759 迴聲', price: 280, img: getEmoji('1f52e') }, { id: 'idv_2', name: '2277 迴聲', price: 860, img: getEmoji('1f52e') }, { id: 'idv_3', name: '3036 迴聲', price: 1100, img: getEmoji('1f52e') }, { id: 'idv_4', name: '3795 迴聲', price: 1350, img: getEmoji('1f52e') }, { id: 'idv_5', name: '7590 迴聲', price: 2600, img: getEmoji('1f52e') }, { id: 'idv_6', name: '15180 迴聲', price: 5200, img: getEmoji('1f52e') } ]
-            },
+            
             // 👇 新增的傳說對決 x 巨人連動代抽專區
             'aov_aot': {
                 name: '傳說對決 x 進擊的巨人 代抽包中', 
                 loginType: 'account', 
                 desc: '⚔️ 期間限定連動！代抽需提供帳密', 
-                banner: 'https://i.meee.com.tw/NRLbKEH.png', // 建議您之後可以換成巨人的活動宣傳圖
+                banner: 'https://i.meee.com.tw/NRLbKEH.png',
                 icon: 'https://i.meee.com.tw/nmM1cEO.png',
                 products: [ 
                     { id: 'aot_1', name: '⚔️ 克萊斯-艾連·葉卡 (價格待定)', price: 0, img: 'https://i.meee.com.tw/MgeAfAm.png' }, 
@@ -370,9 +371,13 @@
                 name: '傳說對決', loginType: 'none', desc: '發送貝殼幣序號，請至官網自行兌換', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png',
                 products: [ { id: 'aov_1', name: '364 點券', price: 250, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 470, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 970, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_5', name: '2932 點券', price: 1930, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2870, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_7', name: '9086 點券', price: 5700, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ]
             },
+            'idv': {
+                name: '第五人格', loginType: 'uid', desc: 'UID免帳密，首次儲值需掃碼', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png',
+                products: [ { id: 'idv_1', name: '759 迴聲', price: 280, img: getEmoji('1f52e') }, { id: 'idv_2', name: '2277 迴聲', price: 860, img: getEmoji('1f52e') }, { id: 'idv_3', name: '3036 迴聲', price: 1100, img: getEmoji('1f52e') }, { id: 'idv_4', name: '3795 迴聲', price: 1350, img: getEmoji('1f52e') }, { id: 'idv_5', name: '7590 迴聲', price: 2600, img: getEmoji('1f52e') }, { id: 'idv_6', name: '15180 迴聲', price: 5200, img: getEmoji('1f52e') } ]
+            },
             'valorant': {
                 name: '特戰英豪', loginType: 'account', desc: '顆秒 難道你真的是賦能哥', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg',
-                products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1400, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2750, img: getEmoji('1f52b') } ]
+                products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1400, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2650, img: getEmoji('1f52b') } ]
             },
             'delta': {
                 name: '三角洲行動', loginType: 'account', desc: '帳密代儲，安全快速', banner: 'https://i.meee.com.tw/0Dux7tW.png', icon: 'https://i.meee.com.tw/OKtEmR8.jpg',
@@ -490,12 +495,34 @@
         }
         function filterGames() { renderGames(document.getElementById('game-search-input').value); }
         
+        // 🚨 這裡已經幫您全部修復好，並接上正確的切換路線了！ 🚨
         function selectGame(gameId) {
+            if (currentActiveGame !== gameId) {
+                currentActiveGame = gameId; cart = {}; 
+                document.getElementById('uid-uid').value = ''; document.getElementById('uid-server').value = ''; document.getElementById('uid-nickname').value = '';
+                document.getElementById('acc-nickname').value = ''; document.getElementById('acc-login-method').value = ''; document.getElementById('acc-server').value = '';
+                document.getElementById('acc-account').value = ''; document.getElementById('acc-password').value = ''; document.getElementById('acc-recovery').value = '';
+                document.getElementById('payment-method').value = '';
+            }
+            updateTotal();
+            const loginType = db[gameId].loginType;
+            
+            // 這裡原本有一句神秘的亂碼，已經幫您換回正常指令了！
+            document.getElementById('form-uid').style.display = loginType === 'uid' ? 'block' : 'none';
+            document.getElementById('form-account').style.display = loginType === 'account' ? 'block' : 'none';
+            document.getElementById('form-none').style.display = loginType === 'none' ? 'block' : 'none';
+
+            document.getElementById('selected-game-title').innerText = db[gameId].name;
+            document.getElementById('selected-game-img').src = db[gameId].icon;
+            
+            const pList = document.getElementById('product-list'); 
+            pList.innerHTML = '';
+            
             db[gameId].products.forEach(p => {
                 if (cart[p.id] === undefined) cart[p.id] = 0;
                 
                 // 🎀 自動把名字後面醜醜的括號藏起來
-                let cleanName = p.name.replace(' (價格待定/私訊)', '');
+                let cleanName = p.name.replace(' (價格待定/私訊)', '').replace(' (價格待定)', '');
                 
                 // 🎀 如果價格是 0，就顯示「價格待定」，否則顯示正常 NT$ 金額
                 let priceText = (p.price === 0) ? "價格待定" : `NT$ ${p.price}`;
@@ -518,31 +545,18 @@
                         </div>
                     </div>`;
             });
-            updateTotal();
-            const loginType = db[gameId].loginType;
+
             // 判斷是否為巨人代抽，來決定要不要顯示購買須知
             let aotNotice = document.getElementById('notice-aov-aot');
             if (aotNotice) {
                 aotNotice.style.display = (gameId === 'aov_aot') ? 'block' : 'none';
             }
-            第五 = loginType === 'uid' ? 'block' : 'none';
-            document.getElementById('form-account').style.display = loginType === 'account' ? 'block' : 'none';
-            document.getElementById('form-none').style.display = loginType === 'none' ? 'block' : 'none';
 
-            document.getElementById('selected-game-title').innerText = db[gameId].name;
-            document.getElementById('selected-game-img').src = db[gameId].icon;
-            
-            const pList = document.getElementById('product-list'); pList.innerHTML = '';
-            db[gameId].products.forEach(p => {
-                if (cart[p.id] === undefined) cart[p.id] = 0;
-                pList.innerHTML += `
-                    <div class="product-item">
-                        <img src="${p.img}" class="product-icon"><div class="product-info"><div class="product-name">${p.name}</div><div class="price">NT$ ${p.price}</div></div>
-                        <div class="qty-ctrl"><button class="btn-qty" onclick="changeQty('${p.id}', -1)">-</button><span id="qty-${p.id}" style="width:24px;text-align:center;font-weight:bold;color:var(--text-main);">${cart[p.id]}</span><button class="btn-qty add" onclick="changeQty('${p.id}', 1)">+</button></div>
-                    </div>`;
-            });
+            // 切換畫面
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.getElementById('step-1').classList.remove('active'); document.getElementById('step-2').classList.add('active'); document.getElementById('footer').style.display = 'flex';
+            document.getElementById('step-1').classList.remove('active'); 
+            document.getElementById('step-2').classList.add('active'); 
+            document.getElementById('footer').style.display = 'flex';
         }
 
         function changeQty(productId, delta) {
@@ -564,7 +578,6 @@
             window.location.href = "https://lin.ee/您的專屬LINE連結網址"; 
         }
 
-        // 🌟 1. 公開評價牆功能 (🎀 新增日期與版面優化)
         window.openPublicReviews = async function() {
             document.getElementById('public-reviews-overlay').classList.add('active');
             const listEl = document.getElementById('public-reviews-list');
@@ -592,7 +605,6 @@
                         `<div class="reviewer-avatar" style="background-image: url('${r.pictureUrl}'); background-size: cover; background-position: center; color: transparent;"></div>` : 
                         `<div class="reviewer-avatar">🦊</div>`;
 
-                    // 🎀 新增日期格式化轉換
                     let dateObj = new Date(r.date);
                     let dateStr = (!isNaN(dateObj.getTime())) ? `${dateObj.getFullYear()}/${String(dateObj.getMonth()+1).padStart(2,'0')}/${String(dateObj.getDate()).padStart(2,'0')}` : '';
 
@@ -603,7 +615,8 @@
                                     ${avatarHtml}
                                     <div style="display: flex; flex-direction: column;">
                                         <div class="reviewer-name">${r.name || '匿名訪客'}</div>
-                                        <div class="review-date">${dateStr}</div> </div>
+                                        <div class="review-date">${dateStr}</div> 
+                                    </div>
                                 </div>
                                 <div class="review-stars">${starsHtml}</div>
                             </div>
