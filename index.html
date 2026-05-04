@@ -311,6 +311,17 @@
                 <div id="form-none" style="display: none; background: var(--light-pink); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
                     <p style="margin: 0; font-size: 13px; font-weight: bold; color: var(--primary-pink); text-align: center;">💡 溫馨提醒<br><br><span style="color: var(--text-main); font-weight: normal;">此遊戲將直接發送「序號」，<br>結帳後請自行至官方儲值中心兌換即可，無需填寫任何帳號資料喔！</span></p>
                 </div>
+                <div id="form-discord" style="display: none; background: var(--light-pink); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
+                    <p style="margin: 0; font-size: 13px; font-weight: bold; color: var(--primary-pink); text-align: center;">
+                        💡 溫馨提醒<br><br>
+                        <span style="color: var(--text-main); font-weight: normal;">
+                            此商品結帳時無需填寫帳密資料。<br>
+                            下單完成後，請主動私訊客服：<br>
+                            買【登入方案】請提供帳密以便代購；<br>
+                            買【贈禮方案】將直接發送升級連結喔！
+                        </span>
+                    </p>
+                </div>
 
                 <div class="input-group" style="margin-bottom: 0; margin-top: 16px; border-top: 2px solid var(--light-purple); padding-top: 16px;">
                     <label>💳 選擇付款方式 <span style="color:var(--primary-pink)">*</span></label>
@@ -377,6 +388,21 @@
             'valorant': {
                 name: '特戰英豪', loginType: 'account', desc: '顆秒 難道你真的是賦能哥', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg',
                 products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1400, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2650, img: getEmoji('1f52b') } ]
+            },
+            'discord': {
+                name: 'Discord 商品', 
+                loginType: 'discord', // 🚨 專屬模式
+                desc: '提供登入代購與連結贈禮方案', 
+                banner: 'https://i.meee.com.tw/2h8hjAv.jpg', // 老闆請記得換成 DC 的宣傳圖
+                icon: 'https://i.meee.com.tw/pT3KP1z.png',   // 老闆請記得換成 DC 的 Logo
+                products: [ 
+                    { id: 'dc_1', name: '💎 1個月 Nitro (登入)', price: 230, img: getEmoji('1f48e') }, 
+                    { id: 'dc_2', name: '🎁 1個月 Nitro (贈禮)', price: 270, img: getEmoji('1f381') }, 
+                    { id: 'dc_3', name: '💎 1年 Nitro (登入)', price: 1499, img: getEmoji('1f48e') }, 
+                    { id: 'dc_4', name: '🎁 1年 Nitro (贈禮)', price: 2700, img: getEmoji('1f381') },
+                    { id: 'dc_3', name: '三麗鷗組合包', price: 500, img: getEmoji('1f48e') },
+                    { id: 'dc_3', name: '咒術迴戰組合包', price: 400, img: getEmoji('1f48e') }
+                ]
             },
             'delta': {
                 name: '三角洲行動', loginType: 'account', desc: '帳密代儲，安全快速', banner: 'https://i.meee.com.tw/0Dux7tW.png', icon: 'https://i.meee.com.tw/OKtEmR8.jpg',
@@ -510,6 +536,8 @@
             document.getElementById('form-uid').style.display = loginType === 'uid' ? 'block' : 'none';
             document.getElementById('form-account').style.display = loginType === 'account' ? 'block' : 'none';
             document.getElementById('form-none').style.display = loginType === 'none' ? 'block' : 'none';
+            let formDiscord = document.getElementById('form-discord');
+            if (formDiscord) formDiscord.style.display = loginType === 'discord' ? 'block' : 'none';
 
             document.getElementById('selected-game-title').innerText = db[gameId].name;
             document.getElementById('selected-game-img').src = db[gameId].icon;
