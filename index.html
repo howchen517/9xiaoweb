@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>九霄科技｜致力於給顧客最好的服務</title>
     
+    <meta property="og:title" content="九霄科技 9xiaoGame ｜ 自助下單系統">
+    <meta property="og:description" content="致力於給顧客最好的服務體驗！🦊✨">
+    <meta property="og:image" content="https://i.meee.com.tw/R4i6DOW.png">
+    <meta property="og:type" content="website">
+
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
@@ -36,7 +41,6 @@
         .brand { font-size: 15px; font-weight: 800; color: var(--primary-pink); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .brand-mascot { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--bg-white); box-shadow: 0 4px 12px rgba(106, 90, 205, 0.2); background-color: var(--light-pink); flex-shrink: 0; }
         .user-profile { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; background: rgba(232, 226, 250, 0.6); padding: 4px 12px; border-radius: 30px; transition: 0.2s; white-space: nowrap; }
-        .user-profile:active { transform: scale(0.95); background: var(--light-purple); }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-white); background-size: cover; background-position: center; border: 2px solid var(--bg-white); box-shadow: 0 4px 12px rgba(106, 90, 205, 0.2); flex-shrink: 0; }
 
         .container { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 24px; padding-bottom: 140px; }
@@ -49,12 +53,14 @@
         @keyframes ring { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
         .marquee-container { flex: 1; overflow: hidden; white-space: nowrap; }
         .marquee-content { display: inline-block; padding-left: 100%; font-size: 13px; font-weight: 800; color: var(--primary-purple); animation: marquee 12s linear infinite; }
-        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
 
-        /* ✨ 升級：呼吸燈特效的評價按鈕 */
+        .floating-cs-btn { position: fixed; right: 20px; bottom: 120px; width: 54px; height: 54px; background: var(--gradient-btn); color: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(106, 90, 205, 0.4); cursor: pointer; z-index: 9999; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 2px solid rgba(255,255,255,0.5); }
+        .floating-cs-btn:active { transform: scale(0.9); }
+        .floating-cs-icon { font-size: 20px; line-height: 1; margin-bottom: 2px; }
+        .floating-cs-text { font-size: 11px; font-weight: 800; line-height: 1; letter-spacing: 0.5px; }
+
         @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(106, 90, 205, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(106, 90, 205, 0); } 100% { box-shadow: 0 0 0 0 rgba(106, 90, 205, 0); } }
         .public-reviews-btn { background: linear-gradient(135deg, #FFFFFF 0%, #F4F1FE 100%); border: 2px solid var(--primary-pink); color: var(--primary-purple); width: 100%; padding: 14px; border-radius: 20px; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; margin-bottom: 24px; box-shadow: var(--shadow-soft); transition: 0.2s; animation: pulseGlow 2s infinite; }
-        .public-reviews-btn:active { transform: scale(0.98); }
 
         .search-container { position: relative; margin-bottom: 20px; width: 100%; }
         .search-container input { width: 100%; padding: 14px 14px 14px 44px; border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.85); box-shadow: 0 4px 12px rgba(106, 90, 205, 0.08); font-size: 14px; color: var(--text-main); font-weight: 600; }
@@ -127,7 +133,6 @@
         .history-game { font-weight: 800; font-size: 16px; margin-bottom: 6px; }
         .history-item-footer { display: flex; justify-content: space-between; align-items: center; }
 
-        /* ✨ 升級：對話框式的超高質感評價卡片 */
         .review-dashboard-header { background: linear-gradient(135deg, #FFFFFF 0%, #F4F1FE 100%); border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: center; border: 2px solid var(--primary-pink); box-shadow: 0 10px 25px rgba(106, 90, 205, 0.1); }
         .review-score-big { font-size: 42px; font-weight: 900; color: var(--primary-purple); line-height: 1; margin-bottom: 5px; }
         .review-score-stars { color: #FFD700; font-size: 18px; letter-spacing: 3px; margin-bottom: 5px; }
@@ -154,7 +159,6 @@
         .btn-cancel, .btn-confirm { padding: 12px; border-radius: 24px; font-size: 14px; font-weight: 800; flex: 1; cursor: pointer; border: none; transition: 0.2s; }
         .btn-cancel { background: var(--light-pink); color: var(--primary-purple); }
         .btn-confirm { background: var(--gradient-btn); color: white; box-shadow: 0 6px 16px rgba(157, 132, 234, 0.3); }
-        .btn-cancel:active, .btn-confirm:active { transform: scale(0.95); }
 
         .star-rating { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-direction: row-reverse; }
         .star-rating input { display: none; }
@@ -242,17 +246,17 @@
         <div id="step-1" class="step active">
             <div class="marquee-wrapper">
                 <div class="marquee-icon">📢</div>
-                <div class="marquee-container"><div class="marquee-content">歡迎來到九霄科技自助下單系統！🎉 營業時間：早上 09:00 - 凌晨 02:00。非營業時間訂單將於隔日處理，感謝您的耐心等候！</div></div>
+                <div class="marquee-container"><div class="marquee-content">歡迎來到九霄科技自助下單系統！🎉 營業時間：早上 09:00 - 凌晨 01:00。非營業時間訂單將於隔日處理，感謝您的耐心等候！</div></div>
             </div>
 
             <div class="public-reviews-btn" onclick="openPublicReviews()">
-                <span style="font-size:18px;">🔥</span> 看看大家都怎麼說 <span style="font-size:18px;">➔</span>
+                <span style="font-size:18px;">🔥</span> 評價專區 <span style="font-size:18px;">➔</span>
             </div>
 
             <h2 style="font-size: 20px; margin-top: 0; margin-bottom: 16px; color: var(--primary-purple); font-weight: 800;">你想儲值哪款遊戲呢？🎮</h2>
             
             <div class="search-container">
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 23.1837L16.6168 18.901C15.0769 19.9691 13.1678 20.6025 11.1012 20.6025C5.52391 20.6025 1 16.0786 1 10.5013C1 4.92398 5.52391 0.400085 11.1012 0.400085C16.6786 0.400085 21.2025 4.92398 21.2025 10.5013C21.2025 12.7533 20.4616 14.8327 19.206 16.4526L18.031 16.6168ZM16.0123 15.6989C17.3828 14.3411 18.2025 12.5113 18.2025 10.5013C18.2025 6.57967 15.0229 3.40009 11.1012 3.40009C7.17961 3.40009 4 6.57967 4 10.5013C4 14.4229 7.17961 17.6025 11.1012 17.6025C13.0645 17.6025 14.8434 16.8123 16.1477 15.5392L16.0123 15.6989Z"></path></svg>
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 23.1837L16.6168 18.901C15.0769 19.9691(資料略)..."></path></svg>
                 <input type="text" id="game-search-input" placeholder="尋找遊戲名稱..." oninput="filterGames()">
             </div>
             <div id="game-list"></div>
@@ -324,7 +328,6 @@
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
         let currentLineUser = null; 
 
-        // 🎮 所有遊戲完整資料庫 (已新增異環, 修正 Discord)
         const db = {
             'aov_aot': { name: '傳說對決 x 進擊的巨人 代抽包中', loginType: 'account', desc: '⚔️ 期間限定連動！代抽需提供帳密', banner: 'https://i.meee.com.tw/NRLbKEH.png', icon: 'https://i.meee.com.tw/nmM1cEO.png', products: [ { id: 'aot_1', name: '⚔️ 克萊斯-艾連·葉卡 (單造型)', price: 2300, img: 'https://i.meee.com.tw/MgeAfAm.png' }, { id: 'aot_2', name: '🧣 星葵-米卡莎·阿卡曼 (單造型)', price: 2300, img: 'https://i.meee.com.tw/v0Ygzgq.png' }, { id: 'aot_3', name: '⚔️ 納克羅斯-里維·兵長 (領完全部)', price: 2200, img: 'https://i.meee.com.tw/Oimpxzt.png' }, { id: 'aot_4', name: '🛡️ 巨人連動 造型全包大禮包 ', price: 7200, img: 'https://i.meee.com.tw/iboOM8u.png' } ] },
             'aov': { name: '傳說對決', loginType: 'none', desc: '發送貝殼幣序號，請至官網自行兌換', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_1', name: '364 點券', price: 250, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 480, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 970, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2870, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
@@ -332,6 +335,20 @@
             'valorant': { name: '特戰英豪', loginType: 'account', desc: '特務幣代儲，客製化面額請詢問客服', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg', products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1400, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2650, img: getEmoji('1f52b') } ] },
             'discord': { name: 'Discord 商品', loginType: 'discord', desc: '提供登入代購與連結贈禮方案', banner: 'https://i.meee.com.tw/4lQCqUp.jpg', icon: 'https://i.meee.com.tw/pT3KP1z.png', products: [ { id: 'dc_1', name: '1個月 Nitro (登入)', price: 230, img: getEmoji('1f48e') }, { id: 'dc_2', name: '1個月 Nitro (贈禮)', price: 270, img: getEmoji('1f381') }, { id: 'dc_3', name: '1年 Nitro (登入)', price: 1499, img: getEmoji('1f48e') }, { id: 'dc_4', name: '1年 Nitro (贈禮)', price: 2700, img: getEmoji('1f381') }, { id: 'dc_5', name: '三麗鷗組合包', price: 500, img: getEmoji('1f48e') }, { id: 'dc_6', name: '咒術迴戰組合包', price: 400, img: getEmoji('1f48e') } ] },
             'nte': { name: '異環 (台服)', loginType: 'account', desc: '異晶代儲，請填寫正確帳密', banner: 'https://i.meee.com.tw/R4i6DOW.png', icon: 'https://i.meee.com.tw/R4i6DOW.png', products: [ { id: 'nte_1', name: '精銳獵人補給', price: 300, img: getEmoji('1f3ab') }, { id: 'nte_2', name: '榮譽獵人補給', price: 600, img: getEmoji('1f3ab') }, { id: 'nte_3', name: '300 異晶', price: 170, img: getEmoji('1f48e') }, { id: 'nte_4', name: '980 異晶', price: 470, img: getEmoji('1f48e') }, { id: 'nte_5', name: '1980 異晶', price: 900, img: getEmoji('1f48e') }, { id: 'nte_6', name: '3280 異晶', price: 1500, img: getEmoji('1f48e') }, { id: 'nte_7', name: '6480 異晶', price: 2700, img: getEmoji('1f48e') } ] },
+            
+            // ✨ 新增：決勝時刻M 雙倍CP
+            'codm': {
+                name: '決勝時刻M 雙倍CP', loginType: 'account', desc: '雙倍CP優惠代儲，請填寫正確帳密', banner: 'https://i.meee.com.tw/R4i6DOW.png', icon: 'https://i.meee.com.tw/R4i6DOW.png',
+                products: [
+                    { id: 'codm_1', name: '400+400 CP', price: 150, img: getEmoji('1fa99') },
+                    { id: 'codm_2', name: '800+800 CP', price: 300, img: getEmoji('1fa99') },
+                    { id: 'codm_3', name: '2000+2000 CP', price: 750, img: getEmoji('1fa99') },
+                    { id: 'codm_4', name: '4000+4000 CP', price: 1400, img: getEmoji('1fa99') },
+                    { id: 'codm_5', name: '8000+8000 CP', price: 2700, img: getEmoji('1fa99') },
+                    { id: 'codm_6', name: '雙倍一條龍 (共30560 CP)', price: 4990, img: getEmoji('1f3c6') }
+                ]
+            },
+            
             'delta': { name: '三角洲行動', loginType: 'account', desc: '帳密代儲，安全快速', banner: 'https://i.meee.com.tw/0Dux7tW.png', icon: 'https://i.meee.com.tw/OKtEmR8.jpg', products: [ { id: 'df_1', name: '750 金幣', price: 300, img: getEmoji('1fa99') }, { id: 'df_2', name: '1480 金幣', price: 600, img: getEmoji('1fa99') }, { id: 'df_3', name: '3950 金幣', price: 1450, img: getEmoji('1fa99') }, { id: 'df_4', name: '8100 金幣', price: 2700, img: getEmoji('1fa99') } ] },
             'heartbeat': { name: '心動小鎮', loginType: 'account', desc: '心鑽代儲，享受療癒生活', banner: 'https://i.meee.com.tw/PF1RLtF.jpg', icon: 'https://i.meee.com.tw/N9n8flZ.png', products: [ { id: 'ht_1', name: '300+20 心鑽', price: 160, img: getEmoji('1f496') }, { id: 'ht_2', name: '680+50 心鑽', price: 320, img: getEmoji('1f496') }, { id: 'ht_3', name: '1280+90 心鑽', price: 600, img: getEmoji('1f496') }, { id: 'ht_4', name: '1980+150 心鑽', price: 910, img: getEmoji('1f496') }, { id: 'ht_5', name: '3280+270 心鑽', price: 1500, img: getEmoji('1f496') }, { id: 'ht_6', name: '6480+570 心鑽', price: 2700, img: getEmoji('1f496') } ] },
             'arenabreakout': { name: '暗區突圍', loginType: 'uid', desc: 'UID直儲，快速到帳', banner: 'https://i.meee.com.tw/cx2BdEH.jpg', icon: 'https://i.meee.com.tw/MGVGPgp.png', products: [ { id: 'ab_1', name: '675 點券', price: 330, img: getEmoji('1f4b0') }, { id: 'ab_2', name: '1690 點券', price: 800, img: getEmoji('1f4b0') }, { id: 'ab_3', name: '3400 點券', price: 1500, img: getEmoji('1f4b0') }, { id: 'ab_4', name: '6820 點券', price: 2800, img: getEmoji('1f4b0') } ] },
@@ -435,7 +452,6 @@
 
         window.contactCS = function() { window.location.href = "https://lin.ee/zHlVKw9"; }
 
-        // ✨ 評價系統翻新：加入社群認證風格
         window.openPublicReviews = async function() {
             document.getElementById('public-reviews-overlay').classList.add('active');
             const listEl = document.getElementById('public-reviews-list');
@@ -499,7 +515,6 @@
                 
                 document.getElementById('history-total-spend').innerText = `NT$ ${totalSpent.toLocaleString()}`;
                 
-                // ✨ VIP 門檻更新：5000 / 20000 / 50000
                 let tierName = "🥉 萌新小狐", nextTierTotal = 5000, nextTierName = "🥈 白銀小狐", progressPercent = 0;
                 if (totalSpent >= 50000) { tierName = "👑 尊爵神狐"; nextTierTotal = totalSpent; nextTierName = "最高等級"; progressPercent = 100; }
                 else if (totalSpent >= 20000) { tierName = "🥇 黃金小狐"; nextTierTotal = 50000; nextTierName = "👑 尊爵神狐"; progressPercent = (totalSpent / nextTierTotal) * 100; }
@@ -554,7 +569,6 @@
             btnConfirm.innerText = "⏳ 處理中...";
             btnConfirm.disabled = true;
 
-            // ✨ 抓取顧客 IP 位址
             let clientIp = "未能抓取";
             try {
                 const ipRes = await fetch('https://api.ipify.org?format=json');
@@ -574,7 +588,7 @@
                 totalAmount: totalAmount, 
                 paymentMethod: document.getElementById('payment-method').value || '未填寫', 
                 status: '處理中', 
-                ip: clientIp, // ✨ 傳送 IP 到後台
+                ip: clientIp, 
                 cart: {}, 
                 formDetails: {} 
             };
@@ -616,7 +630,7 @@
                     if (liff && liff.isInClient && liff.isInClient()) {
                         await liff.sendMessages([flexMessage]);
                         closeConfirmModal();
-                        setTimeout(() => { window.alert(`🎉 訂單已送出！(編號: ${finalOrderId})\n請在聊天室查看付款資訊。`); liff.closeWindow(); }, 1500);
+                        setTimeout(() => { window.alert(`🎉 訂單已送出！(編號: ${finalOrderId})\n請在聊天室查看付款資訊喔！`); liff.closeWindow(); }, 1500);
                     } else {
                         closeConfirmModal();
                         setTimeout(() => { alert(`🌸 網頁版測試：Flex 訂單已建立 (編號: ${finalOrderId})！`); goHome(); }, 1500);
