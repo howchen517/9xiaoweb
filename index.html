@@ -309,10 +309,6 @@
             <h3 style="font-size: 16px; color: var(--primary-purple); margin-top: 20px;">🛍️ 選擇想要的面額</h3>
             <div id="product-list"></div>
             
-            <div id="notice-aov-aot" style="display: none; margin-top: 24px; font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-top: 16px; border-top: 1px dashed var(--light-purple);">
-                <div style="font-weight: 800; margin-bottom: 6px;">💡 巨人代抽專屬購買須知：</div>
-                1. 代抽期間請勿登入帳號，若因搶登造成任何問題我方將不負擔任何責任。<br>2. Garena/Google/FB登入均可，只有Apple登入無法。<br>3. 付款完成後基本上半小時內結單，除非訂單量爆炸需要排隊，請不要催促，我們會以最快的速度幫您處理。<br>4. 遊戲內信箱請記得領取乾淨，不然抽到的獎品會被清空。<br>5. 我方均使用正規貝殼幣進行代抽服務，官方儲值中心都可以查詢到紀錄。<br>6. 我方代抽包中服務是作為變相保底，定價內抽中剩餘的即是我方利潤，反之，超出定價還未抽中，我方也不得要求客人補足點數。<br>7. 結單後一律建議更改密碼，避免後續問題發生。
-            </div>
         </div>
     </div>
 
@@ -329,7 +325,6 @@
         let currentLineUser = null; 
 
         const db = {
-            'aov_aot': { name: '傳說對決 x 進擊的巨人 代抽包中', loginType: 'account', desc: '⚔️ 期間限定連動！代抽需提供帳密', banner: 'https://i.meee.com.tw/NRLbKEH.png', icon: 'https://i.meee.com.tw/nmM1cEO.png', products: [ { id: 'aot_1', name: '⚔️ 克萊斯-艾連·葉卡 (單造型)', price: 2300, img: 'https://i.meee.com.tw/MgeAfAm.png' }, { id: 'aot_2', name: '🧣 星葵-米卡莎·阿卡曼 (單造型)', price: 2300, img: 'https://i.meee.com.tw/v0Ygzgq.png' }, { id: 'aot_3', name: '⚔️ 納克羅斯-里維·兵長 (領完全部)', price: 2200, img: 'https://i.meee.com.tw/Oimpxzt.png' }, { id: 'aot_4', name: '🛡️ 巨人連動 造型全包大禮包 ', price: 7200, img: 'https://i.meee.com.tw/iboOM8u.png' } ] },
             'aov': { name: '傳說對決', loginType: 'none', desc: '發送貝殼幣序號，請至官網自行兌換', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_1', name: '364 點券', price: 250, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 480, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 970, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2870, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
             'idv': { name: '第五人格', loginType: 'uid', desc: 'UID免帳密，首次儲值需掃碼', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png', products: [ { id: 'idv_1', name: '759 迴聲', price: 280, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_2', name: '2277 迴聲', price: 860, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_3', name: '3036 迴聲', price: 1100, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_4', name: '3795 迴聲', price: 1350, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_5', name: '7590 迴聲', price: 2600, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_6', name: '15180 迴聲', price: 5200, img: 'https://i.meee.com.tw/FIkkG1Q.webp' } ] },
             'valorant': { name: '特戰英豪', loginType: 'account', desc: '特務幣代儲，客製化面額請詢問客服', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg', products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1400, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2650, img: getEmoji('1f52b') } ] },
@@ -430,9 +425,6 @@
                 let qtyHtml = (p.price === 0) ? `<span style="font-size:12px; color:var(--text-muted); font-weight:bold;">準備中</span>` : `<button class="btn-qty" onclick="changeQty('${p.id}', -1)">-</button><span id="qty-${p.id}" style="width:24px;text-align:center;font-weight:bold;color:var(--text-main);">${cart[p.id]}</span><button class="btn-qty add" onclick="changeQty('${p.id}', 1)">+</button>`;
                 pList.innerHTML += `<div class="product-item"><img src="${p.img}" class="product-icon"><div class="product-info"><div class="product-name">${cleanName}</div><div class="price" style="${p.price === 0 ? 'color:#D84315;' : ''}">${priceText}</div></div><div class="qty-ctrl" style="${p.price === 0 ? 'background:transparent;' : ''}">${qtyHtml}</div></div>`;
             });
-
-            let aotNotice = document.getElementById('notice-aov-aot');
-            if (aotNotice) { aotNotice.style.display = (gameId === 'aov_aot') ? 'block' : 'none'; }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
             document.getElementById('step-1').classList.remove('active'); document.getElementById('step-2').classList.add('active'); document.getElementById('footer').style.display = 'flex';
