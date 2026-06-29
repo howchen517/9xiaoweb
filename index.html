@@ -2566,13 +2566,29 @@
 
         let currentActiveGame = null; let cart = {}; let totalAmount = 0;
 
+        function isLineConnected() {
+            return !!(currentLineUser && currentLineUser.userId && currentLineUser.userId !== "guest_web");
+        }
+
+        function requireLineConnect() {
+            alert("請先連接官方 LINE 後再送出訂單喔！這樣我們才能聯繫您並通知訂單進度。");
+            try {
+                if (window.liff && LIFF_ID && LIFF_ID !== "請在這裡填入正確的LIFF_ID") {
+                    liff.login({ redirectUri: window.location.href });
+                }
+            } catch (err) {
+                console.warn('LINE connect skipped.', err);
+            }
+        }
+
         async function initApp() {
-            const setGuestUser = () => {
-                document.getElementById('user-name').innerText = "九霄的客人 ▾";
-                currentLineUser = currentLineUser || { userId: "guest_web", displayName: "九霄的客人", pictureUrl: "https://i.meee.com.tw/R4i6DOW.png" };
+            const setPendingLineUser = () => {
+                document.getElementById('user-name').innerText = "連接官方 LINE ▾";
+                document.getElementById('user-name').onclick = requireLineConnect;
+                currentLineUser = null;
             };
 
-            setGuestUser();
+            setPendingLineUser();
             renderGames();
 
             try {
@@ -2585,6 +2601,7 @@
                 const profile = await liff.getProfile();
                 currentLineUser = profile;
                 document.getElementById('user-name').innerText = profile.displayName + " ▾";
+                document.getElementById('user-name').onclick = null;
                 if (profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
             } catch (err) {
                 console.warn('LIFF profile skipped, storefront remains available.', err);
@@ -3054,6 +3071,7 @@
             const flow = getSelectedPaymentFlow();
             if (!flow) return alert('💳 請先選擇付款方式喔！');
             if (flow.options.length > 0 && !selectedPaymentDetail) return alert('💳 請選擇要使用的付款銀行喔！');
+            if (!isLineConnected()) return requireLineConnect();
             document.getElementById('confirm-overlay').classList.add('active');
         };
 
