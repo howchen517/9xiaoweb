@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -2567,24 +2567,28 @@
         let currentActiveGame = null; let cart = {}; let totalAmount = 0;
 
         async function initApp() {
+            const setGuestUser = () => {
+                document.getElementById('user-name').innerText = "九霄的客人 ▾";
+                currentLineUser = currentLineUser || { userId: "guest_web", displayName: "九霄的客人", pictureUrl: "https://i.meee.com.tw/R4i6DOW.png" };
+            };
+
+            setGuestUser();
+            renderGames();
+
             try {
                 const isLocalPreview = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-                if (isLocalPreview) {
-                    document.getElementById('user-name').innerText = 'Preview Guest';
-                    currentLineUser = { userId: 'preview_01', displayName: 'Preview Guest', pictureUrl: 'https://i.meee.com.tw/R4i6DOW.png' };
-                    renderGames();
-                    return;
-                }
-                if (!LIFF_ID || LIFF_ID === "請在這裡填入正確的LIFF_ID") {
-                    document.getElementById('user-name').innerText = "九霄的客人 ▾"; currentLineUser = { userId: "test_01", displayName: "測試客", pictureUrl: "https://i.meee.com.tw/R4i6DOW.png" }; renderGames(); return;
-                }
+                if (isLocalPreview || !window.liff || !LIFF_ID || LIFF_ID === "請在這裡填入正確的LIFF_ID") return;
+
                 await liff.init({ liffId: LIFF_ID });
-                if (!liff.isLoggedIn()) { liff.login(); return; }
-                const profile = await liff.getProfile(); currentLineUser = profile;
+                if (!liff.isLoggedIn()) return;
+
+                const profile = await liff.getProfile();
+                currentLineUser = profile;
                 document.getElementById('user-name').innerText = profile.displayName + " ▾";
-                if(profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
-                renderGames();
-            } catch (err) { renderGames(); }
+                if (profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
+            } catch (err) {
+                console.warn('LIFF profile skipped, storefront remains available.', err);
+            }
         }
 
         function renderGames(filterText = '') {
