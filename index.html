@@ -2570,13 +2570,27 @@
             return !!(currentLineUser && currentLineUser.userId && currentLineUser.userId !== "guest_web");
         }
 
+        let isLineConnectRedirecting = false;
+
+        function getCleanLineRedirectUri() {
+            const url = new URL(window.location.href);
+            ['code', 'state', 'liffClientId', 'liffRedirectUri', 'friendship_status_changed'].forEach(key => url.searchParams.delete(key));
+            url.searchParams.set('line_connect', '1');
+            return url.origin + url.pathname + url.search + url.hash;
+        }
+
         function requireLineConnect() {
+            if (isLineConnectRedirecting) return;
             alert("請先連接官方 LINE 後再送出訂單喔！這樣我們才能聯繫您並通知訂單進度。");
             try {
                 if (window.liff && LIFF_ID && LIFF_ID !== "請在這裡填入正確的LIFF_ID") {
-                    liff.login({ redirectUri: window.location.href });
+                    isLineConnectRedirecting = true;
+                    const nameEl = document.getElementById('user-name');
+                    if (nameEl) nameEl.innerText = "正在連接 LINE...";
+                    liff.login({ redirectUri: getCleanLineRedirectUri() });
                 }
             } catch (err) {
+                isLineConnectRedirecting = false;
                 console.warn('LINE connect skipped.', err);
             }
         }
