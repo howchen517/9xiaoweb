@@ -2566,6 +2566,32 @@
 
         let currentActiveGame = null; let cart = {}; let totalAmount = 0;
 
+        function showLineConnectNotice(title, message, canRetry = false) {
+            const list = document.getElementById('game-list');
+            document.getElementById('user-name').innerText = title;
+            if (!list) return;
+            list.innerHTML = `
+                <div class="game-card" style="grid-column: 1 / -1; padding: 24px; text-align: center;">
+                    <div style="font-size: 36px; margin-bottom: 10px;">💬</div>
+                    <h3 style="margin: 0 0 8px; color: #332B4A;">${title}</h3>
+                    <p style="margin: 0 auto 16px; max-width: 420px; color: #6F6686; line-height: 1.8;">${message}</p>
+                    ${canRetry ? '<button class="hero-primary" type="button" onclick="retryLineLogin()">重新連接 LINE</button>' : ''}
+                </div>`;
+        }
+
+        function getLineLoginRedirectUri() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('line_login_tried', '1');
+            return url.toString();
+        }
+
+        window.retryLineLogin = function() {
+            localStorage.removeItem('9xiaoLineLoginTried');
+            const url = new URL(window.location.href);
+            url.searchParams.delete('line_login_tried');
+            window.location.href = url.toString();
+        };
+
         async function initApp() {
             try {
                 const isLocalPreview = ['localhost', '127.0.0.1'].includes(window.location.hostname);
@@ -2576,18 +2602,37 @@
                     return;
                 }
                 if (!LIFF_ID || LIFF_ID === "請在這裡填入正確的LIFF_ID") {
-                    document.getElementById('user-name').innerText = "九霄的客人 ▾"; currentLineUser = { userId: "test_01", displayName: "測試客", pictureUrl: "https://i.meee.com.tw/R4i6DOW.png" }; renderGames(); return;
-                }
-                await liff.init({ liffId: LIFF_ID, withLoginOnExternalBrowser: true });
-                if (!liff.isLoggedIn()) {
-                    document.getElementById('user-name').innerText = "請從官方 LINE 開啟 ▾";
+                    showLineConnectNotice("LIFF 設定中", "目前尚未連接到官方 LINE，請稍後再試。", false);
                     return;
                 }
+
+                showLineConnectNotice("正在連接官方 LINE", "正在確認您的 LINE 身分，請稍候，不需要重複點擊或重新整理。", false);
+                await liff.init({ liffId: LIFF_ID });
+
+                if (!liff.isLoggedIn()) {
+                    const alreadyTried = new URL(window.location.href).searchParams.get('line_login_tried') === '1' || localStorage.getItem('9xiaoLineLoginTried') === '1';
+                    if (!alreadyTried) {
+                        localStorage.setItem('9xiaoLineLoginTried', '1');
+                        liff.login({ redirectUri: getLineLoginRedirectUri() });
+                        return;
+                    }
+                    showLineConnectNotice("請重新連接官方 LINE", "目前沒有成功取得 LINE 身分。請從官方 LINE 聊天室重新開啟官網，或點下方按鈕再試一次。", true);
+                    return;
+                }
+
+                localStorage.removeItem('9xiaoLineLoginTried');
+                const cleanUrl = new URL(window.location.href);
+                cleanUrl.searchParams.delete('line_login_tried');
+                window.history.replaceState({}, document.title, cleanUrl.toString());
+
                 const profile = await liff.getProfile(); currentLineUser = profile;
                 document.getElementById('user-name').innerText = profile.displayName + " ▾";
                 if(profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
                 renderGames();
-            } catch (err) { renderGames(); }
+            } catch (err) {
+                console.warn('LIFF init failed.', err);
+                showLineConnectNotice("LINE 連接暫時失敗", "請從官方 LINE 聊天室重新開啟官網，或稍後再試一次。", true);
+            }
         }
 
         function renderGames(filterText = '') {
