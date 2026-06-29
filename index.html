@@ -1762,13 +1762,13 @@
         .payment-hero::after {
             content: '';
             position: absolute;
-            inset: auto -8% -26% auto;
-            width: 260px;
-            height: 190px;
-            border-radius: 28px;
-            background: linear-gradient(145deg, rgba(34,36,58,.92), rgba(118,92,255,.72));
-            transform: rotate(-8deg);
-            box-shadow: 0 26px 70px rgba(76,67,150,.18);
+            right: 22px;
+            bottom: 18px;
+            width: 128px;
+            height: 3px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, rgba(118,92,255,.42), rgba(92,157,255,.28), transparent);
+            box-shadow: 0 0 28px rgba(118,92,255,.20);
             pointer-events: none;
         }
 
@@ -1966,6 +1966,57 @@
             letter-spacing: .08em;
         }
 
+        .payment-copy-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .payment-copy-head strong {
+            margin-bottom: 0;
+        }
+
+        .payment-copy-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 7px;
+        }
+
+        .payment-copy-btn {
+            min-height: 32px;
+            border: 1px solid rgba(118,92,255,.14);
+            border-radius: 999px;
+            padding: 7px 11px;
+            color: #765CFF;
+            background: rgba(255,255,255,.78);
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(76,67,150,.08);
+            transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+        }
+
+        .payment-copy-btn:active {
+            transform: scale(.96);
+        }
+
+        .payment-copy-toast {
+            min-height: 18px;
+            margin-top: 8px;
+            color: #765CFF;
+            font-size: 12px;
+            font-weight: 850;
+            opacity: 0;
+            transition: opacity .2s ease;
+        }
+
+        .payment-copy-toast.active {
+            opacity: 1;
+        }
+
         .payment-copy-box p {
             margin: 0;
             white-space: pre-line;
@@ -1978,6 +2029,221 @@
         .payment-warning {
             border-left-color: #F0A63A;
             background: rgba(255,250,238,.92);
+        }
+
+        .payment-verify-guide {
+            margin-top: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .verify-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(118,92,255,.13);
+            border-radius: 16px;
+            padding: 14px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.98), rgba(248,249,255,.90)),
+                radial-gradient(circle at top right, rgba(118,92,255,.10), transparent 40%);
+            box-shadow: 0 12px 30px rgba(76,67,150,.06);
+        }
+
+        .verify-card::before {
+            content: '';
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: linear-gradient(180deg, #765CFF, #9B7CFF);
+        }
+
+        .verify-card.physical::before {
+            background: linear-gradient(180deg, #F0A63A, #FFCF73);
+        }
+
+        .verify-card.alert {
+            border-color: rgba(255,95,120,.28);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.99), rgba(255,245,248,.94)),
+                radial-gradient(circle at top right, rgba(255,95,120,.16), transparent 42%);
+            box-shadow: 0 16px 38px rgba(255,95,120,.10);
+        }
+
+        .verify-card.alert::before {
+            background: linear-gradient(180deg, #FF5F78, #FF9A62);
+        }
+
+        .verify-card.alert > summary h4,
+        .verify-card.alert > h4 {
+            color: #D93652;
+        }
+
+        .verify-card.alert > .verify-body > p .verify-highlight,
+        .verify-card.alert > p .verify-highlight {
+            border-color: rgba(255,95,120,.22);
+            color: #C92F4B;
+            background: rgba(255,95,120,.10);
+        }
+
+        .verify-card h4 {
+            margin: 0 0 8px;
+            color: #22243a;
+            font-size: 14px;
+            font-weight: 950;
+            line-height: 1.35;
+        }
+
+        details.verify-card {
+            padding: 0;
+        }
+
+        details.verify-card summary {
+            position: relative;
+            z-index: 1;
+            min-height: 54px;
+            padding: 14px 116px 14px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        details.verify-card summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.verify-card summary h4 {
+            margin: 0;
+        }
+
+        .verify-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            min-width: 86px;
+            min-height: 28px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: #765CFF;
+            background: rgba(118,92,255,.10);
+            font-size: 11px;
+            font-weight: 950;
+            transform: translateY(-50%);
+            transition: transform .2s ease, background .2s ease;
+        }
+
+        .verify-toggle::after {
+            content: '⌄';
+            font-size: 14px;
+            line-height: 1;
+            transition: transform .2s ease;
+        }
+
+        details.verify-card[open] .verify-toggle {
+            background: rgba(118,92,255,.16);
+            transform: translateY(-50%);
+        }
+
+        details.verify-card[open] .verify-toggle::after {
+            transform: rotate(180deg);
+        }
+
+        details.verify-card.physical .verify-toggle {
+            color: #A96610;
+            background: rgba(255,246,225,.92);
+        }
+
+        details.verify-card.physical[open] .verify-toggle {
+            background: rgba(240,166,58,.18);
+        }
+
+        .verify-body {
+            padding: 0 14px 14px;
+        }
+
+        .verify-nested {
+            margin-top: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .verify-card.alert details.verify-card {
+            box-shadow: none;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.94), rgba(248,249,255,.84)),
+                radial-gradient(circle at top right, rgba(118,92,255,.08), transparent 40%);
+        }
+
+        .verify-card.alert details.verify-card summary {
+            min-height: 50px;
+            padding-right: 116px;
+        }
+
+        .verify-card p {
+            margin: 0;
+            color: rgba(34,36,58,.72);
+            font-size: 13px;
+            font-weight: 760;
+            line-height: 1.7;
+        }
+
+        .verify-card strong {
+            color: #22243a;
+            font-weight: 950;
+        }
+
+        .verify-list {
+            margin: 8px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .verify-list li {
+            position: relative;
+            padding-left: 22px;
+            color: rgba(34,36,58,.74);
+            font-size: 13px;
+            font-weight: 760;
+            line-height: 1.55;
+        }
+
+        .verify-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #765CFF;
+            font-weight: 950;
+        }
+
+        .verify-card.physical .verify-list li::before {
+            color: #D8891D;
+        }
+
+        .verify-highlight {
+            display: inline-block;
+            margin: 0 2px;
+            border: 1px solid rgba(118,92,255,.18);
+            border-radius: 999px;
+            padding: 1px 7px 2px;
+            color: #5B43E8;
+            background: rgba(118,92,255,.08);
+            font-weight: 950;
+            white-space: nowrap;
+        }
+
+        .verify-card.physical .verify-highlight {
+            border-color: rgba(240,166,58,.24);
+            color: #A96610;
+            background: rgba(255,246,225,.92);
         }
 
         .payment-actions {
@@ -2003,6 +2269,16 @@
             .payment-summary,
             .payment-option-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .payment-copy-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .payment-copy-actions {
+                width: 100%;
+                justify-content: flex-start;
             }
         }
 
@@ -2097,7 +2373,7 @@
                 <div class="hero-copy">
                     <div class="hero-kicker">9XIAO GAME SERVICE</div>
                     <h1 class="hero-title">&#20061;&#38660;&#31185;&#25216;<br><span>GAME STORE</span></h1>
-                    <p class="hero-subtitle">&#32043;&#33394;&#21697;&#29260;&#24863;&#12289;&#38651;&#24433;&#23652;&#27425;&#12289;&#24555;&#36895;&#19979;&#21934;&#12290;&#25226;&#36938;&#25138;&#20786;&#20540;&#20570;&#24471;&#26356;&#20687;&#19968;&#20491;&#24185;&#28136;&#12289;&#23560;&#26989;&#12289;&#26377;&#35352;&#25014;&#40670;&#30340;&#39640;&#32026;&#26381;&#21209;&#20837;&#21475;&#12290;</p>
+                    <p class="hero-subtitle">&#33268;&#21147;&#26044;&#26381;&#21209;&#22909;&#27599;&#19968;&#20301;&#23458;&#20154;</p>
                     <div class="hero-actions">
                         <a href="#game-list" class="hero-primary">&#38283;&#22987;&#36984;&#36092;</a>
                         <button class="hero-secondary" type="button" onclick="openPublicReviews()">&#26597;&#30475;&#35413;&#20729;</button>
@@ -2198,7 +2474,7 @@
                 <div class="payment-hero">
                     <div class="payment-kicker">PAYMENT CHECKOUT</div>
                     <h2 class="payment-title">付款資訊確認</h2>
-                    <p class="payment-subtitle">請依照下方付款方式完成付款。付款完成後請回到官方 LINE 回傳截圖或驗證資料，我們確認入帳後會立即為您安排訂單。</p>
+                    <p class="payment-subtitle">請依照下方付款方式完成付款。付款完成後請回到官方 LINE 完成驗證回傳，我們確認入帳與驗證資料後會立即為您安排訂單。</p>
                 </div>
 
                 <div class="payment-summary">
@@ -2210,9 +2486,17 @@
                     <h3 id="payment-detail-title">選擇付款資訊</h3>
                     <div class="payment-option-grid" id="payment-detail-options"></div>
                     <div class="payment-note" id="payment-detail-note"></div>
+                    <div class="payment-verify-guide" id="payment-verify-guide"></div>
                     <div class="payment-copy-box">
-                        <strong>PAYMENT MESSAGE</strong>
+                        <div class="payment-copy-head">
+                            <strong>PAYMENT MESSAGE</strong>
+                            <div class="payment-copy-actions">
+                                <button class="payment-copy-btn" type="button" onclick="copyPaymentAccount()">複製帳號</button>
+                                <button class="payment-copy-btn" type="button" onclick="copyPaymentInfo()">複製完整資訊</button>
+                            </div>
+                        </div>
                         <p id="payment-auto-copy">請先選擇付款渠道，系統會自動產生付款說明。</p>
+                        <div class="payment-copy-toast" id="payment-copy-toast">已複製</div>
                     </div>
                 </div>
 
@@ -2476,7 +2760,7 @@
                     { value: 'ipass money', label: 'ipass money', hint: '一卡通 Money 轉帳' },
                     { value: 'LINE BANK 連線', label: 'LINE BANK 連線', hint: 'LINE BANK 轉帳' }
                 ],
-                note: '銀行轉帳可使用實體 ATM 或線上網銀 / APP。付款完成後，請回到官方 LINE 回傳付款成功畫面，並依客服指示完成防詐驗證。'
+                note: '銀行轉帳可使用實體 ATM 或線上網銀 / APP。付款完成後，請回到官方 LINE 完成驗證回傳，並依客服指示完成防詐驗證。'
             },
             atm: {
                 label: '無卡存款',
@@ -2500,7 +2784,7 @@
                 title: 'LINE Pay Money 轉帳',
                 options: [],
                 autoDetail: 'LINE Pay Money',
-                note: '請加入老闆的 LINE：howard1414，從聊天室左下角的轉帳功能完成付款。付款完成後，請截圖回傳官方 LINE。'
+                note: '請加入老闆的 LINE：howard1414，從聊天室左下角的轉帳功能完成付款。付款完成後，請回到官方 LINE 完成驗證回傳。'
             }
         };
 
@@ -2528,8 +2812,32 @@
             'LINE Pay Money': 'howard1414'
         };
 
+        const paymentChannelMeta = {
+            '玉山銀行': { name: '玉山銀行', code: '808', account: '0370979238813' },
+            '台新銀行': { name: '台新銀行', code: '812', account: '28881018496846' },
+            '國泰世華': { name: '國泰世華', code: '013', account: '699520908742' },
+            '街口支付': { name: '街口支付', code: '396', account: '906934155' },
+            'ipass money': { name: 'iPass money', code: '391', account: '0000001528998960' },
+            'LINE BANK 連線': { name: 'LINE Bank 連線商業銀行', code: '824', account: '111021606305' },
+            '國泰世華無卡': { name: '國泰世華', code: '013', account: '699520908742' },
+            '台新銀行無卡': { name: '台新銀行', code: '812', account: '28881018496846' },
+            '玉山銀行無卡': { name: '玉山銀行', code: '808', account: '0370979238813' },
+            'LINE Pay Money': { name: 'LINE Pay Money', code: '', account: 'howard1414' }
+        };
+
+        function getPaymentChannelMeta() {
+            return paymentChannelMeta[selectedPaymentDetail] || null;
+        }
+
+        function getPaymentChannelLabel() {
+            const meta = getPaymentChannelMeta();
+            if (!meta) return selectedPaymentDetail || '';
+            return meta.code ? `${meta.name} (${meta.code})` : meta.name;
+        }
+
         function getPaymentAccountCopyText() {
-            return paymentCopyAccounts[selectedPaymentDetail] || '';
+            const meta = getPaymentChannelMeta();
+            return meta ? meta.account : (paymentCopyAccounts[selectedPaymentDetail] || '');
         }
 
         function getPaymentInstructionText() {
@@ -2540,23 +2848,97 @@
 
             if (method === 'transfer') {
                 if (!channel) return '請先選擇要使用的轉帳銀行，系統會自動產生付款說明。';
-                return `一九霄科技收款資訊\n\n付款方式：轉帳\n轉帳渠道：${channel}\n收款帳號：${getPaymentAccountCopyText()}\n應付金額：${amountText}\n\n可使用實體 ATM、手機 APP 或線上網銀完成付款。\n付款完成後，請回到官方 LINE 回傳轉帳成功截圖，並依照客服指示完成防詐驗證。`;
+                return `九霄科技收款資訊\n\n付款方式：轉帳\n收款銀行：${getPaymentChannelLabel()}\n收款帳號：${getPaymentAccountCopyText()}\n應付金額：${amountText}\n\n可使用實體 ATM、手機 APP 或線上網銀完成付款。\n付款完成後，請回到官方 LINE 完成驗證回傳，並依照客服指示完成防詐驗證。`;
             }
 
             if (method === 'atm') {
                 if (!channel) return '請先選擇要使用的無卡存款銀行，系統會自動產生付款說明。';
-                return `一九霄科技無卡存款資訊\n\n付款方式：無卡存款\n存款銀行：${channel.replace('無卡', '')}\n存款帳號：${getPaymentAccountCopyText()}\n應付金額：${amountText}\n\n完成存款後，請將收據或繳費明細拍照回傳官方 LINE。\n為保障交易安全，請依照客服指示完成收據手寫或錄影驗證。`;
+                return `九霄科技無卡存款資訊\n\n付款方式：無卡存款\n收款銀行：${getPaymentChannelLabel()}\n收款帳號：${getPaymentAccountCopyText()}\n應付金額：${amountText}\n\n完成存款後，請回到官方 LINE 完成驗證回傳。\n為保障交易安全，請依照客服指示完成收據手寫或錄影驗證。`;
             }
 
             if (method === 'family_scan') {
-                return `一九霄科技全家櫃台掃碼付款\n\n付款方式：全家櫃台掃碼\n商品金額：${amountText}\n手續費：NT$ 15\n繳費金額：NT$ ${totalAmount + 15}\n\n條碼開立後只有 10 分鐘有效。\n請到全家後再回官方 LINE 告訴我們，我們會為您開立條碼。`;
+                return `九霄科技全家櫃台掃碼付款\n\n付款方式：全家櫃台掃碼\n商品金額：${amountText}\n手續費：NT$ 15\n繳費金額：NT$ ${totalAmount + 15}\n\n條碼開立後只有 10 分鐘有效。\n請到全家後再回官方 LINE 告訴我們，我們會為您開立條碼。`;
             }
 
             if (method === 'line_pay_money') {
-                return `一九霄科技 LINE Pay Money 付款\n\n付款方式：LINE Pay Money\n應付金額：${amountText}\n\n請加入老闆的 LINE：howard1414\n加入後從聊天室左下角使用轉帳功能完成付款。\n付款完成後，請截圖回傳官方 LINE。`;
+                return `九霄科技 LINE Pay Money 付款\n\n付款方式：LINE Pay Money\n應付金額：${amountText}\n\n請加入老闆的 LINE：howard1414\n加入後從聊天室左下角使用轉帳功能完成付款。\n付款完成後，請回到官方 LINE 完成驗證回傳。`;
             }
 
             return '請先選擇付款渠道，系統會自動產生付款說明。';
+        }
+
+        function getVerificationGuideHTML(method) {
+            const onlineCard = `
+                <details class="verify-card online">
+                    <summary><h4>📱 線上轉帳驗證</h4><span class="verify-toggle">查看說明</span></summary>
+                    <div class="verify-body">
+                        <p>若使用手機 APP、網銀或錢包轉帳，付款後請完成可核對的驗證回傳，避免第三方詐騙。</p>
+                        <ul class="verify-list">
+                            <li>請使用<span class="verify-highlight">分割畫面截圖</span>，同時看到 <strong>付款成功明細</strong> 與 <strong>官方 LINE 聊天窗</strong>。</li>
+                            <li>畫面需能辨識 <strong>銀行 / 錢包 APP</strong>、<strong>轉出帳號末五碼</strong>、<strong>付款金額</strong>。</li>
+                            <li>若 APP 擋住明細，請改用<span class="verify-highlight">螢幕錄影</span>，從付款明細切回官方 LINE。</li>
+                        </ul>
+                    </div>
+                </details>`;
+
+            const physicalCard = `
+                <details class="verify-card physical">
+                    <summary><h4>🧾 實體付款驗證</h4><span class="verify-toggle">查看說明</span></summary>
+                    <div class="verify-body">
+                        <p>若使用 ATM、無卡存款或超商繳費，請保留收據並完成其中一種驗證方式。</p>
+                        <ul class="verify-list">
+                            <li><strong>收據手寫拍照：</strong>在收據空白處寫上<span class="verify-highlight">九霄科技</span>與<span class="verify-highlight">購買商品名稱</span>後，作為驗證資料回傳。</li>
+                            <li><strong>一鏡到底錄影：</strong>從官方 LINE 聊天窗開始錄，切到相機拍攝繳費明細，明細需清楚停留至少 <strong>3 秒</strong>。</li>
+                        </ul>
+                    </div>
+                </details>`;
+
+            const familyCard = `
+                <details class="verify-card physical">
+                    <summary><h4>🏪 全家櫃台掃碼提醒</h4><span class="verify-toggle">查看說明</span></summary>
+                    <div class="verify-body">
+                        <p>條碼開立後只有<span class="verify-highlight">10 分鐘</span>有效，請到全家後再請我們開立條碼。</p>
+                        <ul class="verify-list">
+                            <li>繳費金額會是 <strong>商品金額 + NT$15 手續費</strong>。</li>
+                            <li>付款後請依照上方實體付款方式完成收據驗證。</li>
+                        </ul>
+                    </div>
+                </details>`;
+
+            const linePayCard = `
+                <details class="verify-card online">
+                    <summary><h4>💬 LINE Pay Money 提醒</h4><span class="verify-toggle">查看說明</span></summary>
+                    <div class="verify-body">
+                        <p>請加入指定 LINE 後，從聊天室左下角轉帳功能完成付款。</p>
+                        <ul class="verify-list">
+                            <li>付款完成後請回到<span class="verify-highlight">官方 LINE</span>完成驗證回傳。</li>
+                            <li>驗證資料需能看出 <strong>付款完成</strong>、<strong>付款金額</strong> 與 <strong>付款來源</strong>。</li>
+                        </ul>
+                    </div>
+                </details>`;
+
+            const detailCards = {
+                transfer: `${onlineCard}${physicalCard}`,
+                atm: physicalCard,
+                family_scan: `${familyCard}${physicalCard}`,
+                line_pay_money: linePayCard
+            }[method] || '';
+
+            if (!detailCards) return '';
+            return `
+                <details class="verify-card alert">
+                    <summary><h4>⚠️ 重要提醒：請完成防詐驗證</h4><span class="verify-toggle">查看方式</span></summary>
+                    <div class="verify-body">
+                        <p>請依照下方方式完成<span class="verify-highlight">驗證回傳</span>，我們確認入帳與驗證資料無誤後，才會開始安排訂單。</p>
+                        <div class="verify-nested">${detailCards}</div>
+                    </div>
+                </details>`;
+        }
+
+        function updateVerificationGuide() {
+            const guide = document.getElementById('payment-verify-guide');
+            if (!guide) return;
+            guide.innerHTML = getVerificationGuideHTML(document.getElementById('payment-method').value);
         }
 
         function updatePaymentAutoCopy() {
@@ -2566,6 +2948,52 @@
             const accountLine = accountText ? `\n\n可複製帳號：${accountText}` : '';
             copyEl.innerText = `${getPaymentInstructionText()}${accountLine}`;
         }
+
+        function showPaymentCopyToast(message) {
+            const toast = document.getElementById('payment-copy-toast');
+            if (!toast) return;
+            toast.innerText = message;
+            toast.classList.add('active');
+            window.clearTimeout(showPaymentCopyToast.timer);
+            showPaymentCopyToast.timer = window.setTimeout(() => toast.classList.remove('active'), 1800);
+        }
+
+        async function copyTextToClipboard(text, successMessage) {
+            if (!text) {
+                showPaymentCopyToast('請先選擇付款渠道');
+                return;
+            }
+
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.setAttribute('readonly', '');
+                    textarea.style.position = 'fixed';
+                    textarea.style.left = '-9999px';
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    textarea.setSelectionRange(0, textarea.value.length);
+                    const copied = document.execCommand('copy');
+                    textarea.remove();
+                    if (!copied) throw new Error('copy command rejected');
+                }
+                showPaymentCopyToast(successMessage);
+            } catch (error) {
+                showPaymentCopyToast('複製失敗，請長按文字複製');
+            }
+        }
+
+        window.copyPaymentAccount = function() {
+            copyTextToClipboard(getPaymentAccountCopyText(), '帳號已複製');
+        };
+
+        window.copyPaymentInfo = function() {
+            copyTextToClipboard(document.getElementById('payment-auto-copy')?.innerText || getPaymentInstructionText(), '付款資訊已複製');
+        };
 
         window.choosePaymentDetail = function(value) {
             selectedPaymentDetail = value;
@@ -2585,6 +3013,7 @@
             document.getElementById('payment-detail-title').innerText = flow.title;
             document.getElementById('payment-detail-note').innerText = flow.note;
             document.getElementById('payment-detail-note').classList.toggle('payment-warning', document.getElementById('payment-method').value === 'family_scan');
+            updateVerificationGuide();
             updatePaymentAutoCopy();
 
             const optionWrap = document.getElementById('payment-detail-options');
