@@ -2578,8 +2578,11 @@
                 if (!LIFF_ID || LIFF_ID === "請在這裡填入正確的LIFF_ID") {
                     document.getElementById('user-name').innerText = "九霄的客人 ▾"; currentLineUser = { userId: "test_01", displayName: "測試客", pictureUrl: "https://i.meee.com.tw/R4i6DOW.png" }; renderGames(); return;
                 }
-                await liff.init({ liffId: LIFF_ID });
-                if (!liff.isLoggedIn()) { liff.login(); return; }
+                await liff.init({ liffId: LIFF_ID, withLoginOnExternalBrowser: true });
+                if (!liff.isLoggedIn()) {
+                    document.getElementById('user-name').innerText = "請從官方 LINE 開啟 ▾";
+                    return;
+                }
                 const profile = await liff.getProfile(); currentLineUser = profile;
                 document.getElementById('user-name').innerText = profile.displayName + " ▾";
                 if(profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
