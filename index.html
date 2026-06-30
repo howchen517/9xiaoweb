@@ -2586,11 +2586,16 @@
         }
 
         window.retryLineLogin = function() {
-            localStorage.removeItem('9xiaoLineLoginTried');
+            sessionStorage.removeItem('9xiaoLineLoginTried');
             const url = new URL(window.location.href);
             url.searchParams.delete('line_login_tried');
             window.location.href = url.toString();
         };
+
+        function markStorefrontReady() {
+            document.body.dataset.storefrontReady = '1';
+            window.dispatchEvent(new Event('9xiao:storefront-ready'));
+        }
 
         async function initApp() {
             try {
@@ -2599,6 +2604,7 @@
                     document.getElementById('user-name').innerText = 'Preview Guest';
                     currentLineUser = { userId: 'preview_01', displayName: 'Preview Guest', pictureUrl: 'https://i.meee.com.tw/R4i6DOW.png' };
                     renderGames();
+                    markStorefrontReady();
                     return;
                 }
                 if (!LIFF_ID || LIFF_ID === "請在這裡填入正確的LIFF_ID") {
@@ -2610,9 +2616,9 @@
                 await liff.init({ liffId: LIFF_ID });
 
                 if (!liff.isLoggedIn()) {
-                    const alreadyTried = new URL(window.location.href).searchParams.get('line_login_tried') === '1' || localStorage.getItem('9xiaoLineLoginTried') === '1';
+                    const alreadyTried = new URL(window.location.href).searchParams.get('line_login_tried') === '1' || sessionStorage.getItem('9xiaoLineLoginTried') === '1';
                     if (!alreadyTried) {
-                        localStorage.setItem('9xiaoLineLoginTried', '1');
+                        sessionStorage.setItem('9xiaoLineLoginTried', '1');
                         liff.login({ redirectUri: getLineLoginRedirectUri() });
                         return;
                     }
@@ -2620,7 +2626,7 @@
                     return;
                 }
 
-                localStorage.removeItem('9xiaoLineLoginTried');
+                sessionStorage.removeItem('9xiaoLineLoginTried');
                 const cleanUrl = new URL(window.location.href);
                 cleanUrl.searchParams.delete('line_login_tried');
                 window.history.replaceState({}, document.title, cleanUrl.toString());
@@ -2629,6 +2635,7 @@
                 document.getElementById('user-name').innerText = profile.displayName + " ▾";
                 if(profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
                 renderGames();
+                    markStorefrontReady();
             } catch (err) {
                 console.warn('LIFF init failed.', err);
                 showLineConnectNotice("LINE 連接暫時失敗", "請從官方 LINE 聊天室重新開啟官網，或稍後再試一次。", true);
@@ -3602,7 +3609,14 @@
                 start();
             };
 
-            window.setTimeout(start, 900);
+            function startWhenStorefrontReady() {
+                if (document.body.dataset.storefrontReady === '1') {
+                    window.setTimeout(start, 400);
+                }
+            }
+
+            window.addEventListener('9xiao:storefront-ready', startWhenStorefrontReady);
+            startWhenStorefrontReady();
         })();
     </script>
 </body>
