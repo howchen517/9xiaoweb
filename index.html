@@ -3103,19 +3103,43 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        window.openFinalConfirmModal = function() {
+        function hasValidLineProfile() {
+            return !!(currentLineUser && currentLineUser.userId && currentLineUser.displayName && !['test_user_001', 'test_01', 'preview_01', 'guest_web'].includes(currentLineUser.userId));
+        }
+
+        function requireValidLineProfile() {
+            alert('請先從官方 LINE 重新開啟官網，並完成 LINE 連接後再送出訂單喔！');
+            return false;
+        }
+
+        function validateOrderBeforeSubmit() {
+            if (!hasValidLineProfile()) return requireValidLineProfile();
+            if (!currentActiveGame || !db[currentActiveGame]) { alert('請先選擇遊戲喔！'); return false; }
+            if (totalAmount <= 0 || Object.keys(cart).length === 0) { alert('🛍️ 請至少選擇一個想要的面額喔！'); return false; }
+            const paymentMethodEl = document.getElementById('payment-method');
+            if (!paymentMethodEl || !paymentMethodEl.value) { alert('💳 請選擇一個付款方式喔！'); return false; }
             const flow = getSelectedPaymentFlow();
-            if (!flow) return alert('💳 請先選擇付款方式喔！');
-            if (flow.options.length > 0 && !selectedPaymentDetail) return alert('💳 請選擇要使用的付款銀行喔！');
+            if (flow && flow.options.length > 0 && !selectedPaymentDetail) { alert('💳 請選擇要使用的付款銀行喔！'); return false; }
+            const loginType = db[currentActiveGame].loginType;
+            if (loginType === 'uid') {
+                if (!document.getElementById('uid-uid').value.trim() || !document.getElementById('uid-server').value.trim() || !document.getElementById('uid-nickname').value.trim()) {
+                    alert('🌸 哎呀！UID、伺服器和暱稱都要填寫喔！'); return false;
+                }
+            } else if (loginType === 'account') {
+                if (!document.getElementById('acc-nickname').value.trim() || !document.getElementById('acc-login-method').value || !document.getElementById('acc-server').value.trim() || !document.getElementById('acc-account').value.trim() || !document.getElementById('acc-password').value.trim() || !document.getElementById('acc-recovery').value.trim()) {
+                    alert('🌸 哎呀！帳號密碼登入的所有欄位都必須填寫喔！'); return false;
+                }
+            }
+            return true;
+        }
+
+        window.openFinalConfirmModal = function() {
+            if (!validateOrderBeforeSubmit()) return;
             document.getElementById('confirm-overlay').classList.add('active');
         };
 
         window.openConfirmModal = function() {
-            const loginType = db[currentActiveGame].loginType;
-            if (loginType === 'uid') { if (!document.getElementById('uid-uid').value.trim() || !document.getElementById('uid-server').value.trim() || !document.getElementById('uid-nickname').value.trim()) return alert("🌸 哎呀！UID、伺服器和暱稱都要填寫喔！"); } 
-            else if (loginType === 'account') { if (!document.getElementById('acc-nickname').value.trim() || !document.getElementById('acc-login-method').value || !document.getElementById('acc-server').value.trim() || !document.getElementById('acc-account').value.trim() || !document.getElementById('acc-password').value.trim() || !document.getElementById('acc-recovery').value.trim()) return alert("🌸 哎呀！帳號密碼登入的所有欄位都必須填寫喔！"); }
-            if (!document.getElementById('payment-method').value) return alert("💳 請選擇一個付款方式喔！");
-            if (totalAmount === 0) return alert("🛍️ 請至少選擇一個想要的面額喔！");
+            if (!validateOrderBeforeSubmit()) return;
             showPaymentPage();
         };
         window.closeConfirmModal = function() { document.getElementById('confirm-overlay').classList.remove('active'); };
@@ -3149,6 +3173,7 @@
         }
 
         async function submitOrder() { 
+            if (!validateOrderBeforeSubmit()) return;
             const btnConfirm = document.querySelector('#confirm-overlay .btn-confirm');
             const originalText = btnConfirm.innerText;
             btnConfirm.innerText = "⏳ 處理中...";
@@ -3169,9 +3194,9 @@
             
             let cloudOrderData = { 
                 timestamp: new Date().toISOString(), 
-                lineUserId: currentLineUser ? currentLineUser.userId : 'test_user_001', 
-                customerName: currentLineUser ? currentLineUser.displayName : '匿名訪客', 
-                pictureUrl: currentLineUser ? currentLineUser.pictureUrl : '',
+                lineUserId: currentLineUser.userId, 
+                customerName: currentLineUser.displayName, 
+                pictureUrl: currentLineUser.pictureUrl || '',
                 gameName: db[currentActiveGame].name, 
                 totalAmount: totalAmount, 
                 paymentMethod: paymentSummary, 
