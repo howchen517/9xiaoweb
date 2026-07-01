@@ -2664,6 +2664,7 @@
                 document.getElementById('acc-account').value = ''; document.getElementById('acc-password').value = ''; document.getElementById('acc-recovery').value = '';
                 document.getElementById('payment-method').value = '';
                 selectedPaymentDetail = '';
+                selectedPaymentMethod = '';
             }
             updateTotal();
             const loginType = db[gameId].loginType;
@@ -2805,6 +2806,7 @@
         window.closeHistoryModal = function() { document.getElementById('history-overlay').classList.remove('active'); }
 
         let selectedPaymentDetail = '';
+        let selectedPaymentMethod = '';
         const paymentFlows = {
             transfer: {
                 label: '轉帳',
@@ -2854,6 +2856,16 @@
             const flow = getSelectedPaymentFlow();
             if (!flow) return '';
             return selectedPaymentDetail ? `${flow.label} - ${selectedPaymentDetail}` : flow.label;
+        }
+
+        function getPaymentDetailRequirementText(flow) {
+            if (!flow || !flow.options || flow.options.length === 0) return '';
+            return flow.label === '無卡存款' ? '請選擇要使用的無卡存款銀行喔！' : '請選擇要使用的付款銀行喔！';
+        }
+
+        function isSelectedPaymentDetailValid(flow) {
+            if (!flow || !flow.options || flow.options.length === 0) return true;
+            return flow.options.some(option => option.value === selectedPaymentDetail);
         }
 
         const paymentCopyAccounts = {
@@ -3063,7 +3075,13 @@
         function renderPaymentPage() {
             const flow = getSelectedPaymentFlow();
             if (!flow) return;
-            selectedPaymentDetail = flow.autoDetail || '';
+            const method = document.getElementById('payment-method').value;
+            if (selectedPaymentMethod !== method) {
+                selectedPaymentDetail = flow.autoDetail || '';
+                selectedPaymentMethod = method;
+            } else if (flow.autoDetail) {
+                selectedPaymentDetail = flow.autoDetail;
+            }
 
             document.getElementById('payment-page-method').innerText = flow.label;
             document.getElementById('payment-page-total').innerText = `NT$ ${totalAmount}`;
@@ -3081,7 +3099,7 @@
             }
 
             optionWrap.innerHTML = flow.options.map(option => `
-                <button class="payment-option" type="button" data-value="${option.value}" onclick="choosePaymentDetail('${option.value}')">
+                <button class="payment-option ${selectedPaymentDetail === option.value ? 'active' : ''}" type="button" data-value="${option.value}" onclick="choosePaymentDetail('${option.value}')">
                     ${option.label}
                     <small>${option.hint}</small>
                 </button>
@@ -3112,14 +3130,15 @@
             return false;
         }
 
-        function validateOrderBeforeSubmit() {
+        function validateOrderBeforeSubmit(options = {}) {
+            const requirePaymentDetail = options.requirePaymentDetail !== false;
             if (!hasValidLineProfile()) return requireValidLineProfile();
             if (!currentActiveGame || !db[currentActiveGame]) { alert('請先選擇遊戲喔！'); return false; }
             if (totalAmount <= 0 || Object.keys(cart).length === 0) { alert('🛍️ 請至少選擇一個想要的面額喔！'); return false; }
             const paymentMethodEl = document.getElementById('payment-method');
             if (!paymentMethodEl || !paymentMethodEl.value) { alert('💳 請選擇一個付款方式喔！'); return false; }
             const flow = getSelectedPaymentFlow();
-            if (flow && flow.options.length > 0 && !selectedPaymentDetail) { alert('💳 請選擇要使用的付款銀行喔！'); return false; }
+            if (requirePaymentDetail && flow && flow.options.length > 0 && !isSelectedPaymentDetailValid(flow)) { alert(`💳 ${getPaymentDetailRequirementText(flow)}`); showPaymentPage(); return false; }
             const loginType = db[currentActiveGame].loginType;
             if (loginType === 'uid') {
                 if (!document.getElementById('uid-uid').value.trim() || !document.getElementById('uid-server').value.trim() || !document.getElementById('uid-nickname').value.trim()) {
@@ -3139,7 +3158,7 @@
         };
 
         window.openConfirmModal = function() {
-            if (!validateOrderBeforeSubmit()) return;
+            if (!validateOrderBeforeSubmit({ requirePaymentDetail: false })) return;
             showPaymentPage();
         };
         window.closeConfirmModal = function() { document.getElementById('confirm-overlay').classList.remove('active'); };
@@ -3187,7 +3206,8 @@
             } catch (e) { console.log("IP 抓取失敗", e); }
 
             const loginType = db[currentActiveGame].loginType;
-            const paymentSummary = getSelectedPaymentSummary() || document.getElementById('payment-method').value || '未填寫';
+            const paymentSummary = getSelectedPaymentSummary();
+            if (!paymentSummary) return alert('💳 付款資訊尚未完成，請重新選擇付款方式喔！');
             const paymentInstructionText = getPaymentInstructionText();
             const paymentAccountCopyText = getPaymentAccountCopyText();
             let flexInfoRows = []; 
