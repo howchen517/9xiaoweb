@@ -3685,13 +3685,13 @@
 
             function scrollTargetIntoView(target) {
                 if (target.closest('.header')) {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({ top: 0, behavior: 'auto' });
                     return;
                 }
-                target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                target.scrollIntoView({ block: 'center', behavior: 'auto' });
             }
 
-            function waitForScrollSettled(timeout = 1000) {
+            function waitForScrollSettled(timeout = 260) {
                 return new Promise((resolve) => {
                     const started = performance.now();
                     let lastY = window.scrollY;
@@ -3701,7 +3701,7 @@
                         if (Math.abs(currentY - lastY) < 1) stableFrames += 1;
                         else stableFrames = 0;
                         lastY = currentY;
-                        if (stableFrames >= 4 || performance.now() - started > timeout) resolve();
+                        if (stableFrames >= 2 || performance.now() - started > timeout) resolve();
                         else requestAnimationFrame(tick);
                     }
                     requestAnimationFrame(tick);
@@ -3797,7 +3797,9 @@
                 renderStep({ shouldScroll: true });
             }
 
-            next.addEventListener('click', () => {
+            next.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
                 if (isMoving) return;
                 if (current >= guideSteps.length - 1) finish(true);
                 else {
@@ -3806,7 +3808,11 @@
                 }
             });
 
-            skip.addEventListener('click', () => finish(false));
+            skip.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                finish(false);
+            });
             root.addEventListener('touchmove', preventGuideTouchScroll, { passive: false });
             window.addEventListener('resize', () => {
                 if (!active || isMoving) return;
