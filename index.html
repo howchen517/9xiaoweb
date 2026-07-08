@@ -2687,9 +2687,16 @@
                 showLineConnectNotice('正在連接 LINE', '系統正在確認 LINE 登入狀態，請稍候。', false);
                 await liff.init({ liffId: LIFF_ID });
 
-                if (hasLiffCallbackParams()) sessionStorage.removeItem(LINE_LOGIN_SESSION_KEY);
+                const returnedFromLineLogin = hasLiffCallbackParams();
 
                 if (!liff.isLoggedIn()) {
+                    if (returnedFromLineLogin || sessionStorage.getItem(LINE_LOGIN_SESSION_KEY) === '1') {
+                        sessionStorage.removeItem(LINE_LOGIN_SESSION_KEY);
+                        cleanLoginUrlIfNeeded();
+                        setAuthState({ authLoading: false, ready: true, isAuthenticated: false, redirectReason: 'login-callback-without-session' });
+                        showLineConnectNotice('請重新連接 LINE', '這次沒有成功取得 LINE 登入狀態，請點下方按鈕重新連接一次。', true);
+                        return;
+                    }
                     beginLineLogin('not-authenticated');
                     return;
                 }
