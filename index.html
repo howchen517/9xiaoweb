@@ -2426,7 +2426,7 @@
             
             <div class="form-panel">
                 <div id="form-uid" style="display: none;">
-                    <div class="input-group"><label>📝 玩家 UID <span style="color:var(--primary-pink)">*</span></label><input type="text" id="uid-uid" placeholder="請務必填寫正確 UID！"></div>
+                    <div class="input-group"><label id="uid-label-main">📝 玩家 UID <span style="color:var(--primary-pink)">*</span></label><input type="text" id="uid-uid" placeholder="請務必填寫正確 UID！"></div>
                     <div class="input-group"><label>🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="uid-server" placeholder="例如：台港澳 / 陸服"></div>
                     <div class="input-group"><label>🌸 遊戲暱稱 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="uid-nickname" placeholder="填寫暱稱方便客服核對"></div>
                 </div>
@@ -2446,10 +2446,10 @@
                 <div id="form-none" style="display: none; background: var(--light-pink); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
                     <p>&#128161; &#28331;&#39336;&#25552;&#37266;<span>&#27492;&#21830;&#21697;&#26371;&#30452;&#25509;&#30332;&#36865;&#12300;&#24207;&#34399;&#12301;&#12290;<br>&#32080;&#24115;&#24460;&#65292;&#35531;&#21069;&#24448;&#23448;&#26041;&#20786;&#20540;&#20013;&#24515;&#20812;&#25563;&#21363;&#21487;&#12290;</span><span class="notice-tags"><b>&#19981;&#38656;&#35201;&#24115;&#34399;&#36039;&#26009;</b><b>&#33258;&#34892;&#20812;&#25563;</b><b>&#24207;&#34399;&#20986;&#36008;</b></span></p>
                 </div>
-                <div id="form-discord" style="display: none; background: var(--light-pink); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
-                    <p style="margin: 0; font-size: 13px; font-weight: bold; color: var(--primary-pink); text-align: center;">
+                <div id="form-discord" style="display: none; background: #ffffff; padding: 14px; border-radius: 16px; margin-bottom: 16px; border: 1px solid rgba(157,132,234,.26); box-shadow: 0 12px 28px rgba(78,66,130,.08);">
+                    <p style="margin: 0; font-size: 13px; font-weight: bold; color: #5f46d6; text-align: center; line-height: 1.8;">
                         💡 溫馨提醒<br><br>
-                        <span style="color: var(--text-main); font-weight: normal;">此商品結帳時無需填寫帳密資料。<br>如需要其他裝飾請截圖詢問：<br>買【登入方案】請提供帳密以便代購；<br>買【贈禮方案】將直接發送贈禮連結喔！</span>
+                        <span style="color: #332B4A; font-weight: 600;">此商品結帳時無需填寫帳密資料。<br>如需要其他裝飾請截圖詢問：<br>買【登入方案】請提供帳密以便代購；<br>買【贈禮方案】將直接發送贈禮連結喔！</span>
                     </p>
                 </div>
 
@@ -2553,7 +2553,7 @@
             'genshin': { name: '原神', loginType: 'account', desc: 'UID儲值免帳密', banner: 'https://i.meee.com.tw/9nzDwHm.jpg', icon: 'https://i.meee.com.tw/kCOBoGC.jpg', products: [ { id: 'gs_0', name: '空月祝福', price: 150, img: getEmoji('1f319') }, { id: 'gs_1', name: '980 結晶', price: 430, img: getEmoji('2728') }, { id: 'gs_2', name: '1980 結晶', price: 850, img: getEmoji('2728') }, { id: 'gs_3', name: '3280 結晶', price: 1300, img: getEmoji('2728') }, { id: 'gs_4', name: '6480 結晶', price: 2450, img: getEmoji('2728') }, { id: 'gs_5', name: '60-3280 結晶半條龍', price: 2500, img: getEmoji('2728') }, { id: 'gs_6', name: '60-6480 結晶一條龍', price: 4800, img: getEmoji('2728') }, { id: 'gs_7', name: '980 凝核', price: 450, img: getEmoji('1f48e') }, { id: 'gs_8', name: '1980 凝核', price: 850, img: getEmoji('1f48e') }, { id: 'gs_9', name: '3280 凝核', price: 1280, img: getEmoji('1f48e') }, { id: 'gs_10', name: '6480 凝核', price: 2500, img: getEmoji('1f48e') }, { id: 'gs_11', name: '60-6480 凝核一條龍', price: 4900, img: getEmoji('1f48e') } ] },
             'ptcg': { name: 'PTCG Pocket', loginType: 'account', desc: '金塊代儲，快速抽卡', banner: 'https://i.meee.com.tw/fRWyEK1.jpg', icon: 'https://i.meee.com.tw/WWIupRQ.png', products: [ { id: 'ptcg_1', name: '26 金塊', price: 150, img: getEmoji('1fa99') }, { id: 'ptcg_2', name: '57 金塊', price: 300, img: getEmoji('1fa99') }, { id: 'ptcg_3', name: '120 金塊', price: 550, img: getEmoji('1fa99') }, { id: 'ptcg_4', name: '250 金塊', price: 1100, img: getEmoji('1fa99') }, { id: 'ptcg_5', name: '690 金塊', price: 2580, img: getEmoji('1fa99') } ] },
             'tiktok': { name: 'TikTok', loginType: 'account', desc: '安全代儲，快速到帳', banner: 'https://i.meee.com.tw/2h8hjAv.jpg', icon: 'https://i.meee.com.tw/pT3KP1z.png', products: [ { id: 'tk_1', name: '350 金幣', price: 160, img: getEmoji('1fa99') }, { id: 'tk_2', name: '700 金幣', price: 300, img: getEmoji('1fa99') }, { id: 'tk_3', name: '1400 金幣', price: 580, img: getEmoji('1fa99') }, { id: 'tk_4', name: '3500 金幣', price: 1350, img: getEmoji('1fa99') }, { id: 'tk_5', name: '7000 金幣', price: 2500, img: getEmoji('1fa99') }, { id: 'tk_6', name: '17500 金幣', price: 6500, img: getEmoji('1fa99') }, { id: 'tk_7', name: '52500 金幣', price: 19000, img: getEmoji('1fa99') } ] },
-            'douyin_cn': { name: '抖音(陸抖)', loginType: 'account', desc: '陸抖鑽石代儲，請填寫正確帳密', banner: 'https://i.meee.com.tw/2h8hjAv.jpg', icon: 'https://i.meee.com.tw/pT3KP1z.png', products: [ { id: 'dycn_1', name: '1000 鑽石', price: 540, img: getEmoji('1f48e') }, { id: 'dycn_2', name: '2000 鑽石', price: 1060, img: getEmoji('1f48e') }, { id: 'dycn_3', name: '5000 鑽石', price: 2600, img: getEmoji('1f48e') } ] },
+            'douyin_cn': { name: '抖音(陸抖)', loginType: 'douyin_uid', desc: 'UID儲值，請填寫正確抖音號', banner: 'https://i.meee.com.tw/2h8hjAv.jpg', icon: 'https://i.meee.com.tw/pT3KP1z.png', products: [ { id: 'dycn_1', name: '1000 鑽石', price: 540, img: getEmoji('1f48e') }, { id: 'dycn_2', name: '2000 鑽石', price: 1060, img: getEmoji('1f48e') }, { id: 'dycn_3', name: '5000 鑽石', price: 2600, img: getEmoji('1f48e') } ] },
             'zzz': { name: '絕區零', loginType: 'account', desc: '底片代儲，安全保底', banner: 'https://i.meee.com.tw/994g6dG.jpg', icon: 'https://i.meee.com.tw/fSGxm0Y.png', products: [ { id: 'zzz_1', name: '繩網會員 ', price: 150, img: getEmoji('1f3ab') }, { id: 'zzz_2', name: '980 底片', price: 460, img: getEmoji('1f39e') }, { id: 'zzz_3', name: '1980 底片', price: 850, img: getEmoji('1f39e') }, { id: 'zzz_4', name: '3280 底片', price: 1300, img: getEmoji('1f39e') }, { id: 'zzz_5', name: '6480 底片', price: 2450, img: getEmoji('1f39e') } ] },
             'honkai': { name: '崩壞:星穹鐵道', loginType: 'account', desc: '無法提供UID儲值，需帳密', banner: 'https://i.meee.com.tw/FE8NXFx.jpg', icon: 'https://i.meee.com.tw/Rg23zwU.png', products: [ { id: 'hk_1', name: '列車補給憑證', price: 160, img: getEmoji('1f3ab') }, { id: 'hk_2', name: '980 古老夢華', price: 490, img: getEmoji('1f48e') }, { id: 'hk_3', name: '1980 古老夢華', price: 900, img: getEmoji('1f48e') }, { id: 'hk_4', name: '3280 古老夢華', price: 1300, img: getEmoji('1f48e') }, { id: 'hk_5', name: '6480 古老夢華', price: 2500, img: getEmoji('1f48e') } ] },
             'maple': { name: '楓之谷:放置冒險記', loginType: 'account', desc: '超值禮包，輕鬆掛機練等', banner: 'https://i.meee.com.tw/qMauUBO.jpg', icon: 'https://i.meee.com.tw/QLNgRgO.png', products: [ { id: 'maple_1', name: '15000 鑽石', price: 270, img: getEmoji('1f341') }, { id: 'maple_2', name: '30000 鑽石', price: 520, img: getEmoji('1f341') }, { id: 'maple_3', name: '45000 鑽石', price: 800, img: getEmoji('1f341') }, { id: 'maple_4', name: '75000 鑽石', price: 1350, img: getEmoji('1f341') }, { id: 'maple_5', name: '150000 鑽石', price: 2600, img: getEmoji('1f341') } ] },
@@ -2744,11 +2744,20 @@
             updateTotal();
             const loginType = db[gameId].loginType;
             
-            document.getElementById('form-uid').style.display = loginType === 'uid' ? 'block' : 'none';
+            document.getElementById('form-uid').style.display = (loginType === 'uid' || loginType === 'douyin_uid') ? 'block' : 'none';
             document.getElementById('form-account').style.display = loginType === 'account' ? 'block' : 'none';
             document.getElementById('form-none').style.display = loginType === 'none' ? 'block' : 'none';
             let formDiscord = document.getElementById('form-discord');
             if (formDiscord) formDiscord.style.display = loginType === 'discord' ? 'block' : 'none';
+            const uidServerGroup = document.getElementById('uid-server')?.closest('.input-group');
+            const uidNicknameGroup = document.getElementById('uid-nickname')?.closest('.input-group');
+            const uidLabel = document.getElementById('uid-label-main');
+            const uidInput = document.getElementById('uid-uid');
+            const isDouyinUid = loginType === 'douyin_uid';
+            if (uidServerGroup) uidServerGroup.style.display = isDouyinUid ? 'none' : '';
+            if (uidNicknameGroup) uidNicknameGroup.style.display = isDouyinUid ? 'none' : '';
+            if (uidLabel) uidLabel.innerHTML = isDouyinUid ? '抖音號 <span style="color:var(--primary-pink)">*</span>' : '📝 玩家 UID <span style="color:var(--primary-pink)">*</span>';
+            if (uidInput) uidInput.placeholder = isDouyinUid ? '請填寫正確抖音號' : '請務必填寫正確 UID！';
 
             document.getElementById('selected-game-title').innerText = db[gameId].name;
             document.getElementById('selected-game-img').src = db[gameId].icon;
@@ -3215,6 +3224,10 @@
                 if (!document.getElementById('uid-uid').value.trim() || !document.getElementById('uid-server').value.trim() || !document.getElementById('uid-nickname').value.trim()) {
                     alert('🌸 哎呀！UID、伺服器和暱稱都要填寫喔！'); return false;
                 }
+            } else if (loginType === 'douyin_uid') {
+                if (!document.getElementById('uid-uid').value.trim()) {
+                    alert('🌸 哎呀！請填寫抖音號喔！'); return false;
+                }
             } else if (loginType === 'account') {
                 if (!document.getElementById('acc-nickname').value.trim() || !document.getElementById('acc-login-method').value || !document.getElementById('acc-server').value.trim() || !document.getElementById('acc-account').value.trim() || !document.getElementById('acc-password').value.trim() || !document.getElementById('acc-recovery').value.trim()) {
                     alert('🌸 哎呀！帳號密碼登入的所有欄位都必須填寫喔！'); return false;
@@ -3303,6 +3316,10 @@
                 const uidVal = document.getElementById('uid-uid').value.trim(); const serverVal = document.getElementById('uid-server').value.trim(); const nicknameVal = document.getElementById('uid-nickname').value.trim();
                 flexInfoRows.push(createFlexRow("🆔 UID", uidVal)); flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal)); flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal));
                 cloudOrderData.formDetails = { '玩家 UID': uidVal, '伺服器': serverVal, '遊戲暱稱': nicknameVal };
+            } else if (loginType === 'douyin_uid') {
+                const douyinVal = document.getElementById('uid-uid').value.trim();
+                flexInfoRows.push(createFlexRow("🎵 抖音號", douyinVal));
+                cloudOrderData.formDetails = { '抖音號': douyinVal };
             } else if (loginType === 'account') {
                 const nicknameVal = document.getElementById('acc-nickname').value.trim(); const loginMethodVal = document.getElementById('acc-login-method').value; const serverVal = document.getElementById('acc-server').value.trim(); const accountVal = document.getElementById('acc-account').value.trim(); const passwordVal = document.getElementById('acc-password').value.trim(); const recoveryVal = document.getElementById('acc-recovery').value.trim();
                 flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal)); flexInfoRows.push(createFlexRow("🔑 登入", loginMethodVal)); flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal)); flexInfoRows.push(createFlexRow("👤 帳號", accountVal)); flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal)); flexInfoRows.push(createFlexRow("🛡️ 備用碼", recoveryVal));
