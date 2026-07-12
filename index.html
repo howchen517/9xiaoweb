@@ -2871,7 +2871,8 @@
                 title: '傳說對決點券暫時停售',
                 subtitle: '代抽服務照常開放｜造成不便敬請見諒',
                 label: 'NOTICE',
-                img: 'assets/announcements/aov-points-suspended.webp'
+                img: 'assets/announcements/aov-points-suspended.webp',
+                hideCopy: true
             },
             {
                 title: '熱門遊戲代儲服務',
@@ -2897,10 +2898,11 @@
             track.innerHTML = announcements.map((item, index) => `
                 <article class="announcement-slide ${index === activeAnnouncementIndex ? 'active' : ''}">
                     <img src="${item.img}" alt="${item.title}">
+                    ${item.hideCopy ? '' : `
                     <div class="announcement-copy">
                         <div><strong>${item.title}</strong><span>${item.subtitle}</span></div>
                         <div class="announcement-label">${item.label}</div>
-                    </div>
+                    </div>`}
                 </article>
             `).join('');
 
