@@ -450,66 +450,155 @@
 
         .hero-showcase {
             position: relative;
-            min-height: clamp(360px, 48vw, 540px);
-            perspective: 1100px;
+            min-height: clamp(330px, 46vw, 520px);
             animation: revealUp .72s .18s ease both;
         }
-        .showcase-card {
-            position: absolute;
+        .announcement-board {
+            position: relative;
+            height: 100%;
+            min-height: clamp(330px, 46vw, 520px);
             overflow: hidden;
-            border-radius: 8px;
-            border: 1px solid rgba(244, 241, 254, .20);
-            background: rgba(244, 241, 254, .08);
-            box-shadow: 0 28px 70px rgba(0,0,0,.46);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,.74);
+            background:
+                linear-gradient(145deg, rgba(255,255,255,.88), rgba(246,247,255,.74)),
+                radial-gradient(circle at 12% 8%, rgba(143,124,255,.14), transparent 30%);
+            box-shadow: 0 28px 70px rgba(76, 67, 150, .18);
+            isolation: isolate;
         }
-        .showcase-card img {
+        .announcement-board::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.72)),
+                linear-gradient(110deg, transparent 0 42%, rgba(255,255,255,.42) 50%, transparent 58% 100%);
+            opacity: .72;
+        }
+        .announcement-track {
+            position: absolute;
+            inset: 0;
+        }
+        .announcement-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateX(28px) scale(.985);
+            transition: opacity .55s ease, transform .55s ease;
+            pointer-events: none;
+        }
+        .announcement-slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+        }
+        .announcement-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            filter: saturate(1.05) contrast(1.06);
+            filter: saturate(1.04) contrast(1.02);
         }
-        .main-poster {
-            inset: 7% 0 7% 15%;
-            transform: rotateY(-13deg) rotateZ(1.5deg);
-            animation: posterBreath 5.8s ease-in-out infinite alternate;
-        }
-        .poster-one {
-            width: 38%;
-            height: 36%;
-            left: 0;
-            top: 0;
-            transform: rotateY(-22deg) rotateZ(-5deg) translateZ(40px);
-            animation: posterDriftA 6.5s ease-in-out infinite alternate;
-        }
-        .poster-two {
-            width: 34%;
-            height: 32%;
-            right: 2%;
-            bottom: 0;
-            transform: rotateY(-18deg) rotateZ(5deg) translateZ(65px);
-            animation: posterDriftB 7.2s ease-in-out infinite alternate;
-        }
-        @keyframes posterBreath { from { transform: rotateY(-13deg) rotateZ(1.5deg) translateY(-4px); } to { transform: rotateY(-8deg) rotateZ(.5deg) translateY(8px); } }
-        @keyframes posterDriftA { from { translate: 0 -8px; } to { translate: 14px 14px; } }
-        @keyframes posterDriftB { from { translate: 8px 10px; } to { translate: -10px -10px; } }
-        .showcase-badge {
+        .announcement-copy {
             position: absolute;
-            right: 5%;
-            top: 13%;
+            left: 18px;
+            right: 18px;
+            bottom: 18px;
             z-index: 3;
-            border: 1px solid rgba(244, 241, 254, .20);
-            border-radius: 8px;
-            padding: 9px 11px;
-            color: var(--cinema-white);
-            background: rgba(18, 15, 29, .72);
-            backdrop-filter: blur(16px);
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: .14em;
-            animation: badgePulse 2.8s ease-in-out infinite;
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            align-items: end;
+            color: #241d3b;
+            text-shadow: 0 1px 0 rgba(255,255,255,.72);
         }
-        @keyframes badgePulse { 0%, 100% { box-shadow: 0 0 0 rgba(157,132,234,0); } 50% { box-shadow: 0 0 28px rgba(157,132,234,.42); } }
+        .announcement-copy strong {
+            display: block;
+            font-size: clamp(18px, 3.3vw, 28px);
+            line-height: 1.25;
+            font-weight: 950;
+        }
+        .announcement-copy span {
+            display: block;
+            margin-top: 4px;
+            color: #6f6686;
+            font-size: 12px;
+            font-weight: 850;
+        }
+        .announcement-label {
+            flex: 0 0 auto;
+            padding: 8px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(118,92,255,.16);
+            background: rgba(255,255,255,.82);
+            color: #765CFF;
+            font-size: 11px;
+            font-weight: 950;
+            letter-spacing: .12em;
+            white-space: nowrap;
+        }
+        .announcement-ui {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            top: 16px;
+            z-index: 4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        .announcement-kicker {
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.78);
+            color: #765CFF;
+            font-size: 11px;
+            font-weight: 950;
+            letter-spacing: .14em;
+            box-shadow: 0 12px 30px rgba(76,67,150,.12);
+        }
+        .announcement-dots {
+            display: flex;
+            gap: 6px;
+            padding: 7px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.72);
+        }
+        .announcement-dot {
+            width: 7px;
+            height: 7px;
+            border: 0;
+            border-radius: 999px;
+            padding: 0;
+            background: rgba(118,92,255,.26);
+            cursor: pointer;
+        }
+        .announcement-dot.active {
+            width: 22px;
+            background: linear-gradient(135deg, #8F7CFF, #5C9DFF);
+        }
+        .announcement-progress {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 5;
+            height: 3px;
+            background: rgba(118,92,255,.12);
+        }
+        .announcement-progress span {
+            display: block;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #8F7CFF, #5C9DFF);
+        }
+        .announcement-board.playing .announcement-progress span {
+            animation: announcementProgress 5.2s linear forwards;
+        }
+        @keyframes announcementProgress { from { width: 0; } to { width: 100%; } }
 
         .marquee-wrapper, .public-reviews-btn, .form-panel, .vip-dashboard, .review-dashboard-header, .history-item, .review-card, .center-modal, .bottom-modal, .product-item {
             background: rgba(18, 15, 29, .72);
@@ -2385,11 +2474,15 @@
                         <div class="hero-stat"><strong>&#23448;&#26041; LINE</strong><span>&#19979;&#21934;&#36861;&#36452;</span></div>
                     </div>
                 </div>
-                <div class="hero-showcase" aria-hidden="true">
-                    <div class="showcase-card main-poster"><img src="https://i.meee.com.tw/ABaNPBl.png" alt=""></div>
-                    <div class="showcase-card poster-one"><img src="https://i.meee.com.tw/iHVBqUY.jpg" alt=""></div>
-                    <div class="showcase-card poster-two"><img src="https://i.meee.com.tw/4lQCqUp.jpg" alt=""></div>
-                    <div class="showcase-badge">AUTO ORDER</div>
+                <div class="hero-showcase">
+                    <div class="announcement-board playing" id="announcement-board" aria-label="最新公告">
+                        <div class="announcement-ui">
+                            <div class="announcement-kicker">LATEST NEWS</div>
+                            <div class="announcement-dots" id="announcement-dots" aria-label="公告切換"></div>
+                        </div>
+                        <div class="announcement-track" id="announcement-track"></div>
+                        <div class="announcement-progress" aria-hidden="true"><span id="announcement-progress-bar"></span></div>
+                    </div>
                 </div>
             </section>
 
@@ -2708,6 +2801,9 @@
                     document.getElementById('user-name').innerText = 'Preview Guest';
                     setAuthState({ authLoading: false, ready: true, user: currentLineUser, isAuthenticated: true, redirectReason: 'local-preview' });
                     renderGames();
+                    renderAnnouncements();
+                    restartAnnouncementProgress();
+                    startAnnouncementAutoPlay();
                     replaceRouteState('step-1', '');
                     markStorefrontReady();
                     return;
@@ -2745,6 +2841,9 @@
                 if (profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
                 setAuthState({ authLoading: false, ready: true, user: profile, isAuthenticated: true, redirectReason: 'liff-authenticated' });
                 renderGames();
+                renderAnnouncements();
+                restartAnnouncementProgress();
+                startAnnouncementAutoPlay();
                 replaceRouteState('step-1', '');
                 markStorefrontReady();
             } catch (err) {
@@ -2767,6 +2866,73 @@
         
         function filterGames() { renderGames(document.getElementById('game-search-input').value); }
         
+        const announcements = [
+            {
+                title: '九霄科技自助下單',
+                subtitle: '官方 LINE 下單追蹤｜快速確認｜安心服務',
+                label: 'SERVICE',
+                img: 'https://i.meee.com.tw/ABaNPBl.png'
+            },
+            {
+                title: '熱門遊戲代儲服務',
+                subtitle: 'Roblox、特戰英豪、Pokemon GO 持續更新',
+                label: 'HOT',
+                img: 'https://i.meee.com.tw/iHVBqUY.jpg'
+            },
+            {
+                title: '近期公告將放在這裡',
+                subtitle: '之後有新活動或重要提醒會改成公告圖輪播',
+                label: 'NEWS',
+                img: 'https://i.meee.com.tw/4lQCqUp.jpg'
+            }
+        ];
+        let activeAnnouncementIndex = 0;
+        let announcementTimer = null;
+
+        function renderAnnouncements() {
+            const track = document.getElementById('announcement-track');
+            const dots = document.getElementById('announcement-dots');
+            if (!track || !dots) return;
+
+            track.innerHTML = announcements.map((item, index) => `
+                <article class="announcement-slide ${index === activeAnnouncementIndex ? 'active' : ''}">
+                    <img src="${item.img}" alt="${item.title}">
+                    <div class="announcement-copy">
+                        <div><strong>${item.title}</strong><span>${item.subtitle}</span></div>
+                        <div class="announcement-label">${item.label}</div>
+                    </div>
+                </article>
+            `).join('');
+
+            dots.innerHTML = announcements.map((_, index) => `
+                <button class="announcement-dot ${index === activeAnnouncementIndex ? 'active' : ''}" type="button" aria-label="切換到第 ${index + 1} 則公告" onclick="showAnnouncement(${index}, true)"></button>
+            `).join('');
+        }
+
+        function restartAnnouncementProgress() {
+            const board = document.getElementById('announcement-board');
+            const bar = document.getElementById('announcement-progress-bar');
+            if (!board || !bar) return;
+            board.classList.remove('playing');
+            void bar.offsetWidth;
+            board.classList.add('playing');
+        }
+
+        window.showAnnouncement = function(index, manual = false) {
+            if (!announcements.length) return;
+            activeAnnouncementIndex = (index + announcements.length) % announcements.length;
+            renderAnnouncements();
+            restartAnnouncementProgress();
+            if (manual) startAnnouncementAutoPlay();
+        };
+
+        function startAnnouncementAutoPlay() {
+            if (announcementTimer) window.clearInterval(announcementTimer);
+            announcementTimer = window.setInterval(() => {
+                window.showAnnouncement(activeAnnouncementIndex + 1);
+            }, 5200);
+        }
+
         function selectGame(gameId) {
             if (currentActiveGame !== gameId) {
                 currentActiveGame = gameId; cart = {}; 
@@ -3467,6 +3633,10 @@
         }
 
         initCinematicFX();
+
+        renderAnnouncements();
+        restartAnnouncementProgress();
+        startAnnouncementAutoPlay();
 
         initApp();
     </script>
