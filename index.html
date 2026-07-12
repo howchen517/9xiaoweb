@@ -2576,7 +2576,41 @@
         };
         const LINE_LOGIN_SESSION_KEY = '9xiaoLineLoginAttemptV2';
         const LIFF_CALLBACK_PARAMS = ['code', 'state', 'liff.state', 'friendship_status_changed'];
-        const routeState = { currentStep: 'step-1', lastReason: 'initial' };
+        const routeState = { currentStep: 'step-1', lastReason: 'initial', suppressHistory: false };
+
+        function replaceRouteState(stepId = routeState.currentStep, gameId = currentActiveGame) {
+            if (!window.history || !window.history.replaceState) return;
+            window.history.replaceState({ source: '9xiao-storefront', stepId, gameId: gameId || '' }, document.title, window.location.href);
+        }
+
+        function pushRouteState(stepId, gameId = currentActiveGame) {
+            if (!window.history || !window.history.pushState || routeState.suppressHistory) return;
+            window.history.pushState({ source: '9xiao-storefront', stepId, gameId: gameId || '' }, document.title, window.location.href);
+        }
+
+        function handleBrowserRoute(event) {
+            const state = event.state || {};
+            if (state.source !== '9xiao-storefront') {
+                if (routeState.currentStep !== 'step-1') {
+                    routeState.suppressHistory = true;
+                    setStep('step-1', 'browser-back-fallback');
+                    routeState.suppressHistory = false;
+                }
+                return;
+            }
+
+            routeState.suppressHistory = true;
+            if (state.stepId === 'step-2' && state.gameId && db[state.gameId]) {
+                selectGame(state.gameId);
+            } else if (state.stepId === 'step-3' && currentActiveGame) {
+                setStep('step-3', 'browser-history-payment');
+            } else {
+                setStep('step-1', 'browser-history-home');
+            }
+            routeState.suppressHistory = false;
+        }
+
+        window.addEventListener('popstate', handleBrowserRoute);
 
         function showLineConnectNotice(title, message, canRetry = false) {
             const list = document.getElementById('game-list');
@@ -2609,7 +2643,7 @@
             if (!shouldClean || !window.history || !window.history.replaceState) return;
             LIFF_CALLBACK_PARAMS.forEach((key) => url.searchParams.delete(key));
             url.searchParams.delete('line_login_tried');
-            window.history.replaceState({}, document.title, url.toString());
+            window.history.replaceState({ source: '9xiao-storefront', stepId: routeState.currentStep, gameId: currentActiveGame || '' }, document.title, url.toString());
         }
 
         function setAuthState(nextState) {
@@ -2674,6 +2708,7 @@
                     document.getElementById('user-name').innerText = 'Preview Guest';
                     setAuthState({ authLoading: false, ready: true, user: currentLineUser, isAuthenticated: true, redirectReason: 'local-preview' });
                     renderGames();
+                    replaceRouteState('step-1', '');
                     markStorefrontReady();
                     return;
                 }
@@ -2710,6 +2745,7 @@
                 if (profile.pictureUrl) document.getElementById('user-img').style.backgroundImage = `url(${profile.pictureUrl})`;
                 setAuthState({ authLoading: false, ready: true, user: profile, isAuthenticated: true, redirectReason: 'liff-authenticated' });
                 renderGames();
+                replaceRouteState('step-1', '');
                 markStorefrontReady();
             } catch (err) {
                 console.warn('LIFF init failed.', err);
@@ -2773,6 +2809,7 @@
                 pList.innerHTML += `<div class="product-item"><img src="${p.img}" class="product-icon"><div class="product-info"><div class="product-name">${cleanName}</div>${noteHtml}<div class="price" style="${(p.price === 0 || p.soldOut) ? 'color:#D84315;' : ''}">${priceText}</div></div><div class="qty-ctrl" style="${(p.price === 0 || p.soldOut) ? 'background:transparent;' : ''}">${qtyHtml}</div></div>`;
             });
             setStep('step-2', 'game-selected');
+            pushRouteState('step-2', gameId);
         }
 
         function changeQty(productId, delta) { let newQty = cart[productId] + delta; if (newQty < 0) newQty = 0; cart[productId] = newQty; document.getElementById(`qty-${productId}`).innerText = newQty; updateTotal(); }
@@ -2783,7 +2820,10 @@
             if (isNaN(totalAmount) || totalAmount < 0) totalAmount = 0;
             document.getElementById('total-price').innerText = `NT$ ${totalAmount}`;
         }
-        function goBack() { setStep('step-1', 'back-to-home'); }
+        function goBack() {
+            setStep('step-1', 'back-to-home');
+            replaceRouteState('step-1', '');
+        }
         function goHome() { goBack(); document.getElementById('game-search-input').value = ''; renderGames(); }
 
         window.contactCS = function() { window.location.href = "https://lin.ee/zHlVKw9"; }
@@ -3195,10 +3235,12 @@
         function showPaymentPage() {
             renderPaymentPage();
             setStep('step-3', 'payment-page-opened');
+            pushRouteState('step-3', currentActiveGame);
         }
 
         window.goBackToOrder = function() {
             setStep('step-2', 'payment-page-back-to-order');
+            replaceRouteState('step-2', currentActiveGame);
         };
 
         function hasValidLineProfile() {
