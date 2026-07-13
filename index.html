@@ -2664,30 +2664,38 @@
         };
         const LINE_LOGIN_SESSION_KEY = '9xiaoLineLoginAttemptV2';
         const LIFF_CALLBACK_PARAMS = ['code', 'state', 'liff.state', 'friendship_status_changed'];
-        const routeState = { currentStep: 'step-1', lastReason: 'initial', suppressHistory: false };
+        const routeState = { currentStep: 'step-1', lastReason: 'initial', suppressHistory: false, activeModal: '' };
 
-        function replaceRouteState(stepId = routeState.currentStep, gameId = currentActiveGame) {
+        function getRoutePayload(stepId = routeState.currentStep, gameId = currentActiveGame, modal = routeState.activeModal) {
+            return { source: '9xiao-storefront', stepId, gameId: gameId || '', modal: modal || '' };
+        }
+
+        function replaceRouteState(stepId = routeState.currentStep, gameId = currentActiveGame, modal = routeState.activeModal) {
             if (!window.history || !window.history.replaceState) return;
-            window.history.replaceState({ source: '9xiao-storefront', stepId, gameId: gameId || '' }, document.title, window.location.href);
+            window.history.replaceState(getRoutePayload(stepId, gameId, modal), document.title, window.location.href);
         }
 
-        function pushRouteState(stepId, gameId = currentActiveGame) {
+        function pushRouteState(stepId, gameId = currentActiveGame, modal = routeState.activeModal) {
             if (!window.history || !window.history.pushState || routeState.suppressHistory) return;
-            window.history.pushState({ source: '9xiao-storefront', stepId, gameId: gameId || '' }, document.title, window.location.href);
+            window.history.pushState(getRoutePayload(stepId, gameId, modal), document.title, window.location.href);
         }
 
-        function handleBrowserRoute(event) {
-            const state = event.state || {};
-            if (state.source !== '9xiao-storefront') {
-                if (routeState.currentStep !== 'step-1') {
-                    routeState.suppressHistory = true;
-                    setStep('step-1', 'browser-back-fallback');
-                    routeState.suppressHistory = false;
-                }
-                return;
-            }
+        function closeRouteModal() {
+            document.getElementById('public-reviews-overlay')?.classList.remove('active');
+            routeState.activeModal = '';
+        }
 
-            routeState.suppressHistory = true;
+        function openRouteModal(modalName, elementId, reason = 'modal-opened') {
+            const modal = document.getElementById(elementId);
+            if (!modal) return;
+            modal.classList.add('active');
+            if (routeState.activeModal === modalName) return;
+            routeState.activeModal = modalName;
+            pushRouteState(routeState.currentStep, currentActiveGame, modalName);
+            console.info('[9xiao-route]', reason, '->', modalName);
+        }
+
+        function applyRouteStep(state) {
             if (state.stepId === 'step-2' && state.gameId && db[state.gameId]) {
                 selectGame(state.gameId);
             } else if (state.stepId === 'step-3' && currentActiveGame) {
@@ -2695,7 +2703,27 @@
             } else {
                 setStep('step-1', 'browser-history-home');
             }
-            routeState.suppressHistory = false;
+        }
+
+        function handleBrowserRoute(event) {
+            const state = event.state || {};
+            routeState.suppressHistory = true;
+            try {
+                if (state.source !== '9xiao-storefront') {
+                    closeRouteModal();
+                    if (routeState.currentStep !== 'step-1') setStep('step-1', 'browser-back-fallback');
+                    return;
+                }
+
+                closeRouteModal();
+                applyRouteStep(state);
+                if (state.modal === 'reviews') {
+                    routeState.activeModal = 'reviews';
+                    document.getElementById('public-reviews-overlay')?.classList.add('active');
+                }
+            } finally {
+                routeState.suppressHistory = false;
+            }
         }
 
         window.addEventListener('popstate', handleBrowserRoute);
@@ -2991,8 +3019,12 @@
             document.getElementById('total-price').innerText = `NT$ ${totalAmount}`;
         }
         function goBack() {
+            if (window.history && window.history.state && window.history.state.source === '9xiao-storefront' && routeState.currentStep !== 'step-1') {
+                window.history.back();
+                return;
+            }
             setStep('step-1', 'back-to-home');
-            replaceRouteState('step-1', '');
+            replaceRouteState('step-1', '', '');
         }
         function goHome() { goBack(); document.getElementById('game-search-input').value = ''; renderGames(); }
 
@@ -3000,14 +3032,16 @@
 
         window.openPublicReviews = async function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            document.getElementById('public-reviews-overlay').classList.add('active');
+            openRouteModal('reviews', 'public-reviews-overlay', 'reviews-opened');
             const listEl = document.getElementById('public-reviews-list');
             listEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-            
+
             try {
-                const response = await fetch(`${GAS_URL}?action=getReviews`);
-                const reviews = await response.json();
-                
+                const response = await fetch(`${GAS_URL}?action=getReviews`, { redirect: 'follow' });
+                if (!response.ok) throw new Error(`reviews api failed: ${response.status}`);
+                const data = await response.json();
+                const reviews = Array.isArray(data) ? data : [];
+
                 if (reviews.length === 0) {
                     listEl.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted); font-weight: bold;">目前還沒有評價唷！</div>';
                     return;
@@ -3045,7 +3079,12 @@
         }
         window.closePublicReviews = function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            document.getElementById('public-reviews-overlay').classList.remove('active');
+            if (routeState.activeModal === 'reviews' && window.history?.state?.modal === 'reviews') {
+                window.history.back();
+                return;
+            }
+            closeRouteModal();
+            replaceRouteState(routeState.currentStep, currentActiveGame, '');
         }
 
         window.openHistoryModal = async function() {
