@@ -3032,7 +3032,9 @@
 
         window.openPublicReviews = async function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            openRouteModal('reviews', 'public-reviews-overlay', 'reviews-opened');
+            const overlay = document.getElementById('public-reviews-overlay');
+            if (overlay) overlay.classList.add('active');
+            routeState.activeModal = 'reviews';
             const listEl = document.getElementById('public-reviews-list');
             listEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
 
@@ -3079,12 +3081,7 @@
         }
         window.closePublicReviews = function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            if (routeState.activeModal === 'reviews' && window.history?.state?.modal === 'reviews') {
-                window.history.back();
-                return;
-            }
             closeRouteModal();
-            replaceRouteState(routeState.currentStep, currentActiveGame, '');
         }
 
         window.openHistoryModal = async function() {
