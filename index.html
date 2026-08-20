@@ -2608,6 +2608,8 @@
 
         const getEmoji = (code) => `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${code}.png`;
         let currentLineUser = null; 
+        let publicReviewsCacheHtml = null;
+        let publicReviewsLoading = null;
 
         const db = {
             'aov': { name: '傳說對決', loginType: 'none', desc: '發送貝殼幣序號，請至官網自行兌換', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_dandadan_collab_skin', name: '膽大黨聯動造型', price: 0, priceLabel: '人工報價', quoteOnly: true, img: 'assets/aov-dandadan-collab.webp', loginType: 'account', gameNameOverride: '傳說對決（登入儲值）' }, { id: 'aov_hayate_dimensional_breakthrough', name: '亥犽-次元突破', note: '全套', price: 8900, img: 'assets/aov-hayate-dimensional-breakthrough.webp', loginType: 'account', gameNameOverride: '傳說對決（登入儲值）', availableAt: '2026-07-25T00:01:00+08:00' }, { id: 'aov_liliana_witch_memoir', name: '莉莉安:魔女回憶錄', note: '全包', price: 9100, img: 'assets/aov-liliana-witch-memoir.png', loginType: 'account', gameNameOverride: '傳說對決（登入儲值）' }, { id: 'aov_nakroth_stars', name: '納克-群星', price: 5800, img: 'assets/aov-nakroth-stars.webp' }, { id: 'aov_1', name: '364 點券', price: 250, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 485, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 980, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2900, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
@@ -3121,60 +3123,75 @@
 
         window.contactCS = function() { window.location.href = "https://lin.ee/zHlVKw9"; }
 
+        function renderPublicReviewsHtml(reviews) {
+            if (!Array.isArray(reviews) || reviews.length === 0) {
+                return '<div style="text-align:center; padding:20px; color:var(--text-muted); font-weight: bold;">目前還沒有評價唷！</div>';
+            }
+
+            return reviews.map(r => {
+                const starCount = parseInt(r.stars) || 5;
+                const starsHtml = '★'.repeat(starCount) + '☆'.repeat(Math.max(0, 5 - starCount));
+                const purchaseInfo = (r.gameName || r.items) ? '<div class="review-purchase-info">🎮 ' + (r.gameName || '') + ' | 🛒 ' + (r.items || '') + '</div>' : '';
+                const avatarHtml = r.pictureUrl ? '<div class="reviewer-avatar" style="background-image: url(\'' + r.pictureUrl + '\');"></div>' : '<div class="reviewer-avatar" style="display:flex; justify-content:center; align-items:center; font-size:20px;">🦊</div>';
+                const dateObj = new Date(r.date);
+                const dateStr = (!isNaN(dateObj.getTime())) ? dateObj.getFullYear() + '/' + String(dateObj.getMonth()+1).padStart(2,'0') + '/' + String(dateObj.getDate()).padStart(2,'0') : '';
+
+                return '<div class="review-card">' +
+                    '<div class="review-header">' +
+                        '<div class="reviewer-info">' + avatarHtml +
+                            '<div style="display: flex; flex-direction: column;">' +
+                                '<div class="reviewer-name">' + (r.name || '匿名訪客') + '</div>' +
+                                '<div class="review-date">' + dateStr + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="review-stars">' + starsHtml + '</div>' +
+                    '</div>' +
+                    purchaseInfo +
+                    '<div class="review-comment">💬 ' + (r.comment || '這位客人給了超讚的好評！') + '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        async function loadPublicReviewsHtml() {
+            if (publicReviewsCacheHtml) return publicReviewsCacheHtml;
+            if (publicReviewsLoading) return publicReviewsLoading;
+            publicReviewsLoading = fetch(`${GAS_URL}?action=getReviews`, { redirect: 'follow' })
+                .then(response => {
+                    if (!response.ok) throw new Error(`reviews api failed: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    publicReviewsCacheHtml = renderPublicReviewsHtml(Array.isArray(data) ? data : []);
+                    return publicReviewsCacheHtml;
+                })
+                .catch(err => {
+                    console.warn('[9xiao-reviews] load failed', err);
+                    return '<div style="text-align:center; padding:20px; color:red; font-weight: bold;">無法讀取評價資料，請稍後再試。</div>';
+                })
+                .finally(() => { publicReviewsLoading = null; });
+            return publicReviewsLoading;
+        }
+
         window.openPublicReviews = async function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
             const overlay = document.getElementById('public-reviews-overlay');
-            if (overlay) overlay.classList.add('active');
-            routeState.activeModal = 'reviews';
             const listEl = document.getElementById('public-reviews-list');
-            listEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+            if (!overlay || !listEl) return;
 
-            try {
-                const response = await fetch(`${GAS_URL}?action=getReviews`, { redirect: 'follow' });
-                if (!response.ok) throw new Error(`reviews api failed: ${response.status}`);
-                const data = await response.json();
-                const reviews = Array.isArray(data) ? data : [];
-
-                if (reviews.length === 0) {
-                    listEl.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted); font-weight: bold;">目前還沒有評價唷！</div>';
-                    return;
-                }
-
-                let html = '';
-                reviews.forEach(r => {
-                    let starsHtml = '★'.repeat(parseInt(r.stars) || 5) + '☆'.repeat(5 - (parseInt(r.stars) || 5));
-                    let purchaseInfo = '';
-                    if (r.gameName || r.items) { purchaseInfo = `<div class="review-purchase-info">🎮 ${r.gameName || ''} | 🛒 ${r.items || ''}</div>`; }
-                    let avatarHtml = r.pictureUrl ? `<div class="reviewer-avatar" style="background-image: url('${r.pictureUrl}');"></div>` : `<div class="reviewer-avatar" style="display:flex; justify-content:center; align-items:center; font-size:20px;">🦊</div>`;
-                    let dateObj = new Date(r.date);
-                    let dateStr = (!isNaN(dateObj.getTime())) ? `${dateObj.getFullYear()}/${String(dateObj.getMonth()+1).padStart(2,'0')}/${String(dateObj.getDate()).padStart(2,'0')}` : '';
-
-                    html += `
-                        <div class="review-card">
-                            <div class="review-header">
-                                <div class="reviewer-info">${avatarHtml}
-                                    <div style="display: flex; flex-direction: column;">
-                                        <div class="reviewer-name">${r.name || '匿名訪客'}</div>
-                                        <div class="review-date">${dateStr}</div> 
-                                    </div>
-                                </div>
-                                <div class="review-stars">${starsHtml}</div>
-                            </div>
-                            ${purchaseInfo}
-                            <div class="review-comment">💬 ${r.comment || '這位客人給了超讚的好評！'}</div>
-                        </div>
-                    `;
-                });
-                listEl.innerHTML = html;
-            } catch (err) {
-                listEl.innerHTML = '<div style="text-align:center; padding:20px; color:red; font-weight: bold;">無法讀取評價資料，請稍後再試。</div>';
+            // Keep reviews as a pure overlay. In LIFF, touching route/history here can make the WebView reinitialize.
+            overlay.classList.add('active');
+            if (publicReviewsCacheHtml) {
+                listEl.innerHTML = publicReviewsCacheHtml;
+                return;
             }
+
+            listEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+            listEl.innerHTML = await loadPublicReviewsHtml();
         }
         window.closePublicReviews = function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            closeRouteModal();
+            document.getElementById('public-reviews-overlay')?.classList.remove('active');
         }
-
         window.openHistoryModal = async function() {
             if (!currentLineUser) return alert("⚠️ 請先透過 LINE 登入才能查看歷史紀錄唷！");
             if (!GAS_URL || GAS_URL === "請填入GAS_URL") return alert("⚠️ 請先填寫 Google Apps Script 網址！");
