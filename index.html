@@ -2875,6 +2875,26 @@
             window.dispatchEvent(new CustomEvent('9xiao:storefront-ready', { detail: { reason: authState.redirectReason } }));
         }
 
+        function shouldAutoStartLineLogin() {
+            const isLineCallback = hasLiffCallbackParams();
+            const isLineInApp = !!(liff && typeof liff.isInClient === 'function' && liff.isInClient());
+            return isLineCallback || isLineInApp;
+        }
+
+        function renderGuestStorefront(reason = 'guest-public-browsing') {
+            sessionStorage.removeItem(LINE_LOGIN_SESSION_KEY);
+            cleanLoginUrlIfNeeded();
+            currentLineUser = { userId: 'guest_web', displayName: '訪客', pictureUrl: '' };
+            document.getElementById('user-name').innerText = '連接 LINE';
+            setAuthState({ authLoading: false, ready: true, user: currentLineUser, isAuthenticated: false, redirectReason: reason });
+            renderGames();
+            renderAnnouncements();
+            restartAnnouncementProgress();
+            startAnnouncementAutoPlay();
+            replaceRouteState('step-1', '');
+            markStorefrontReady();
+        }
+
         function setStep(stepId, reason = 'manual-route') {
             const allowedSteps = ['step-1', 'step-2', 'step-3'];
             if (!allowedSteps.includes(stepId)) {
@@ -2922,6 +2942,10 @@
                 const returnedFromLineLogin = hasLiffCallbackParams();
 
                 if (!liff.isLoggedIn()) {
+                    if (!shouldAutoStartLineLogin()) {
+                        renderGuestStorefront('public-browser-before-line-login');
+                        return;
+                    }
                     if (returnedFromLineLogin || sessionStorage.getItem(LINE_LOGIN_SESSION_KEY) === '1') {
                         sessionStorage.removeItem(LINE_LOGIN_SESSION_KEY);
                         cleanLoginUrlIfNeeded();
