@@ -3180,6 +3180,11 @@
 
             // Keep reviews as a pure overlay. In LIFF, touching route/history here can make the WebView reinitialize.
             overlay.classList.add('active');
+            const isLiffClient = !!(liff && typeof liff.isInClient === 'function' && liff.isInClient());
+            if (isLiffClient) {
+                listEl.innerHTML = '<div style="text-align:center; padding:22px 18px; color:var(--text-muted); font-weight:800; line-height:1.8;">評價資料正在調整 LIFF 讀取方式。<br>目前請先透過官方 LINE 詢問客服查看評價。</div>';
+                return false;
+            }
             if (publicReviewsCacheHtml) {
                 listEl.innerHTML = publicReviewsCacheHtml;
                 return false;
