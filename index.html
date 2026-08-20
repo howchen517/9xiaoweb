@@ -2466,7 +2466,7 @@
                     <p class="hero-subtitle">&#33268;&#21147;&#26044;&#26381;&#21209;&#22909;&#27599;&#19968;&#20301;&#23458;&#20154;</p>
                     <div class="hero-actions">
                         <a href="#game-list" class="hero-primary" data-guide="start">&#38283;&#22987;&#36984;&#36092;</a>
-                        <button class="hero-secondary" type="button" onclick="openPublicReviews(event)">&#26597;&#30475;&#35413;&#20729;</button>
+                        <button class="hero-secondary" type="button" data-open-reviews="1" onclick="return openPublicReviews(event)">&#26597;&#30475;&#35413;&#20729;</button>
                     </div>
                 </div>
                 <div class="hero-showcase">
@@ -2488,7 +2488,7 @@
                     <h2>&#20320;&#24819;&#20786;&#20540;&#21738;&#27454;&#36938;&#25138;&#65311;</h2>
                     <p>&#36984;&#25321;&#36938;&#25138;&#12289;&#22635;&#20837;&#36039;&#35338;&#12289;&#36865;&#20986;&#35330;&#21934;&#12290;&#25105;&#20497;&#26371;&#22312; &#23448;&#26041; LINE &#20013;&#21332;&#21161;&#20320;&#23436;&#25104;&#24460;&#32396;&#30906;&#35469;&#12290;</p>
                 </div>
-                <button class="hub-review" type="button" onclick="openPublicReviews(event)">
+                <button class="hub-review" type="button" data-open-reviews="1" onclick="return openPublicReviews(event)">
                     <span class="review-score">5.0</span>
                     <span class="review-copy"><strong>&#35413;&#20729;&#23560;&#21312;</strong><small>99+ &#30495;&#23526;&#22238;&#39243;</small></span>
                     <span class="review-arrow">&#8250;</span>
@@ -3172,25 +3172,29 @@
             return publicReviewsLoading;
         }
 
-        window.openPublicReviews = async function(event) {
+        window.openPublicReviews = function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
             const overlay = document.getElementById('public-reviews-overlay');
             const listEl = document.getElementById('public-reviews-list');
-            if (!overlay || !listEl) return;
+            if (!overlay || !listEl) return false;
 
             // Keep reviews as a pure overlay. In LIFF, touching route/history here can make the WebView reinitialize.
             overlay.classList.add('active');
             if (publicReviewsCacheHtml) {
                 listEl.innerHTML = publicReviewsCacheHtml;
-                return;
+                return false;
             }
 
             listEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-            listEl.innerHTML = await loadPublicReviewsHtml();
+            loadPublicReviewsHtml().then(html => {
+                if (overlay.classList.contains('active')) listEl.innerHTML = html;
+            });
+            return false;
         }
         window.closePublicReviews = function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
             document.getElementById('public-reviews-overlay')?.classList.remove('active');
+            return false;
         }
         window.openHistoryModal = async function() {
             if (!currentLineUser) return alert("⚠️ 請先透過 LINE 登入才能查看歷史紀錄唷！");
