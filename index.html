@@ -2388,23 +2388,6 @@
 
     <div class="floating-cs-btn" onclick="contactCS()"><span class="floating-cs-icon">💬</span><span class="floating-cs-text">客服</span></div>
 
-    <div class="overlay" id="public-reviews-overlay">
-        <div class="bottom-modal">
-            <div class="modal-header">
-                <div class="modal-title">🌟 顧客真實好評</div>
-                <button class="close-btn" onclick="closePublicReviews(event)">&times;</button>
-            </div>
-            <div class="review-dashboard-header">
-                <div class="review-score-big">5.0</div>
-                <div class="review-score-stars">⭐⭐⭐⭐⭐</div>
-                <div class="review-score-text">綜合超過 99+ 位顧客的真實推薦</div>
-            </div>
-            <div class="list-container" id="public-reviews-list">
-                <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-            </div>
-        </div>
-    </div>
-
     <div class="overlay" id="history-overlay">
         <div class="bottom-modal">
             <div class="modal-header">
@@ -2436,18 +2419,6 @@
         </div>
     </div>
 
-    <div class="center-overlay" id="review-overlay">
-        <div class="center-modal">
-            <h3 class="center-title">給予九霄科技評價</h3>
-            <p class="center-text" style="margin-bottom: 10px;">您的回饋是我們進步的動力！🦊</p>
-            <div class="star-rating">
-                <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label><input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label><input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label><input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label><input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
-            </div>
-            <textarea id="review-text" class="review-textarea" rows="3" placeholder="有什麼想對我們說的嗎？ (選填)"></textarea>
-            <div class="modal-actions"><button class="btn-cancel" onclick="closeReviewModal(event)">稍後再說</button><button class="btn-confirm" onclick="submitReview(event)">送出評價</button></div>
-        </div>
-    </div>
-
     <div class="container">
         <div id="step-1" class="step active">
 
@@ -2466,7 +2437,6 @@
                     <p class="hero-subtitle">&#33268;&#21147;&#26044;&#26381;&#21209;&#22909;&#27599;&#19968;&#20301;&#23458;&#20154;</p>
                     <div class="hero-actions">
                         <a href="#game-list" class="hero-primary" data-guide="start">&#38283;&#22987;&#36984;&#36092;</a>
-                        <button class="hero-secondary" type="button" data-open-reviews="1" onclick="return openPublicReviews(event)">&#26597;&#30475;&#35413;&#20729;</button>
                     </div>
                 </div>
                 <div class="hero-showcase">
@@ -2488,11 +2458,6 @@
                     <h2>&#20320;&#24819;&#20786;&#20540;&#21738;&#27454;&#36938;&#25138;&#65311;</h2>
                     <p>&#36984;&#25321;&#36938;&#25138;&#12289;&#22635;&#20837;&#36039;&#35338;&#12289;&#36865;&#20986;&#35330;&#21934;&#12290;&#25105;&#20497;&#26371;&#22312; &#23448;&#26041; LINE &#20013;&#21332;&#21161;&#20320;&#23436;&#25104;&#24460;&#32396;&#30906;&#35469;&#12290;</p>
                 </div>
-                <button class="hub-review" type="button" data-open-reviews="1" onclick="return openPublicReviews(event)">
-                    <span class="review-score">5.0</span>
-                    <span class="review-copy"><strong>&#35413;&#20729;&#23560;&#21312;</strong><small>99+ &#30495;&#23526;&#22238;&#39243;</small></span>
-                    <span class="review-arrow">&#8250;</span>
-                </button>
                 <div class="hub-status">
                     <span class="status-dot"></span>
                     <span>&#23458;&#26381;&#26178;&#27573; 10:00 - 23:00｜非營業時間也可以詢問</span>
@@ -3174,26 +3139,6 @@
 
         window.openPublicReviews = function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            const overlay = document.getElementById('public-reviews-overlay');
-            const listEl = document.getElementById('public-reviews-list');
-            if (!overlay || !listEl) return false;
-
-            // Keep reviews as a pure overlay. In LIFF, touching route/history here can make the WebView reinitialize.
-            overlay.classList.add('active');
-            const isLiffClient = !!(liff && typeof liff.isInClient === 'function' && liff.isInClient());
-            if (isLiffClient) {
-                listEl.innerHTML = '<div style="text-align:center; padding:22px 18px; color:var(--text-muted); font-weight:800; line-height:1.8;">評價資料正在調整 LIFF 讀取方式。<br>目前請先透過官方 LINE 詢問客服查看評價。</div>';
-                return false;
-            }
-            if (publicReviewsCacheHtml) {
-                listEl.innerHTML = publicReviewsCacheHtml;
-                return false;
-            }
-
-            listEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-            loadPublicReviewsHtml().then(html => {
-                if (overlay.classList.contains('active')) listEl.innerHTML = html;
-            });
             return false;
         }
         window.closePublicReviews = function(event) {
@@ -3240,12 +3185,6 @@
                     if (o.status === 'pending' || o.status === '處理中') statusHtml = '<span class="badge h-pending">🟡 處理中</span>';
                     else if (o.status === 'completed' || o.status === '已完成') {
                         statusHtml = '<span class="badge h-completed">🟢 已完成</span>';
-                        if (o.isReviewed) { actionBtn = '<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">✅ 已評價</span>'; } 
-                        else {
-                            let itemsStr = ''; for(let k in o.cart) { itemsStr += `${k} x${o.cart[k]} `; }
-                            const reviewPayload = encodeURIComponent(JSON.stringify({ orderId: o.orderId, gameName: o.gameName, items: itemsStr.trim() }));
-                            actionBtn = `<button id="btn-review-${o.orderId}" data-review-payload="${reviewPayload}" style="background:var(--light-purple); color:var(--primary-purple); border:none; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);" onclick="openReviewModalFromButton(event, this)">⭐ 寫評價</button>`;
-                        }
                     } else statusHtml = '<span class="badge h-cancelled">🔴 已取消</span>';
 
                     html += `<div class="history-item"><div class="history-item-header"><span class="history-date">🕒 ${dateStr}</span>${statusHtml}</div><div class="history-game">🎮 ${o.gameName}</div><div class="history-item-footer"><span style="font-size: 11px; color: var(--text-muted); font-family: monospace;">#${o.orderId}</span><div style="display:flex; gap:8px; align-items:center;">${actionBtn}<span style="font-weight: 800; color: var(--primary-pink); font-size: 15px;">NT$ ${o.totalAmount}</span></div></div></div>`;
@@ -3750,42 +3689,22 @@
         }
 
         let currentReviewOrderId = null; let currentReviewGame = ''; let currentReviewItems = '';
-        window.openReviewModal = function(orderId, gameName, items) { currentReviewOrderId = orderId; currentReviewGame = gameName; currentReviewItems = items; document.getElementById('review-overlay').classList.add('active'); document.getElementById('review-text').value = ''; document.getElementById('star5').checked = true; };
+        window.openReviewModal = function() { return false; };
         window.openReviewModalFromButton = function(event, button) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            try {
-                const payload = JSON.parse(decodeURIComponent(button.dataset.reviewPayload || '{}'));
-                openReviewModal(payload.orderId || '', payload.gameName || '', payload.items || '');
-            } catch (err) {
-                console.warn('[9xiao-review] invalid review payload', err);
-                alert('評價資料讀取失敗，請重新開啟訂單紀錄後再試一次。');
-            }
+            return false;
         };
         window.closeReviewModal = function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            document.getElementById('review-overlay').classList.remove('active'); currentReviewOrderId = null;
+            document.getElementById('review-overlay')?.classList.remove('active'); currentReviewOrderId = null;
+            return false;
         };
-        
+
         window.submitReview = async function(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
-            const stars = document.querySelector('input[name="rating"]:checked').value;
-            const comment = document.getElementById('review-text').value.trim();
-            const orderId = currentReviewOrderId;
-            closeReviewModal();
-            
-            const reviewBtn = document.getElementById(`btn-review-${orderId}`);
-            if (reviewBtn) reviewBtn.outerHTML = '<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">✅ 已評價</span>';
-            
-            confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 }, colors: ['#FFD700'] });
-            setTimeout(() => { alert(`💖 感謝您的 ${stars} 星評價！`); }, 500);
-
-            if (GAS_URL && GAS_URL !== "請填入GAS_URL") {
-                const reviewData = { action: 'submitReview', orderId: orderId, lineUserId: currentLineUser ? currentLineUser.userId : 'unknown', customerName: currentLineUser ? currentLineUser.displayName : '匿名', pictureUrl: currentLineUser && currentLineUser.pictureUrl ? currentLineUser.pictureUrl : '', stars: stars, comment: comment, gameName: currentReviewGame, items: currentReviewItems, timestamp: new Date().toISOString() };
-                try { fetch(GAS_URL, { redirect: "follow", method: 'POST', body: JSON.stringify(reviewData) }); } catch (e) { }
-            }
+            return false;
         };
 
-        
         function initCinematicFX() {
             const root = document.documentElement;
             window.addEventListener('pointermove', (event) => {
@@ -4018,7 +3937,7 @@
                 { id: 'start', target: '[data-guide="start"]', title: '從這裡開始選購', text: '第一次來可以直接點「開始選購」，系統會帶你往下選擇遊戲與商品。', placement: 'bottom' },
                 { id: 'search', target: '[data-guide="search"]', title: '快速搜尋遊戲', text: '如果遊戲很多，可以在這裡輸入遊戲名稱、商品或服務關鍵字。', placement: 'bottom' },
                 { id: 'game-card', target: '[data-guide="game-card"]', title: '選擇想儲值的項目', text: '點擊遊戲卡片後，會進入填寫資料與選擇面額的頁面。', placement: 'bottom' },
-                { id: 'profile', target: '[data-guide="profile"]', title: '查看訂單與評價', text: '登入後可以查看自己的訂單紀錄，也能在完成後留下評價。', placement: 'bottom' }
+                { id: 'profile', target: '[data-guide="profile"]', title: '查看訂單紀錄', text: '登入後可以查看自己的訂單紀錄與處理狀態。', placement: 'bottom' }
             ];
 
             function hasSeenGuide() {
