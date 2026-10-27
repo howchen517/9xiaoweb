@@ -2513,6 +2513,7 @@
                         <option value="transfer">轉帳</option>
                         <option value="atm">無卡存款</option>
                         <option value="family_scan">全家櫃台掃碼付款</option>
+                        <option value="seven_code">7-ELEVEN 超商代碼</option>
                         <option value="line_pay_money">LINE Pay Money</option>
                     </select>
                 </div>
@@ -2545,7 +2546,7 @@
                         <div class="payment-copy-head">
                             <strong>PAYMENT MESSAGE</strong>
                             <div class="payment-copy-actions">
-                                <button class="payment-copy-btn" type="button" onclick="copyPaymentAccount()">複製帳號</button>
+                                <button class="payment-copy-btn" id="payment-copy-account-btn" type="button" onclick="copyPaymentAccount()">複製帳號</button>
                                 <button class="payment-copy-btn" type="button" onclick="copyPaymentInfo()">複製完整資訊</button>
                             </div>
                         </div>
@@ -2577,7 +2578,7 @@
         let publicReviewsLoading = null;
 
         const db = {
-            'aov': { name: '傳說對決', loginType: 'none', desc: '發送貝殼幣序號，請至官網自行兌換', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_dandadan_collab_skin', name: '膽大黨聯動造型', price: 0, priceLabel: '人工報價', quoteOnly: true, img: 'assets/aov-dandadan-collab.webp', loginType: 'account', gameNameOverride: '傳說對決（登入儲值）' }, { id: 'aov_hayate_dimensional_breakthrough', name: '亥犽-次元突破', note: '全套', price: 8900, img: 'assets/aov-hayate-dimensional-breakthrough.webp', loginType: 'account', gameNameOverride: '傳說對決（登入儲值）', availableAt: '2026-07-25T00:01:00+08:00' }, { id: 'aov_liliana_witch_memoir', name: '莉莉安:魔女回憶錄', note: '全包', price: 9100, img: 'assets/aov-liliana-witch-memoir.png', loginType: 'account', gameNameOverride: '傳說對決（登入儲值）' }, { id: 'aov_nakroth_stars', name: '納克-群星', price: 5800, img: 'assets/aov-nakroth-stars.webp' }, { id: 'aov_1', name: '364 點券', price: 250, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 485, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 980, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2900, soldOut: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
+            'aov': { name: '傳說對決', loginType: 'none', desc: '貝殼幣序號與限定代抽服務', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_yaya_weather_adventure', name: '芽芽－氣象大冒險', price: 0, priceLabel: '價格待公告', quoteOnly: true, img: 'assets/aov-yaya-weather-adventure.jpg', loginType: 'account', gameNameOverride: '傳說對決（登入代抽）' }, { id: 'aov_1', name: '364 點券', price: 250, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 485, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 980, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2900, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
             'idv': { name: '\u7b2c\u4e94\u4eba\u683c', loginType: 'uid', desc: 'UID\u514d\u5e33\u5bc6\uff0c\u9996\u6b21\u5132\u503c\u9700\u6383\u78bc', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png', products: [ { id: 'idv_1', name: '759 \u8ff4\u8072', price: 280, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_2', name: '2277 \u8ff4\u8072', price: 840, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_3', name: '3036 \u8ff4\u8072', price: 1120, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_4', name: '3795 \u8ff4\u8072', price: 1400, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_5', name: '7590 \u8ff4\u8072', price: 2650, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_6', name: '15180 \u8ff4\u8072', price: 5200, img: 'https://i.meee.com.tw/FIkkG1Q.webp' } ] },
             'valorant': { name: '特戰英豪', loginType: 'account', desc: '特務幣代儲，客製化面額請詢問客服', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg', products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1450, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2700, img: getEmoji('1f52b') } ] },
             'discord': { name: 'Discord 商品', loginType: 'discord', desc: '提供登入代購與連結贈禮方案', banner: 'https://i.meee.com.tw/4lQCqUp.jpg', icon: 'https://cdn.simpleicons.org/discord/5865F2', products: [ { id: 'dc_1', name: '1個月 Nitro (登入)', price: 230, img: getEmoji('1f48e') }, { id: 'dc_2', name: '1個月 Nitro (贈禮)', price: 270, img: getEmoji('1f381') }, { id: 'dc_3', name: '1年 Nitro (登入)', price: 1499, img: getEmoji('1f48e') }, { id: 'dc_4', name: '1年 Nitro (贈禮)', price: 2700, img: getEmoji('1f381') }, { id: 'dc_5', name: '三麗鷗組合包', price: 500, img: getEmoji('1f48e') }, { id: 'dc_6', name: '咒術迴戰組合包', price: 400, img: getEmoji('1f48e') } ] },
@@ -3062,6 +3063,16 @@
         function changeQty(productId, delta) {
             const product = currentActiveGame ? db[currentActiveGame].products.find(p => p.id === productId) : null;
             if (!product || product.soldOut || !isProductAvailable(product)) return;
+            if (delta > 0) {
+                db[currentActiveGame].products.forEach(otherProduct => {
+                    if (otherProduct.id === productId) return;
+                    const shouldClear = isQuoteProduct(product) || isQuoteProduct(otherProduct);
+                    if (!shouldClear || !cart[otherProduct.id]) return;
+                    cart[otherProduct.id] = 0;
+                    const qtyEl = document.getElementById(`qty-${otherProduct.id}`);
+                    if (qtyEl) qtyEl.innerText = '0';
+                });
+            }
             let newQty = cart[productId] + delta;
             if (newQty < 0) newQty = 0;
             cart[productId] = newQty;
@@ -3227,6 +3238,13 @@
                 autoDetail: '全家櫃台掃碼',
                 note: '此方式只有提供全家。條碼開立後限時 10 分鐘內完成繳費，請到全家後再到官方 LINE 告訴我們開立條碼。櫃台掃碼手續費為 NT$15，繳費金額會是商品金額 + 15。'
             },
+            seven_code: {
+                label: '7-ELEVEN 超商代碼',
+                title: '7-ELEVEN 超商代碼',
+                options: [],
+                autoDetail: '7-ELEVEN 超商代碼',
+                note: '完成下單後，我們會透過官方 LINE 提供本次 7-ELEVEN 繳費代碼。收到代碼後再前往門市完成付款，請勿先行操作。'
+            },
             line_pay_money: {
                 label: 'LINE Pay Money',
                 title: 'LINE Pay Money 轉帳',
@@ -3236,8 +3254,21 @@
             }
         };
 
+        function isManualTransferAccountOrder() {
+            return getSelectedProducts().some(product => product.manualTransferAccount);
+        }
+
         function getSelectedPaymentFlow() {
             const method = document.getElementById('payment-method').value;
+            if (method === 'transfer' && isManualTransferAccountOrder()) {
+                return {
+                    label: '轉帳',
+                    title: '轉帳付款',
+                    options: [],
+                    autoDetail: '下單後由客服提供帳號',
+                    note: '完成下單後，我們會透過官方 LINE 提供本次收款帳號。為避免匯入錯誤帳戶，請收到客服提供的帳號後再付款。'
+                };
+            }
             return paymentFlows[method] || null;
         }
 
@@ -3294,6 +3325,7 @@
         }
 
         function getPaymentAccountCopyText() {
+            if (document.getElementById('payment-method').value === 'transfer' && isManualTransferAccountOrder()) return '';
             const meta = getPaymentChannelMeta();
             return meta ? meta.account : (paymentCopyAccounts[selectedPaymentDetail] || '');
         }
@@ -3305,6 +3337,9 @@
             const channel = selectedPaymentDetail || flow?.autoDetail || '';
 
             if (method === 'transfer') {
+                if (isManualTransferAccountOrder()) {
+                    return `九霄科技轉帳付款資訊\n\n付款方式：轉帳\n應付金額：${amountText}\n\n完成下單後，我們會透過官方 LINE 提供本次收款帳號。\n為避免匯入錯誤帳戶，請收到客服提供的帳號後再付款。`;
+                }
                 if (!channel) return '請先選擇要使用的轉帳銀行，系統會自動產生付款說明。';
                 return `九霄科技收款資訊\n\n付款方式：轉帳\n收款銀行：${getPaymentChannelLabel()}\n收款帳號：${getPaymentAccountCopyText()}\n應付金額：${amountText}\n\n可使用實體 ATM、手機 APP 或線上網銀完成付款。\n付款完成後，請回到官方 LINE 完成驗證回傳，並依照客服指示完成防詐驗證。`;
             }
@@ -3316,6 +3351,10 @@
 
             if (method === 'family_scan') {
                 return `九霄科技全家櫃台掃碼付款\n\n付款方式：全家櫃台掃碼\n商品金額：${amountText}\n手續費：NT$ 15\n繳費金額：NT$ ${totalAmount + 15}\n\n條碼開立後只有 10 分鐘有效。\n請到全家後再回官方 LINE 告訴我們，我們會為您開立條碼。`;
+            }
+
+            if (method === 'seven_code') {
+                return `九霄科技 7-ELEVEN 超商代碼付款\n\n付款方式：7-ELEVEN 超商代碼\n應付金額：${amountText}\n\n完成下單後，我們會透過官方 LINE 提供本次繳費代碼。\n收到代碼後再前往 7-ELEVEN 門市完成付款，請勿先行操作。`;
             }
 
             if (method === 'line_pay_money') {
@@ -3363,6 +3402,18 @@
                     </div>
                 </details>`;
 
+            const sevenCard = `
+                <details class="verify-card physical">
+                    <summary><h4>🏪 7-ELEVEN 超商代碼提醒</h4><span class="verify-toggle">查看說明</span></summary>
+                    <div class="verify-body">
+                        <p>完成下單後，請等待官方 LINE 提供本次<span class="verify-highlight">繳費代碼</span>。</p>
+                        <ul class="verify-list">
+                            <li>收到代碼後再前往 <strong>7-ELEVEN</strong> 門市完成付款。</li>
+                            <li>付款後請保留收據，並依照上方實體付款方式完成驗證回傳。</li>
+                        </ul>
+                    </div>
+                </details>`;
+
             const linePayCard = `
                 <details class="verify-card online">
                     <summary><h4>💬 LINE Pay Money 提醒</h4><span class="verify-toggle">查看說明</span></summary>
@@ -3379,6 +3430,7 @@
                 transfer: `${onlineCard}${physicalCard}`,
                 atm: physicalCard,
                 family_scan: `${familyCard}${physicalCard}`,
+                seven_code: `${sevenCard}${physicalCard}`,
                 line_pay_money: linePayCard
             }[method] || '';
 
@@ -3403,6 +3455,8 @@
             const copyEl = document.getElementById('payment-auto-copy');
             if (!copyEl) return;
             const accountText = getPaymentAccountCopyText();
+            const accountButton = document.getElementById('payment-copy-account-btn');
+            if (accountButton) accountButton.style.display = accountText ? '' : 'none';
             const accountLine = accountText ? `\n\n可複製帳號：${accountText}` : '';
             copyEl.innerText = `${getPaymentInstructionText()}${accountLine}`;
         }
@@ -3476,7 +3530,7 @@
             document.getElementById('payment-page-total').innerText = getTotalDisplayText();
             document.getElementById('payment-detail-title').innerText = flow.title;
             document.getElementById('payment-detail-note').innerText = flow.note;
-            document.getElementById('payment-detail-note').classList.toggle('payment-warning', document.getElementById('payment-method').value === 'family_scan');
+            document.getElementById('payment-detail-note').classList.toggle('payment-warning', ['family_scan', 'seven_code'].includes(document.getElementById('payment-method').value));
             updateVerificationGuide();
             updatePaymentAutoCopy();
 
