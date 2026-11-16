@@ -2355,9 +2355,140 @@
             flex: 1;
         }
 
+        .verification-consent-modal {
+            width: min(540px, calc(100vw - 28px));
+            max-width: 540px;
+            max-height: min(88vh, 720px);
+            padding: 24px;
+            overflow-y: auto;
+            text-align: left;
+            border-radius: 20px !important;
+        }
+
+        .verification-consent-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            margin-bottom: 16px;
+        }
+
+        .verification-consent-icon {
+            flex: 0 0 42px;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            color: #fff;
+            background: linear-gradient(135deg, #765CFF, #9B7CFF);
+            box-shadow: 0 12px 26px rgba(118,92,255,.25);
+            font-size: 20px;
+        }
+
+        .verification-consent-head .center-title {
+            margin: 0 0 5px;
+            font-size: 19px;
+        }
+
+        .verification-consent-lead {
+            margin: 0;
+            color: rgba(34,36,58,.68);
+            font-size: 13px;
+            font-weight: 760;
+            line-height: 1.65;
+        }
+
+        .verification-consent-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin: 14px 0;
+        }
+
+        .verification-consent-guide {
+            border: 1px solid rgba(118,92,255,.14);
+            border-radius: 14px;
+            padding: 13px;
+            background: linear-gradient(145deg, rgba(248,247,255,.96), rgba(255,255,255,.98));
+        }
+
+        .verification-consent-guide.physical {
+            border-color: rgba(240,166,58,.22);
+            background: linear-gradient(145deg, rgba(255,249,236,.96), rgba(255,255,255,.98));
+        }
+
+        .verification-consent-guide strong {
+            display: block;
+            margin-bottom: 7px;
+            color: #332B4A;
+            font-size: 13px;
+            font-weight: 950;
+        }
+
+        .verification-consent-guide p {
+            margin: 0;
+            color: rgba(34,36,58,.68);
+            font-size: 12px;
+            font-weight: 720;
+            line-height: 1.6;
+        }
+
+        .verification-consent-warning {
+            margin: 0 0 13px;
+            border-left: 4px solid #FF5F78;
+            border-radius: 10px;
+            padding: 11px 12px;
+            color: #B92F49;
+            background: rgba(255,95,120,.08);
+            font-size: 12px;
+            font-weight: 850;
+            line-height: 1.6;
+        }
+
+        .verification-consent-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 0 0 16px;
+            border: 1px solid rgba(118,92,255,.16);
+            border-radius: 12px;
+            padding: 12px;
+            color: #332B4A;
+            background: rgba(118,92,255,.055);
+            font-size: 13px;
+            font-weight: 850;
+            line-height: 1.55;
+            cursor: pointer;
+        }
+
+        .verification-consent-check input {
+            width: 19px;
+            height: 19px;
+            margin: 1px 0 0;
+            accent-color: #765CFF;
+            flex: 0 0 auto;
+        }
+
+        .verification-consent-modal .btn-confirm:disabled {
+            opacity: .42;
+            cursor: not-allowed;
+            box-shadow: none;
+            filter: grayscale(.25);
+        }
+
         @media (max-width: 620px) {
             .payment-summary,
             .payment-option-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .verification-consent-modal {
+                width: calc(100vw - 22px);
+                max-height: 90vh;
+                padding: 18px;
+            }
+
+            .verification-consent-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -2410,12 +2541,34 @@
         </div>
     </div>
 
-    <div class="center-overlay" id="confirm-overlay">
-        <div class="center-modal">
-            <div style="font-size: 50px; margin-bottom: 12px;">🛍️</div>
-            <h3 class="center-title">確認結帳送出嗎？</h3>
-            <p class="center-text">請確認填寫的遊戲資料皆正確喔！</p>
-            <div class="modal-actions"><button class="btn-cancel" onclick="closeConfirmModal()">再檢查一下</button><button class="btn-confirm" onclick="submitOrder()">確認送出</button></div>
+    <div class="center-overlay" id="confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="verification-consent-title">
+        <div class="center-modal verification-consent-modal">
+            <div class="verification-consent-head">
+                <div class="verification-consent-icon">✓</div>
+                <div>
+                    <h3 class="center-title" id="verification-consent-title">付款後請完成驗證</h3>
+                    <p class="verification-consent-lead">完成付款後，請依照下方教學將驗證資料回傳至官方 LINE，我們核對無誤後才會安排訂單。</p>
+                </div>
+            </div>
+            <div class="verification-consent-grid">
+                <div class="verification-consent-guide">
+                    <strong>📱 網路銀行／APP 轉帳</strong>
+                    <p>請以分割畫面截圖，同時顯示付款成功明細與官方 LINE；若 APP 無法截圖，請改用螢幕錄影。</p>
+                </div>
+                <div class="verification-consent-guide physical">
+                    <strong>🧾 ATM／無卡／超商付款</strong>
+                    <p>請保留收據，在空白處寫上「九霄科技」與商品名稱後拍照，或使用一鏡到底錄影回傳。</p>
+                </div>
+            </div>
+            <p class="verification-consent-warning">未完成驗證、資料不完整或無法核對時，訂單將無法安排出單。感謝您的理解與配合。</p>
+            <label class="verification-consent-check">
+                <input type="checkbox" id="verification-consent-checkbox" onchange="updateVerificationConsent()">
+                <span>我已知曉，並同意在付款完成後依照教學完成驗證。</span>
+            </label>
+            <div class="modal-actions">
+                <button class="btn-cancel" type="button" onclick="closeConfirmModal()">返回檢查</button>
+                <button class="btn-confirm" id="verification-confirm-button" type="button" onclick="submitOrder()" disabled>已知曉，送出訂單</button>
+            </div>
         </div>
     </div>
 
@@ -2528,8 +2681,8 @@
             <div class="payment-page-shell">
                 <div class="payment-hero">
                     <div class="payment-kicker">PAYMENT CHECKOUT</div>
-                    <h2 class="payment-title">付款資訊確認</h2>
-                    <p class="payment-subtitle">請依照下方付款方式完成付款。付款完成後請回到官方 LINE 完成驗證回傳，我們確認入帳與驗證資料後會立即為您安排訂單。</p>
+                    <h2 class="payment-title">付款方式與驗證教學</h2>
+                    <p class="payment-subtitle">確認付款方式後，請依照官方 LINE 的付款指引操作。完成付款後，務必依照下方教學完成驗證回傳。</p>
                 </div>
 
                 <div class="payment-summary">
@@ -2538,21 +2691,9 @@
                 </div>
 
                 <div class="payment-card" id="payment-detail-card">
-                    <h3 id="payment-detail-title">選擇付款資訊</h3>
-                    <div class="payment-option-grid" id="payment-detail-options"></div>
+                    <h3 id="payment-detail-title">付款方式說明</h3>
                     <div class="payment-note" id="payment-detail-note"></div>
                     <div class="payment-verify-guide" id="payment-verify-guide"></div>
-                    <div class="payment-copy-box">
-                        <div class="payment-copy-head">
-                            <strong>PAYMENT MESSAGE</strong>
-                            <div class="payment-copy-actions">
-                                <button class="payment-copy-btn" id="payment-copy-account-btn" type="button" onclick="copyPaymentAccount()">複製帳號</button>
-                                <button class="payment-copy-btn" type="button" onclick="copyPaymentInfo()">複製完整資訊</button>
-                            </div>
-                        </div>
-                        <p id="payment-auto-copy">請先選擇付款渠道，系統會自動產生付款說明。</p>
-                        <div class="payment-copy-toast" id="payment-copy-toast">已複製</div>
-                    </div>
                 </div>
 
                 <div class="payment-actions">
@@ -2578,7 +2719,7 @@
         let publicReviewsLoading = null;
 
         const db = {
-            'aov': { name: '傳說對決', loginType: 'none', desc: '貝殼幣序號與限定代抽服務', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_yaya_weather_adventure', name: '芽芽－氣象大冒險', price: 7500, img: 'assets/aov-yaya-weather-adventure.jpg', loginType: 'account', gameNameOverride: '傳說對決（登入代抽）' }, { id: 'aov_1', name: '364 點券', price: 250, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 485, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 980, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2900, manualTransferAccount: true, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
+            'aov': { name: '傳說對決', loginType: 'none', desc: '貝殼幣序號與限定代抽服務', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_yaya_weather_adventure', name: '芽芽－氣象大冒險', price: 7500, img: 'assets/aov-yaya-weather-adventure.jpg', loginType: 'account', gameNameOverride: '傳說對決（登入代抽）' }, { id: 'aov_1', name: '364 點券', price: 250, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 485, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 980, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2900, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
             'idv': { name: '\u7b2c\u4e94\u4eba\u683c', loginType: 'uid', desc: 'UID\u514d\u5e33\u5bc6\uff0c\u9996\u6b21\u5132\u503c\u9700\u6383\u78bc', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png', products: [ { id: 'idv_1', name: '759 \u8ff4\u8072', price: 280, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_2', name: '2277 \u8ff4\u8072', price: 840, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_3', name: '3036 \u8ff4\u8072', price: 1120, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_4', name: '3795 \u8ff4\u8072', price: 1400, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_5', name: '7590 \u8ff4\u8072', price: 2650, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_6', name: '15180 \u8ff4\u8072', price: 5200, img: 'https://i.meee.com.tw/FIkkG1Q.webp' } ] },
             'valorant': { name: '特戰英豪', loginType: 'account', desc: '特務幣代儲，客製化面額請詢問客服', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg', products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1450, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2700, img: getEmoji('1f52b') } ] },
             'discord': { name: 'Discord 商品', loginType: 'discord', desc: '提供登入代購與連結贈禮方案', banner: 'https://i.meee.com.tw/4lQCqUp.jpg', icon: 'https://cdn.simpleicons.org/discord/5865F2', products: [ { id: 'dc_1', name: '1個月 Nitro (登入)', price: 230, img: getEmoji('1f48e') }, { id: 'dc_2', name: '1個月 Nitro (贈禮)', price: 270, img: getEmoji('1f381') }, { id: 'dc_3', name: '1年 Nitro (登入)', price: 1499, img: getEmoji('1f48e') }, { id: 'dc_4', name: '1年 Nitro (贈禮)', price: 2700, img: getEmoji('1f381') }, { id: 'dc_5', name: '三麗鷗組合包', price: 500, img: getEmoji('1f48e') }, { id: 'dc_6', name: '咒術迴戰組合包', price: 400, img: getEmoji('1f48e') } ] },
@@ -2821,6 +2962,15 @@
                 return;
             }
 
+            // LIFF browser already handles login during liff.init(). Calling
+            // liff.login() here can reopen the LIFF page repeatedly on mobile.
+            if (typeof liff.isInClient === 'function' && liff.isInClient()) {
+                sessionStorage.removeItem(LINE_LOGIN_SESSION_KEY);
+                setAuthState({ authLoading: false, ready: true, isAuthenticated: false, redirectReason: 'liff-client-session-missing' });
+                showLineConnectNotice('LINE 連接尚未完成', '請先關閉這個頁面，再從官方 LINE 的自助下單入口重新開啟。', false);
+                return;
+            }
+
             const loginAlreadyStarted = sessionStorage.getItem(LINE_LOGIN_SESSION_KEY) === '1';
             if (loginAlreadyStarted && !hasLiffCallbackParams()) {
                 setAuthState({ authLoading: false, ready: true, isAuthenticated: false, redirectReason: 'login-returned-without-session' });
@@ -2841,12 +2991,6 @@
         function markStorefrontReady() {
             document.body.dataset.storefrontReady = '1';
             window.dispatchEvent(new CustomEvent('9xiao:storefront-ready', { detail: { reason: authState.redirectReason } }));
-        }
-
-        function shouldAutoStartLineLogin() {
-            const isLineCallback = hasLiffCallbackParams();
-            const isLineInApp = !!(liff && typeof liff.isInClient === 'function' && liff.isInClient());
-            return isLineCallback || isLineInApp;
         }
 
         function renderGuestStorefront(reason = 'guest-public-browsing') {
@@ -2905,23 +3049,22 @@
                 }
 
                 showLineConnectNotice('正在連接 LINE', '系統正在確認 LINE 登入狀態，請稍候。', false);
-                await liff.init({ liffId: LIFF_ID });
+                await liff.init({
+                    liffId: LIFF_ID,
+                    withLoginOnExternalBrowser: true,
+                });
 
                 const returnedFromLineLogin = hasLiffCallbackParams();
 
                 if (!liff.isLoggedIn()) {
-                    if (!shouldAutoStartLineLogin()) {
-                        renderGuestStorefront('public-browser-before-line-login');
-                        return;
+                    sessionStorage.removeItem(LINE_LOGIN_SESSION_KEY);
+                    cleanLoginUrlIfNeeded();
+                    if (typeof liff.isInClient === 'function' && liff.isInClient()) {
+                        setAuthState({ authLoading: false, ready: true, isAuthenticated: false, redirectReason: 'liff-client-session-missing' });
+                        showLineConnectNotice('LINE 連接尚未完成', '請先關閉這個頁面，再從官方 LINE 的自助下單入口重新開啟。', false);
+                    } else {
+                        renderGuestStorefront(returnedFromLineLogin ? 'login-callback-without-session' : 'external-browser-not-authenticated');
                     }
-                    if (returnedFromLineLogin || sessionStorage.getItem(LINE_LOGIN_SESSION_KEY) === '1') {
-                        sessionStorage.removeItem(LINE_LOGIN_SESSION_KEY);
-                        cleanLoginUrlIfNeeded();
-                        setAuthState({ authLoading: false, ready: true, isAuthenticated: false, redirectReason: 'login-callback-without-session' });
-                        showLineConnectNotice('請重新連接 LINE', '這次沒有成功取得 LINE 登入狀態，請點下方按鈕重新連接一次。', true);
-                        return;
-                    }
-                    beginLineLogin('not-authenticated');
                     return;
                 }
 
@@ -3035,8 +3178,6 @@
                 document.getElementById('acc-nickname').value = ''; document.getElementById('acc-login-method').value = ''; document.getElementById('acc-server').value = '';
                 document.getElementById('acc-account').value = ''; document.getElementById('acc-password').value = ''; document.getElementById('acc-recovery').value = '';
                 document.getElementById('payment-method').value = '';
-                selectedPaymentDetail = '';
-                selectedPaymentMethod = '';
             }
             updateTotal();
             updateCredentialForms();
@@ -3205,31 +3346,20 @@
         }
         window.closeHistoryModal = function() { document.getElementById('history-overlay').classList.remove('active'); }
 
-        let selectedPaymentDetail = '';
-        let selectedPaymentMethod = '';
         const paymentFlows = {
             transfer: {
                 label: '轉帳',
-                title: '選擇轉帳銀行',
-                options: [
-                    { value: '玉山銀行', label: '玉山銀行', hint: '實體 ATM / 線上網銀皆可' },
-                    { value: '台新銀行', label: '台新銀行', hint: '實體 ATM / 線上網銀皆可' },
-                    { value: '國泰世華', label: '國泰世華', hint: '實體 ATM / 線上網銀皆可' },
-                    { value: '街口支付', label: '街口支付', hint: '街口帳戶轉帳' },
-                    { value: 'ipass money', label: 'ipass money', hint: '一卡通 Money 轉帳' },
-                    { value: 'LINE BANK 連線', label: 'LINE BANK 連線', hint: 'LINE BANK 轉帳' }
-                ],
-                note: '銀行轉帳可使用實體 ATM 或線上網銀 / APP。付款完成後，請回到官方 LINE 完成驗證回傳，並依客服指示完成防詐驗證。'
+                title: '轉帳付款說明',
+                options: [],
+                autoDetail: '轉帳',
+                note: '可使用銀行 APP、網路銀行或實體 ATM。請依照官方 LINE 的付款指引操作；付款完成後，務必完成下方驗證回傳。'
             },
             atm: {
                 label: '無卡存款',
-                title: '選擇無卡存款銀行',
-                options: [
-                    { value: '國泰世華無卡', label: '國泰世華', hint: '全家 / 捷運站 / 火車站常見 ATM' },
-                    { value: '台新銀行無卡', label: '台新銀行', hint: '全家 / 捷運站 / 火車站常見 ATM' },
-                    { value: '玉山銀行無卡', label: '玉山銀行', hint: '全家 / 捷運站 / 火車站常見 ATM' }
-                ],
-                note: '請選擇方便存入的銀行。完成無卡存款後，請回傳收據或明細，並配合官方 LINE 的付款驗證流程。'
+                title: '無卡存款說明',
+                options: [],
+                autoDetail: '無卡存款',
+                note: '請依照官方 LINE 的付款指引前往支援無卡存款的 ATM 操作。完成後請保留收據，並完成下方實體付款驗證。'
             },
             family_scan: {
                 label: '全家櫃台掃碼付款',
@@ -3250,103 +3380,31 @@
                 title: 'LINE Pay Money 轉帳',
                 options: [],
                 autoDetail: 'LINE Pay Money',
-                note: '請加入老闆的 LINE：howard1414，從聊天室左下角的轉帳功能完成付款。付款完成後，請回到官方 LINE 完成驗證回傳。'
+                note: '請依照官方 LINE 的付款指引完成操作。付款完成後，請回到官方 LINE 完成驗證回傳。'
             }
         };
 
-        function isManualTransferAccountOrder() {
-            return getSelectedProducts().some(product => product.manualTransferAccount);
-        }
-
         function getSelectedPaymentFlow() {
             const method = document.getElementById('payment-method').value;
-            if (method === 'transfer' && isManualTransferAccountOrder()) {
-                return {
-                    label: '轉帳',
-                    title: '轉帳付款',
-                    options: [],
-                    autoDetail: '下單後由客服提供帳號',
-                    note: '完成下單後，我們會透過官方 LINE 提供本次收款帳號。為避免匯入錯誤帳戶，請收到客服提供的帳號後再付款。'
-                };
-            }
             return paymentFlows[method] || null;
         }
 
         function getSelectedPaymentSummary() {
             const flow = getSelectedPaymentFlow();
             if (!flow) return '';
-            return selectedPaymentDetail ? `${flow.label} - ${selectedPaymentDetail}` : flow.label;
-        }
-
-        function getPaymentDetailRequirementText(flow) {
-            if (!flow || !flow.options || flow.options.length === 0) return '';
-            return flow.label === '無卡存款' ? '請選擇要使用的無卡存款銀行喔！' : '請選擇要使用的付款銀行喔！';
-        }
-
-        function isSelectedPaymentDetailValid(flow) {
-            if (!flow || !flow.options || flow.options.length === 0) return true;
-            return flow.options.some(option => option.value === selectedPaymentDetail);
-        }
-
-        const paymentCopyAccounts = {
-            '玉山銀行': '0370979238813',
-            '台新銀行': '28881018496846',
-            '國泰世華': '699520908742',
-            '街口支付': '906934155',
-            'ipass money': '0000001528998960',
-            'LINE BANK 連線': '111021606305',
-            '國泰世華無卡': '699520908742',
-            '台新銀行無卡': '28881018496846',
-            '玉山銀行無卡': '0370979238813',
-            'LINE Pay Money': 'howard1414'
-        };
-
-        const paymentChannelMeta = {
-            '玉山銀行': { name: '玉山銀行', code: '808', account: '0370979238813' },
-            '台新銀行': { name: '台新銀行', code: '812', account: '28881018496846' },
-            '國泰世華': { name: '國泰世華', code: '013', account: '699520908742' },
-            '街口支付': { name: '街口支付', code: '396', account: '906934155' },
-            'ipass money': { name: 'iPass money', code: '391', account: '0000001528998960' },
-            'LINE BANK 連線': { name: 'LINE Bank 連線商業銀行', code: '824', account: '111021606305' },
-            '國泰世華無卡': { name: '國泰世華', code: '013', account: '699520908742' },
-            '台新銀行無卡': { name: '台新銀行', code: '812', account: '28881018496846' },
-            '玉山銀行無卡': { name: '玉山銀行', code: '808', account: '0370979238813' },
-            'LINE Pay Money': { name: 'LINE Pay Money', code: '', account: 'howard1414' }
-        };
-
-        function getPaymentChannelMeta() {
-            return paymentChannelMeta[selectedPaymentDetail] || null;
-        }
-
-        function getPaymentChannelLabel() {
-            const meta = getPaymentChannelMeta();
-            if (!meta) return selectedPaymentDetail || '';
-            return meta.code ? `${meta.name} (${meta.code})` : meta.name;
-        }
-
-        function getPaymentAccountCopyText() {
-            if (document.getElementById('payment-method').value === 'transfer' && isManualTransferAccountOrder()) return '';
-            const meta = getPaymentChannelMeta();
-            return meta ? meta.account : (paymentCopyAccounts[selectedPaymentDetail] || '');
+            return flow.label;
         }
 
         function getPaymentInstructionText() {
             const method = document.getElementById('payment-method').value;
-            const flow = getSelectedPaymentFlow();
             const amountText = getTotalDisplayText();
-            const channel = selectedPaymentDetail || flow?.autoDetail || '';
 
             if (method === 'transfer') {
-                if (isManualTransferAccountOrder()) {
-                    return `九霄科技轉帳付款資訊\n\n付款方式：轉帳\n應付金額：${amountText}\n\n完成下單後，我們會透過官方 LINE 提供本次收款帳號。\n為避免匯入錯誤帳戶，請收到客服提供的帳號後再付款。`;
-                }
-                if (!channel) return '請先選擇要使用的轉帳銀行，系統會自動產生付款說明。';
-                return `九霄科技收款資訊\n\n付款方式：轉帳\n收款銀行：${getPaymentChannelLabel()}\n收款帳號：${getPaymentAccountCopyText()}\n應付金額：${amountText}\n\n可使用實體 ATM、手機 APP 或線上網銀完成付款。\n付款完成後，請回到官方 LINE 完成驗證回傳，並依照客服指示完成防詐驗證。`;
+                return `九霄科技付款說明\n\n付款方式：轉帳\n應付金額：${amountText}\n\n請依照官方 LINE 的付款指引完成操作。\n付款完成後，請依照教學完成驗證回傳。`;
             }
 
             if (method === 'atm') {
-                if (!channel) return '請先選擇要使用的無卡存款銀行，系統會自動產生付款說明。';
-                return `九霄科技無卡存款資訊\n\n付款方式：無卡存款\n收款銀行：${getPaymentChannelLabel()}\n收款帳號：${getPaymentAccountCopyText()}\n應付金額：${amountText}\n\n完成存款後，請回到官方 LINE 完成驗證回傳。\n為保障交易安全，請依照客服指示完成收據手寫或錄影驗證。`;
+                return `九霄科技付款說明\n\n付款方式：無卡存款\n應付金額：${amountText}\n\n請依照官方 LINE 的付款指引完成操作。\n付款後請保留收據，並依照教學完成實體付款驗證。`;
             }
 
             if (method === 'family_scan') {
@@ -3358,10 +3416,10 @@
             }
 
             if (method === 'line_pay_money') {
-                return `九霄科技 LINE Pay Money 付款\n\n付款方式：LINE Pay Money\n應付金額：${amountText}\n\n請加入老闆的 LINE：howard1414\n加入後從聊天室左下角使用轉帳功能完成付款。\n付款完成後，請回到官方 LINE 完成驗證回傳。`;
+                return `九霄科技付款說明\n\n付款方式：LINE Pay Money\n應付金額：${amountText}\n\n請依照官方 LINE 的付款指引完成操作。\n付款完成後，請依照教學完成驗證回傳。`;
             }
 
-            return '請先選擇付款渠道，系統會自動產生付款說明。';
+            return '請先選擇付款方式。';
         }
 
         function getVerificationGuideHTML(method) {
@@ -3451,80 +3509,10 @@
             guide.innerHTML = getVerificationGuideHTML(document.getElementById('payment-method').value);
         }
 
-        function updatePaymentAutoCopy() {
-            const copyEl = document.getElementById('payment-auto-copy');
-            if (!copyEl) return;
-            const accountText = getPaymentAccountCopyText();
-            const accountButton = document.getElementById('payment-copy-account-btn');
-            if (accountButton) accountButton.style.display = accountText ? '' : 'none';
-            const accountLine = accountText ? `\n\n可複製帳號：${accountText}` : '';
-            copyEl.innerText = `${getPaymentInstructionText()}${accountLine}`;
-        }
-
-        function showPaymentCopyToast(message) {
-            const toast = document.getElementById('payment-copy-toast');
-            if (!toast) return;
-            toast.innerText = message;
-            toast.classList.add('active');
-            window.clearTimeout(showPaymentCopyToast.timer);
-            showPaymentCopyToast.timer = window.setTimeout(() => toast.classList.remove('active'), 1800);
-        }
-
-        async function copyTextToClipboard(text, successMessage) {
-            if (!text) {
-                showPaymentCopyToast('請先選擇付款渠道');
-                return;
-            }
-
-            try {
-                if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(text);
-                } else {
-                    const textarea = document.createElement('textarea');
-                    textarea.value = text;
-                    textarea.setAttribute('readonly', '');
-                    textarea.style.position = 'fixed';
-                    textarea.style.left = '-9999px';
-                    document.body.appendChild(textarea);
-                    textarea.focus();
-                    textarea.select();
-                    textarea.setSelectionRange(0, textarea.value.length);
-                    const copied = document.execCommand('copy');
-                    textarea.remove();
-                    if (!copied) throw new Error('copy command rejected');
-                }
-                showPaymentCopyToast(successMessage);
-            } catch (error) {
-                showPaymentCopyToast('複製失敗，請長按文字複製');
-            }
-        }
-
-        window.copyPaymentAccount = function() {
-            copyTextToClipboard(getPaymentAccountCopyText(), '帳號已複製');
-        };
-
-        window.copyPaymentInfo = function() {
-            copyTextToClipboard(document.getElementById('payment-auto-copy')?.innerText || getPaymentInstructionText(), '付款資訊已複製');
-        };
-
-        window.choosePaymentDetail = function(value) {
-            selectedPaymentDetail = value;
-            document.querySelectorAll('.payment-option').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.value === value);
-            });
-            updatePaymentAutoCopy();
-        };
-
         function renderPaymentPage() {
             const flow = getSelectedPaymentFlow();
             if (!flow) return;
             const method = document.getElementById('payment-method').value;
-            if (selectedPaymentMethod !== method) {
-                selectedPaymentDetail = flow.autoDetail || '';
-                selectedPaymentMethod = method;
-            } else if (flow.autoDetail) {
-                selectedPaymentDetail = flow.autoDetail;
-            }
 
             document.getElementById('payment-page-method').innerText = flow.label;
             document.getElementById('payment-page-total').innerText = getTotalDisplayText();
@@ -3532,21 +3520,6 @@
             document.getElementById('payment-detail-note').innerText = flow.note;
             document.getElementById('payment-detail-note').classList.toggle('payment-warning', ['family_scan', 'seven_code'].includes(document.getElementById('payment-method').value));
             updateVerificationGuide();
-            updatePaymentAutoCopy();
-
-            const optionWrap = document.getElementById('payment-detail-options');
-            if (flow.options.length === 0) {
-                optionWrap.innerHTML = `<button class="payment-option active" type="button" data-value="${flow.autoDetail || flow.label}">${flow.autoDetail || flow.label}<small>請依照下方提醒操作</small></button>`;
-                updatePaymentAutoCopy();
-                return;
-            }
-
-            optionWrap.innerHTML = flow.options.map(option => `
-                <button class="payment-option ${selectedPaymentDetail === option.value ? 'active' : ''}" type="button" data-value="${option.value}" onclick="choosePaymentDetail('${option.value}')">
-                    ${option.label}
-                    <small>${option.hint}</small>
-                </button>
-            `).join('');
         }
         function showPaymentPage() {
             renderPaymentPage();
@@ -3560,6 +3533,7 @@
         };
 
         function hasValidLineProfile() {
+            if (currentLineUser?.userId === 'preview_01' && allowLocalReleasePreview()) return true;
             return !!(currentLineUser && currentLineUser.userId && currentLineUser.displayName && !['test_user_001', 'test_01', 'preview_01', 'guest_web'].includes(currentLineUser.userId));
         }
 
@@ -3568,8 +3542,7 @@
             return false;
         }
 
-        function validateOrderBeforeSubmit(options = {}) {
-            const requirePaymentDetail = options.requirePaymentDetail !== false;
+        function validateOrderBeforeSubmit() {
             const selectedProducts = getSelectedProducts();
             const quoteOnlyOrder = isQuoteOnlyOrder();
             if (!hasValidLineProfile()) return requireValidLineProfile();
@@ -3579,8 +3552,6 @@
             if (!quoteOnlyOrder) {
                 const paymentMethodEl = document.getElementById('payment-method');
                 if (!paymentMethodEl || !paymentMethodEl.value) { alert('💳 請選擇一個付款方式喔！'); return false; }
-                const flow = getSelectedPaymentFlow();
-                if (requirePaymentDetail && flow && flow.options.length > 0 && !isSelectedPaymentDetailValid(flow)) { alert(`💳 ${getPaymentDetailRequirementText(flow)}`); showPaymentPage(); return false; }
             }
             const loginType = getEffectiveLoginType();
             if (loginType === 'uid') {
@@ -3601,46 +3572,39 @@
 
         window.openFinalConfirmModal = function() {
             if (!validateOrderBeforeSubmit()) return;
+            const consent = document.getElementById('verification-consent-checkbox');
+            if (consent) consent.checked = false;
+            updateVerificationConsent();
             document.getElementById('confirm-overlay').classList.add('active');
         };
 
+        window.updateVerificationConsent = function() {
+            const consent = document.getElementById('verification-consent-checkbox');
+            const confirmButton = document.getElementById('verification-confirm-button');
+            if (confirmButton) confirmButton.disabled = !(consent && consent.checked);
+        };
+
         window.openConfirmModal = function() {
-            if (!validateOrderBeforeSubmit({ requirePaymentDetail: false })) return;
+            if (!validateOrderBeforeSubmit()) return;
             if (isQuoteOnlyOrder()) return window.openFinalConfirmModal();
             showPaymentPage();
         };
-        window.closeConfirmModal = function() { document.getElementById('confirm-overlay').classList.remove('active'); };
+        window.closeConfirmModal = function() {
+            document.getElementById('confirm-overlay').classList.remove('active');
+            const consent = document.getElementById('verification-consent-checkbox');
+            if (consent) consent.checked = false;
+            updateVerificationConsent();
+        };
         
         function createFlexRow(label, value) { return { "type": "box", "layout": "horizontal", "margin": "sm", "contents": [ { "type": "text", "text": label, "color": "#8E83AA", "size": "sm", "flex": 1 }, { "type": "text", "text": value || '未填寫', "weight": "bold", "size": "sm", "color": "#332B4A", "flex": 2, "wrap": true } ] }; }
 
-        function createCopyAccountFlexRow(label, accountText) {
-            if (!accountText) return null;
-            return {
-                "type": "box",
-                "layout": "horizontal",
-                "margin": "sm",
-                "contents": [
-                    { "type": "text", "text": label, "color": "#8E83AA", "size": "sm", "flex": 2 },
-                    {
-                        "type": "text",
-                        "text": "📋 點擊複製",
-                        "weight": "bold",
-                        "size": "sm",
-                        "color": "#9D84EA",
-                        "flex": 3,
-                        "align": "end",
-                        "action": {
-                            "type": "clipboard",
-                            "label": "複製帳號",
-                            "clipboardText": accountText
-                        }
-                    }
-                ]
-            };
-        }
-
         async function submitOrder() { 
             if (!validateOrderBeforeSubmit()) return;
+            const consent = document.getElementById('verification-consent-checkbox');
+            if (!consent || !consent.checked) {
+                alert('請先勾選「我已知曉」，確認會在付款後完成驗證喔！');
+                return;
+            }
             const btnConfirm = document.querySelector('#confirm-overlay .btn-confirm');
             const originalText = btnConfirm.innerText;
             btnConfirm.innerText = "⏳ 處理中...";
@@ -3658,7 +3622,6 @@
             const paymentSummary = quoteOnlyOrder ? '人工報價，待客服確認' : getSelectedPaymentSummary();
             if (!paymentSummary) return alert('💳 付款資訊尚未完成，請重新選擇付款方式喔！');
             const paymentInstructionText = quoteOnlyOrder ? '此商品需由客服人工報價，送出訂單後請等待官方 LINE 回覆確認金額。' : getPaymentInstructionText();
-            const paymentAccountCopyText = quoteOnlyOrder ? '' : getPaymentAccountCopyText();
             let flexInfoRows = []; 
             
             let cloudOrderData = { 
@@ -3670,7 +3633,7 @@
                 totalAmount: getSubmitTotalAmount(),
                 paymentMethod: paymentSummary, 
                 paymentInstruction: paymentInstructionText,
-                paymentAccount: paymentAccountCopyText,
+                paymentAccount: '',
                 status: '處理中', 
                 ip: clientIp, 
                 cart: {}, 
@@ -3694,8 +3657,6 @@
             }
 
             flexInfoRows.push(createFlexRow("💳 付款", cloudOrderData.paymentMethod));
-            const copyAccountRow = createCopyAccountFlexRow("🏦 帳號", paymentAccountCopyText);
-            if (copyAccountRow) flexInfoRows.push(copyAccountRow);
             flexInfoRows.push({
                 "type": "box",
                 "layout": "vertical",
