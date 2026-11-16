@@ -2474,7 +2474,7 @@
                     <div class="input-group"><label>3. 🌐 伺服器 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-server" placeholder="例如：台服 / 國際服"></div>
                     <div class="input-group"><label>4. 👤 登入帳號 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-account" placeholder="請輸入登入帳號或信箱"></div>
                     <div class="input-group"><label>5. 🔒 登入密碼 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-password" placeholder="請注意大小寫是否正確"></div>
-                    <div class="input-group"><label>6. 🛡️ 臉書復原碼 / Google 備用碼 <span style="color:var(--primary-pink)">*</span></label><input type="text" id="acc-recovery" placeholder="沒有的話則需配合在線驗證"></div>
+                    <div class="input-group"><label>6. 🛡️ 臉書復原碼 / Google 備用碼（選填）</label><input type="text" id="acc-recovery" placeholder="沒有的話則需配合在線驗證"></div>
                 </div>
 
                 <div id="form-none" style="display: none; background: var(--light-pink); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 2px dashed var(--primary-pink);">
@@ -2547,7 +2547,7 @@
         let publicReviewsLoading = null;
 
         const db = {
-            'aov': { name: '傳說對決', loginType: 'none', desc: '貝殼幣序號與限定代抽服務', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_yaya_weather_adventure', name: '芽芽－氣象大冒險', price: 7500, img: 'assets/aov-yaya-weather-adventure.jpg', loginType: 'account', gameNameOverride: '傳說對決（登入代抽）' }, { id: 'aov_1', name: '364 點券', price: 250, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 485, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 980, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2900, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
+            'aov': { name: '傳說對決', loginType: 'none', desc: '貝殼幣序號與限定代抽服務', banner: 'https://i.meee.com.tw/8oIbfVq.jpg', icon: 'https://i.meee.com.tw/dnaX91D.png', products: [ { id: 'aov_yaya_weather_adventure', name: '芽芽－氣象大冒險', price: 8800, img: 'assets/aov-yaya-weather-adventure.jpg', loginType: 'account', gameNameOverride: '傳說對決（登入代抽）' }, { id: 'aov_1', name: '364 點券', price: 250, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_2', name: '728 點券', price: 485, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_3', name: '1466 點券', price: 980, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_4', name: '2250 點券', price: 1450, img: 'https://i.meee.com.tw/Z1wv1Xo.png' }, { id: 'aov_6', name: '4543 點券', price: 2900, img: 'https://i.meee.com.tw/Z1wv1Xo.png' } ] },
             'idv': { name: '\u7b2c\u4e94\u4eba\u683c', loginType: 'uid', desc: 'UID\u514d\u5e33\u5bc6\uff0c\u9996\u6b21\u5132\u503c\u9700\u6383\u78bc', banner: 'https://i.meee.com.tw/h92gKJl.png', icon: 'https://i.meee.com.tw/JeBHmmS.png', products: [ { id: 'idv_1', name: '759 \u8ff4\u8072', price: 280, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_2', name: '2277 \u8ff4\u8072', price: 840, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_3', name: '3036 \u8ff4\u8072', price: 1120, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_4', name: '3795 \u8ff4\u8072', price: 1400, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_5', name: '7590 \u8ff4\u8072', price: 2650, img: 'https://i.meee.com.tw/FIkkG1Q.webp' }, { id: 'idv_6', name: '15180 \u8ff4\u8072', price: 5200, img: 'https://i.meee.com.tw/FIkkG1Q.webp' } ] },
             'valorant': { name: '特戰英豪', loginType: 'account', desc: '特務幣代儲，客製化面額請詢問客服', banner: 'https://i.meee.com.tw/ABaNPBl.png', icon: 'https://i.meee.com.tw/g8Dvi7J.jpg', products: [ { id: 'val_1', name: '1000 特務幣', price: 300, img: getEmoji('1f52b') }, { id: 'val_2', name: '2050 特務幣', price: 600, img: getEmoji('1f52b') }, { id: 'val_3', name: '3650 特務幣', price: 990, img: getEmoji('1f52b') }, { id: 'val_4', name: '5350 特務幣', price: 1450, img: getEmoji('1f52b') }, { id: 'val_5', name: '11000 特務幣', price: 2700, img: getEmoji('1f52b') } ] },
             'discord': { name: 'Discord 商品', loginType: 'discord', desc: '提供登入代購與連結贈禮方案', banner: 'https://i.meee.com.tw/4lQCqUp.jpg', icon: 'https://cdn.simpleicons.org/discord/5865F2', products: [ { id: 'dc_1', name: '1個月 Nitro (登入)', price: 230, img: getEmoji('1f48e') }, { id: 'dc_2', name: '1個月 Nitro (贈禮)', price: 270, img: getEmoji('1f381') }, { id: 'dc_3', name: '1年 Nitro (登入)', price: 1499, img: getEmoji('1f48e') }, { id: 'dc_4', name: '1年 Nitro (贈禮)', price: 2700, img: getEmoji('1f381') }, { id: 'dc_5', name: '三麗鷗組合包', price: 500, img: getEmoji('1f48e') }, { id: 'dc_6', name: '咒術迴戰組合包', price: 400, img: getEmoji('1f48e') } ] },
@@ -3313,8 +3313,8 @@
                     alert('🌸 哎呀！請填寫抖音號喔！'); return false;
                 }
             } else if (loginType === 'account') {
-                if (!document.getElementById('acc-nickname').value.trim() || !document.getElementById('acc-login-method').value || !document.getElementById('acc-server').value.trim() || !document.getElementById('acc-account').value.trim() || !document.getElementById('acc-password').value.trim() || !document.getElementById('acc-recovery').value.trim()) {
-                    alert('🌸 哎呀！帳號密碼登入的所有欄位都必須填寫喔！'); return false;
+                if (!document.getElementById('acc-nickname').value.trim() || !document.getElementById('acc-login-method').value || !document.getElementById('acc-server').value.trim() || !document.getElementById('acc-account').value.trim() || !document.getElementById('acc-password').value.trim()) {
+                    alert('🌸 哎呀！請把有標示 * 的帳密登入欄位填寫完整喔！'); return false;
                 }
             }
             return true;
@@ -3400,7 +3400,7 @@
                 cloudOrderData.formDetails = { '抖音號': douyinVal };
             } else if (loginType === 'account') {
                 const nicknameVal = document.getElementById('acc-nickname').value.trim(); const loginMethodVal = document.getElementById('acc-login-method').value; const serverVal = document.getElementById('acc-server').value.trim(); const accountVal = document.getElementById('acc-account').value.trim(); const passwordVal = document.getElementById('acc-password').value.trim(); const recoveryVal = document.getElementById('acc-recovery').value.trim();
-                flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal)); flexInfoRows.push(createFlexRow("🔑 登入", loginMethodVal)); flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal)); flexInfoRows.push(createFlexRow("👤 帳號", accountVal)); flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal)); flexInfoRows.push(createFlexRow("🛡️ 備用碼", recoveryVal));
+                flexInfoRows.push(createFlexRow("👤 暱稱", nicknameVal)); flexInfoRows.push(createFlexRow("🔑 登入", loginMethodVal)); flexInfoRows.push(createFlexRow("🌐 伺服器", serverVal)); flexInfoRows.push(createFlexRow("👤 帳號", accountVal)); flexInfoRows.push(createFlexRow("🔒 密碼", passwordVal)); flexInfoRows.push(createFlexRow("🛡️ 備用碼", recoveryVal || '未提供（需配合在線驗證）'));
                 cloudOrderData.formDetails = { '遊戲暱稱': nicknameVal, '登入方式': loginMethodVal, '伺服器': serverVal, '登入帳號': accountVal, '登入密碼': passwordVal, '備用碼': recoveryVal };
             } else if (loginType === 'none') {
                 flexInfoRows.push(createFlexRow("📝 儲值", "發送序號 (請至官網兌換)"));
